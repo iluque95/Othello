@@ -1,5 +1,6 @@
-package Interface;
+package GUI;
 
+import Logic.OthelloMove;
 import Logica.*;
 import java.awt.Color;
 import java.awt.Dimension;

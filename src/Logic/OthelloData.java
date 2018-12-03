@@ -5,7 +5,10 @@
  */
 package Logic;
 
+import Util.Color;
+import Util.Point;
 import java.util.Random;
+import java.util.Vector;
 
 /**
  *
@@ -13,14 +16,24 @@ import java.util.Random;
  */
 public class OthelloData {
     
-    int color;
     int spaces;
     int[][] board;
+    int[] pieces;
+    Vector<Point> WPieces;
+    Vector<Point> BPieces;
+
+    
     
     public OthelloData()
     {
-        spaces=64;
         board = new int[8][8];
+        pieces = new int[3];
+        WPieces = new Vector();
+        BPieces = new Vector();
+        
+        spaces=64;
+        
+        pieces[0] = pieces[2] = 2;
 
         Random rnd = new Random();
         
@@ -48,58 +61,51 @@ public class OthelloData {
     */
     private boolean validColor(int color)
     {
-        return color==1 && color==2;
+        return color==Color.BLACK.getColor() && color==Color.WHITE.getColor();
     }
     
     /**
     * Looks if movement is valid from given position.
     * 
-    * @param  x abcissa coordinate
-    * @param  y ordinate coordinate
+    * @param  p is a point which contains x abcissa coordinate
+    *         and y ordinate coordinate.
     * @return   true if can effect movement, false otherwise.
     */
-    public boolean isEmpty(int x, int y)
+    public boolean isEmpty(Point p)
     {
-        return this.board[x][y]==0;
+        return this.board[p.getX()][p.getY()]==0;
     }
     
     /**
     * Add a given piece into the board.
     * 
-    * @param  x abcissa coordinate
-    * @param  y ordinate coordinate
+    * @param  p is a point which contains x abcissa coordinate
+    *         and y ordinate coordinate.
     * @param color piece
     */
-    public void add(int x, int y, int color)
+    public void add(Point p, int color)
     {
-        if (validColor(color)) this.board[x][y] = color;
+        if (validColor(color)) {
+            this.board[p.getX()][p.getY()] = color;
+            if (color == Color.BLACK.getColor()) BPieces.add(p);
+            else WPieces.add(p);
+            pieces[color+1]++;
+        }
     }
     
     /**
     * Get the color of piece in a given position.
     * 0 for empty positions.
     * 1 for black color.
-    * 2 for white color.
+    * -1 for white color.
     * 
-    * @param  x abcissa coordinate
-    * @param  y ordinate coordinate
+    * @param  p is a point which contains x abcissa coordinate
+    *         and y ordinate coordinate.
     * @return color of piece
     */
-    public int getColor(int x, int y)
+    public int getColor(Point p)
     {
-        return this.board[x][y];
-    }
-    
-    /**
-    * Determines if given a piece it will be a solution.
-    * 
-    * @param  x abcissa coordinate
-    * @param  y ordinate coordinate
-    * @return true if is solution, false otherwise
-    */
-    public boolean isSolution(int x, int y)
-    {
-        return true;
+        return this.board[p.getX()][p.getY()];
     }
     
     /**
@@ -111,6 +117,46 @@ public class OthelloData {
     public int getSize()
     {
         return 8;
+    }
+    
+    /**
+    * Obtain the quantity of pieces for the given color.
+    * 
+    * @return size of board
+    */
+    public int getQuantityOfPieces(int color)
+    {
+        return pieces[color+1];
+    }
+    
+    /**
+    * Spaces where do not exists pieces.
+    * 
+    * @return Empty positions in the board
+    */
+    public int getEmptyPositions()
+    {
+        return spaces;
+    }
+    
+    /**
+    * Returns a vector with positions of black pieces in the board.
+    * 
+    * @return Array with black pieces position
+    */
+    public Vector<Point> getBlackPieces()
+    {
+        return BPieces;
+    }
+    
+    /**
+    * Returns a vector with positions of black pieces in the board.
+    * 
+    * @return Array with black pieces position
+    */
+    public Vector<Point> getWhitePieces()
+    {
+        return WPieces;
     }
     
     
@@ -128,7 +174,7 @@ public class OthelloData {
         for (int i=0; i<getSize(); i++) {
             System.out.print(i+"| ");
             for (int j=0; j<getSize(); j++) {
-                System.out.print(getColor(i,j)+" ");
+                System.out.print(getColor(new Point(i,j))+" ");
             }
             System.out.println("");
         }

@@ -6,6 +6,7 @@
 package Tester;
 
 import Logic.OthelloData;
+import Util.EXIT_CODE;
 
 /**
  *
@@ -15,8 +16,12 @@ public class Board {
     public static void main(String args[]) {
         OthelloData od = new OthelloData();
         
-        od.add(2, 5, 2);
+       // od.add(2, 5, 2);
         
-        od.drawBoard();
+        //od.drawBoard();
+        
+        EXIT_CODE exit_code = new EXIT_CODE();
+        
+        System.out.println(exit_code.A);
     }
 }

@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Logica;
+package Util;
 
 /**
  *
- * @author marti
+ * @author itiel
  */
-public class OthelloMove {
-    
+public enum Direction {
+    LEFT, RIGHT, UP, DOWN, LEFTD, RIGHTD;
 }
