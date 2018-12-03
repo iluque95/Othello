@@ -10,5 +10,5 @@ package Util;
  * @author itiel
  */
 public enum Direction {
-    LEFT, RIGHT, UP, DOWN, LEFTD, RIGHTD;
+    LEFT, RIGHT, UP, DOWN, LEFTDUP, RIGHTDUP, LEFTDDOWN, RIGHTDDOWN;
 }

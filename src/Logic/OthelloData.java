@@ -6,6 +6,7 @@
 package Logic;
 
 import Util.Color;
+import Util.Direction;
 import Util.Point;
 import java.util.Random;
 import java.util.Vector;
@@ -21,8 +22,6 @@ public class OthelloData {
     int[] pieces;
     Vector<Point> WPieces;
     Vector<Point> BPieces;
-
-    
     
     public OthelloData()
     {
@@ -39,14 +38,14 @@ public class OthelloData {
         
         if ((1+rnd.nextInt(2))==1) {
             board[3][3]=1; 
-            board[3][4]=2;
-            board[4][3]=2;
+            board[3][4]=-1;
+            board[4][3]=-1;
             board[4][4]=1;
         }else{
-            board[3][3]=2; 
+            board[3][3]=-1; 
             board[3][4]=1;
             board[4][3]=1;
-            board[4][4]=2;
+            board[4][4]=-1;
         }
         
     }
@@ -77,19 +76,84 @@ public class OthelloData {
     }
     
     /**
+    * Given a point, function will change the color of all pieces between the given
+    * piece and the same color that function will find in the given direction.
+    * 
+    * @param p is a empty point of the board
+    * @param dir is in which direction it can be effect the movement.
+    * @param color is the color of piece which it will put in the board.
+    */
+    public void changeColor(Point p, Direction dir, int color)
+    {
+        int i=p.getX(), j=p.getY();
+        
+        boolean found = false;
+        
+        Point pt;
+        
+        while (!found) {
+
+            if (dir == Direction.LEFT) {
+                j--;
+            }else if(dir == Direction.RIGHT) {
+                j++;
+            }else if(dir == Direction.UP) {
+                i--;
+            }else if(dir == Direction.DOWN) {
+                i++;
+            }else if(dir == Direction.LEFTDUP) {
+                i--;
+                j--;
+            }else if(dir == Direction.RIGHTDUP) {
+                i--;
+                j++;
+            }else if(dir == Direction.LEFTDDOWN) {
+                i++;
+                j--;
+            }else if(dir == Direction.RIGHTDDOWN) {
+                i++;
+                j++;
+            }
+            
+            pt = new Point(i, j);
+            
+            if (getColor(pt) == color) {
+                found = true;
+            }else{
+                this.board[pt.getX()][pt.getY()]=color*(-1);
+                this.pieces[color+1]++;
+                this.pieces[(color*(-1))+1]--;
+                
+                if(color==Color.BLACK.getColor()) {
+                    BPieces.add(pt);
+                    WPieces.remove(pt);
+                }else{
+                    WPieces.add(pt);
+                    BPieces.remove(pt);                   
+                }
+            }        
+        }
+    }
+    
+    /**
     * Add a given piece into the board.
     * 
     * @param  p is a point which contains x abcissa coordinate
     *         and y ordinate coordinate.
     * @param color piece
     */
-    public void add(Point p, int color)
+    public void add(Point p, Direction dir, int color)
     {
         if (validColor(color)) {
+            
             this.board[p.getX()][p.getY()] = color;
+            
             if (color == Color.BLACK.getColor()) BPieces.add(p);
             else WPieces.add(p);
+            
             pieces[color+1]++;
+            
+            changeColor(p, dir, color);
         }
     }
     
@@ -109,10 +173,10 @@ public class OthelloData {
     }
     
     /**
-    * Board is square therefore the size is the same in height
+    * Board is square, therefore the size is the same in height
     * and width so returns any of them.
     * 
-    * @return size of board
+    * @return size of board in one way.
     */
     public int getSize()
     {
@@ -127,6 +191,16 @@ public class OthelloData {
     public int getQuantityOfPieces(int color)
     {
         return pieces[color+1];
+    }
+    
+    /**
+    * Obtain the quantity of pieces in the board.
+    * 
+    * @return size of board
+    */
+    public int getQuantityOfPiecesOnBoard()
+    {
+        return pieces[Color.BLACK.getColor()+1]+pieces[Color.WHITE.getColor()+1];
     }
     
     /**
@@ -158,7 +232,6 @@ public class OthelloData {
     {
         return WPieces;
     }
-    
     
     /**
     * Draw the board in the system output.
