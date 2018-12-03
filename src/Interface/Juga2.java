@@ -1,21 +1,30 @@
 package Interface;
+
+import Logica.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-
 
 /**
  *
  * @author Hume
  */
-public class Tauler extends javax.swing.JFrame {
+public class Juga2 extends javax.swing.JFrame {
 
     /**
      * Creates new form NewJFrame
      */
-    public Tauler() {
+    public Juga2() {
         initComponents();
     }
+    
+    // Private
+    static OthelloData data;
+    static OthelloMove move;
+  //  static Jugador jugador1;
+  //  static Random jugador2;
+    static int  Step;
+    boolean acabat = false;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,7 +37,6 @@ public class Tauler extends javax.swing.JFrame {
 
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         fill_73 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 400), new java.awt.Dimension(0, 400), new java.awt.Dimension(32767, 400));
         fill_03 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 400), new java.awt.Dimension(0, 400), new java.awt.Dimension(32767, 400));
@@ -95,6 +103,7 @@ public class Tauler extends javax.swing.JFrame {
         fill_10 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 400), new java.awt.Dimension(0, 400), new java.awt.Dimension(32767, 400));
         fill_00 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 400), new java.awt.Dimension(0, 400), new java.awt.Dimension(32767, 400));
         jTextField3 = new javax.swing.JTextField();
+        Estat_Joc = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -105,7 +114,7 @@ public class Tauler extends javax.swing.JFrame {
         jLayeredPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLayeredPane1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLayeredPane1MouseClicked(evt);
+                ratoliPres(evt);
             }
         });
 
@@ -493,147 +502,163 @@ public class Tauler extends javax.swing.JFrame {
         jLayeredPane1.add(fill_00);
         fill_00.setBounds(0, 350, 50, 50);
 
+        Estat_Joc.setText("ESTAT ACTUAL");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19)
-                .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(61, 61, 61)
                 .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                        .addComponent(Estat_Joc)
+                        .addGap(39, 39, 39))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(43, 43, 43)
                 .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-                .addGap(12, 12, 12))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64)
+                .addComponent(Estat_Joc)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private int c1, c2;
-    private static int[][] tauler = { {0, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0, 0, 0, 0, 0, 0}};
-    static double Ymax;
-    static double  Xmax;
-    static int  Step;
-    static boolean Torn;
-    
-    private static int whichx(int col){
-        return (Step*col+70);
-    }
-    
-    private static int whichy(int fil){
-        return (446-fil*50);
-    }
 
-    private void jLayeredPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLayeredPane1MouseClicked
-        // TODO add your handling code here:
-
-        int X = evt.getX();
-        int Y = evt.getY();
-        Dimension mides = jLayeredPane1.getSize();
-        Ymax = mides.getHeight();
-        Xmax = mides.getWidth();
-        Step = (int) Xmax/8;
-        int col = (int) X/Step;
-        jTextField1.setText(String.valueOf(col));
-
-        if (!Torn){
-            col =(int) (8*Math.random());
-        }       
-        int j=0;
-        boolean trobat=false;
-        while (j<8 && !trobat){
-            if (tauler[col][j]!=0){ 
-                    j++;
-            }
-            else{
-                trobat=true;
-            }
-        }
-        if (trobat){
-        if (Torn) {
-            tauler[col][j]=1;
-            Torn = !(Torn);
-        }
-        else {
-            tauler[col][j]=-1;
-            Torn = !(Torn);
-        }
-        }
+    private void ratoliPres(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ratoliPres
+        int rata_x = evt.getX();
+        int rata_y = evt.getY();
+        double pan_x = jLayeredPane1.getSize().getWidth();
+        double pan_y = jLayeredPane1.getSize().getHeight();
+        Step = (int) pan_x/8;
+        
+        int fila = rata_x / 8;
+        int col = rata_y / 8;
+        
+        System.out.println("MIDA TAULER : " + pan_x + " " + pan_y);
+        System.out.println("Rata : " + rata_x + " " + rata_y);
+        
+        
+        
+        
+        
+        System.out.println("Vaig a afegir fitxa " + fila + " " + col);
+        
+        int aux = (int) (rata_x / (pan_x / 8 ));
+        int aux2 = (int) (rata_y / (pan_y / 8));
+        
+        data.afegir_fitxa(aux,aux2);
+                
+        System.out.println("EVENT");        
+        
         repaint();
-    }//GEN-LAST:event_jLayeredPane1MouseClicked
-
-    
-    private static  void movimentrandom(){
-        int j=0;
-        boolean trobat=false;
-        int col =(int) (8*Math.random());
-        while (j<8 && !trobat){
-            if (tauler[col][j]!=0){ 
-                    j++;
-            }
-            else{
-                trobat=true;
-            }
-        }
-        if (trobat){
-        if (Torn) {
-            tauler[col][j]=1;
-            Torn = !(Torn);
-        }
-        else {
-            tauler[col][j]=-1;
-            Torn = !(Torn);
-        }
-        }
-      //  repaint();
-    }
-    
-    @Override
+    }//GEN-LAST:event_ratoliPres
+   
+     @Override
     public void paint(Graphics g)
     {
      super.paint(g);
-     for (int i=0; i<8; i++){
+     
+    for (int i=0; i<8; i++){
         for (int j=0; j<8; j++){
-            if (tauler[i][j]==1) { 
-                g.setColor(Color.BLACK);
+            g.setColor(Color.RED);
+            if (data.get_color(i, j) == 1){
+                g.drawOval(whichx(i),whichy(j),40,40);
+                g.fillOval(whichx(i),whichy(j),40,40);                
+            }
+            else{
+                g.setColor(Color.BLUE);
                 g.drawOval(whichx(i),whichy(j),40,40);
                 g.fillOval(whichx(i),whichy(j),40,40);
+                
             }
-            else if (tauler[i][j]==-1) { 
-                g.setColor(Color.YELLOW);
-                g.drawOval(whichx(i),whichy(j),40,40);
-                g.fillOval(whichx(i),whichy(j),40,40);
-            }
+            
         }
      }
+     
     }
     
+        
+    private static int whichx(int col){
+        return ((50*col+12));
+    }
+    
+    private static int whichy(int fil){
+        return (50*fil+77);
+    }
+    
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Juga2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Juga2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Juga2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Juga2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Juga2().setVisible(true);
+            }
+        });
+        
+        data = new OthelloData();
+        move = new OthelloMove();
+        
+        // Declaracio dels dos jugadors
+     //   jugador1 = new Jugador();
+     //   jugador2 = new Jugador();
+        
+        
+    }
+    
+    
+    
+
 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Estat_Joc;
     private javax.swing.Box.Filler fill_00;
     private javax.swing.Box.Filler fill_01;
     private javax.swing.Box.Filler fill_02;
@@ -701,7 +726,6 @@ public class Tauler extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }
