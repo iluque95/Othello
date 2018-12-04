@@ -316,51 +316,55 @@ public class OthelloMove {
     }
     
     /**
-    * Given a point, function will look for black or white array of pieces depending of the color
-    * of the piece given from the parameter which is a point in the board.
+    * Given a color, function will look for black or white array of pieces depending of the color
+    * of the piece given from the parameter.
     * 
     * After that, it will check movements for the given point in all directions.
     * 
-    * @param p is a point of board which can not be empty position.
+    * @param color is the color of piece which want know its possible movements.
     * 
     * @return Array of pairs with possible movements in each position and its direction found.
     */
-    public Vector<Pair<Point, Direction>> getMovements(Point p)
+    public Vector<Pair<Point, Integer>> getMovements(int color)
     {
-        Vector<Pair<Point, Direction>> movements = new Vector();
+        Vector<Pair<Point, Integer>> movements = new Vector();
         Vector<Point> pieces;
         Point tmp;
         
-        if (oData.getColor(p) == Color.BLACK.getColor()) {
-            pieces = oData.getBlackPieces();
-        }else if(oData.getColor(p) == Color.WHITE.getColor()){
+        if (color == Color.BLACK.getColor()) {
             pieces = oData.getWhitePieces();
+        }else if(color == Color.WHITE.getColor()){
+            pieces = oData.getBlackPieces();
                         
             for (int i=0; i<pieces.size(); i++) {
                 
+                int dirs=0x0;
+                
                 tmp = searchRight(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) movements.add(new Pair(tmp, Direction.RIGHT));
+                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.RIGHT.getVal();
                 
                 tmp = searchLeft(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) movements.add(new Pair(tmp, Direction.LEFT));
+                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.LEFT.getVal();
                 
                 tmp = searchUp(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) movements.add(new Pair(tmp, Direction.UP));
+                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.UP.getVal();
                 
                 tmp = searchDown(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) movements.add(new Pair(tmp, Direction.DOWN));
+                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.DOWN.getVal();
                 
                 tmp = searchRightUpDiagonal(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) movements.add(new Pair(tmp, Direction.RIGHTDUP));
+                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.RIGHTDUP.getVal();
                 
                 tmp = searchLeftUpDiagonal(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) movements.add(new Pair(tmp, Direction.LEFTDUP));
+                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.LEFTDUP.getVal();
                 
                 tmp = searchRightDownDiagonal(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) movements.add(new Pair(tmp, Direction.RIGHTDDOWN));
+                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.RIGHTDDOWN.getVal();
                 
                 tmp = searchLeftDownDiagonal(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) movements.add(new Pair(tmp, Direction.LEFTDDOWN));
+                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.LEFTDDOWN.getVal();
+                
+                if ((dirs & 0xFF)>0) movements.add(new Pair(tmp, dirs));
 
             }
         }
@@ -376,7 +380,7 @@ public class OthelloMove {
     * @param dir is in which direction it can be effect the movement.
     * @param color is the color of piece which it will put in the board.
     */
-    public void applyMovement(Point p, Direction dir, int color)
+    public void applyMovement(Point p, int dir, int color)
     {
         oData.add(p, dir, color);
     }
@@ -386,12 +390,11 @@ public class OthelloMove {
     * To be a solution the board will be full or pieces black and white have to 
     * got the same amount and do not have any movement any of them.
     * 
-    * @param  p is a point which contains x abcissa coordinate
-    *         and y ordinate coordinate.
+    * @param  color is the color of piece.
     * @return true if is solution, false otherwise
     */
-    public boolean isSolution(Point p)
+    public boolean isSolution(int color)
     {
-        return (oData.getQuantityOfPiecesOnBoard()==64 || ((oData.getQuantityOfPieces(Color.BLACK.getColor()) == oData.getQuantityOfPieces(Color.WHITE.getColor())) && getMovements(p).isEmpty()));
+        return (oData.getQuantityOfPiecesOnBoard()==64 || ((oData.getQuantityOfPieces(Color.BLACK.getColor()) == oData.getQuantityOfPieces(Color.WHITE.getColor())) && getMovements(color).isEmpty()));
     }
 }

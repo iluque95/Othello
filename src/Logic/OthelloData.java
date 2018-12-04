@@ -83,7 +83,7 @@ public class OthelloData {
     * @param dir is in which direction it can be effect the movement.
     * @param color is the color of piece which it will put in the board.
     */
-    public void changeColor(Point p, Direction dir, int color)
+    public void changeColor(Point p, int dir, int color)
     {
         int i=p.getX(), j=p.getY();
         
@@ -93,24 +93,24 @@ public class OthelloData {
         
         while (!found) {
 
-            if (dir == Direction.LEFT) {
+            if (dir == Direction.LEFT.getVal()) {
                 j--;
-            }else if(dir == Direction.RIGHT) {
+            }else if(dir == Direction.RIGHT.getVal()) {
                 j++;
-            }else if(dir == Direction.UP) {
+            }else if(dir == Direction.UP.getVal()) {
                 i--;
-            }else if(dir == Direction.DOWN) {
+            }else if(dir == Direction.DOWN.getVal()) {
                 i++;
-            }else if(dir == Direction.LEFTDUP) {
+            }else if(dir == Direction.LEFTDUP.getVal()) {
                 i--;
                 j--;
-            }else if(dir == Direction.RIGHTDUP) {
+            }else if(dir == Direction.RIGHTDUP.getVal()) {
                 i--;
                 j++;
-            }else if(dir == Direction.LEFTDDOWN) {
+            }else if(dir == Direction.LEFTDDOWN.getVal()) {
                 i++;
                 j--;
-            }else if(dir == Direction.RIGHTDDOWN) {
+            }else if(dir == Direction.RIGHTDDOWN.getVal()) {
                 i++;
                 j++;
             }
@@ -142,7 +142,7 @@ public class OthelloData {
     *         and y ordinate coordinate.
     * @param color piece
     */
-    public void add(Point p, Direction dir, int color)
+    public void add(Point p, int dir, int color)
     {
         if (validColor(color)) {
             
@@ -153,7 +153,15 @@ public class OthelloData {
             
             pieces[color+1]++;
             
-            changeColor(p, dir, color);
+            int mask=0x1;
+            
+            for (int i=0; i<8; i++) {
+
+               if ((dir & mask) != 0) changeColor(p, mask, color);
+               mask = (mask << 1);
+           }
+            
+            
         }
     }
     
