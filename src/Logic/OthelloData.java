@@ -17,7 +17,6 @@ import java.util.Vector;
  */
 public class OthelloData {
     
-    int spaces;
     int[][] board;
     int[] pieces;
     Vector<Point> WPieces;
@@ -30,24 +29,35 @@ public class OthelloData {
         WPieces = new Vector();
         BPieces = new Vector();
         
-        spaces=64;
-        
         pieces[0] = pieces[2] = 2;
+        pieces[1] = 60;
 
         Random rnd = new Random();
         
         if ((1+rnd.nextInt(2))==1) {
-            board[3][3]=1; 
-            board[3][4]=-1;
-            board[4][3]=-1;
-            board[4][4]=1;
+            board[3][3]=Color.BLACK.getColor(); 
+            board[3][4]=Color.WHITE.getColor();
+            board[4][3]=Color.WHITE.getColor();
+            board[4][4]=Color.BLACK.getColor();
+            
+            WPieces.add(new Point(3,4));
+            WPieces.add(new Point(4,3));
+            
+            BPieces.add(new Point(3,3));
+            BPieces.add(new Point(4,4));
+            
         }else{
-            board[3][3]=-1; 
-            board[3][4]=1;
-            board[4][3]=1;
-            board[4][4]=-1;
+            board[3][3]=Color.WHITE.getColor(); 
+            board[3][4]=Color.BLACK.getColor();
+            board[4][3]=Color.BLACK.getColor();
+            board[4][4]=Color.WHITE.getColor();
+            
+            BPieces.add(new Point(3,4));
+            BPieces.add(new Point(4,3));
+            
+            WPieces.add(new Point(3,3));
+            WPieces.add(new Point(4,4));
         }
-        
     }
     
     
@@ -152,6 +162,7 @@ public class OthelloData {
             else WPieces.add(p);
             
             pieces[color+1]++;
+            pieces[1]--;
             
             int mask=0x1;
             
@@ -160,8 +171,6 @@ public class OthelloData {
                if ((dir & mask) != 0) changeColor(p, mask, color);
                mask = (mask << 1);
            }
-            
-            
         }
     }
     
@@ -218,7 +227,7 @@ public class OthelloData {
     */
     public int getEmptyPositions()
     {
-        return spaces;
+        return pieces[1];
     }
     
     /**
