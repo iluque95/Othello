@@ -29,8 +29,8 @@ public class OthelloData {
         WPieces = new Vector();
         BPieces = new Vector();
         
-        pieces[0] = pieces[2] = 2;
-        pieces[1] = 60;
+        pieces[Color.WHITE.getColor()+1] = pieces[Color.BLACK.getColor()+1] = 2;
+        pieces[Color.EMPTY.getColor()+1] = 60;
 
         Random rnd = new Random();
         
@@ -162,12 +162,11 @@ public class OthelloData {
             else WPieces.add(p);
             
             pieces[color+1]++;
-            pieces[1]--;
+            pieces[Color.EMPTY.getColor()+1]--;
             
             int mask=0x1;
             
             for (int i=0; i<8; i++) {
-
                if ((dir & mask) != 0) changeColor(p, mask, color);
                mask = (mask << 1);
            }
