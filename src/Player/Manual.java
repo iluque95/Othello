@@ -5,10 +5,27 @@
  */
 package Player;
 
+import Logic.Board;
+
 /**
  *
  * @author marti
  */
-public class Manual {
+public class Manual implements Player{
+    
+    public String name()
+    {
+        return "Manual";      
+        
+    }
+    
+    public int movement(Board t, int color)
+    {
+        
+        return 4;
+                
+    }
+    
+    
     
 }

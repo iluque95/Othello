@@ -1,6 +1,7 @@
 package GUI;
 
 import Logic.*;
+import Util.Point;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -16,6 +17,7 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
+        s=null;
     }
     
     // Private
@@ -25,6 +27,8 @@ public class GUI extends javax.swing.JFrame {
   //  static Random jugador2;
     static int  Step;
     boolean acabat = false;
+    
+    private Point s;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -566,13 +570,33 @@ public class GUI extends javax.swing.JFrame {
         int aux = (int) (rata_x / (pan_x / 8 ));
         int aux2 = (int) (rata_y / (pan_y / 8));
         
-        data.afegir_fitxa(aux,aux2);
-                
-        System.out.println("EVENT");        
+        
+        s = new Point (aux,aux2);
         
         repaint();
     }//GEN-LAST:event_ratoliPres
    
+    
+    public Point getMovement()
+    {
+        Point p2 = null;
+        
+        
+        if (s != null ){
+            p2 = s;
+            s = null;
+        }
+       
+       if (p2 != null) System.out.println("P2 dif");
+       return p2;
+        
+        
+    }
+    
+    
+    
+    
+    
      @Override
     public void paint(Graphics g)
     {
@@ -581,7 +605,7 @@ public class GUI extends javax.swing.JFrame {
     for (int i=0; i<8; i++){
         for (int j=0; j<8; j++){
             g.setColor(Color.RED);
-            if (data.get_color(i, j) == 1){
+            if (true){
                 g.drawOval(whichx(i),whichy(j),40,40);
                 g.fillOval(whichx(i),whichy(j),40,40);                
             }
@@ -638,9 +662,6 @@ public class GUI extends javax.swing.JFrame {
                 new GUI().setVisible(true);
             }
         });
-        
-        data = new OthelloData();
-        move = new OthelloMove();
         
         // Declaracio dels dos jugadors
      //   jugador1 = new Jugador();
