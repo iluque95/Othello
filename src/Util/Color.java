@@ -25,7 +25,7 @@ public enum Color {
     public int getColor() {
         return this.color;
     }
-   
+  
     public boolean equals(int color)
     {
         return color == getColor();

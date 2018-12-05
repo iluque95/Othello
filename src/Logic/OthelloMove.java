@@ -39,7 +39,12 @@ public class OthelloMove {
         
         boolean consecutives = true;
         boolean found = false;
-        int i = p.getY()-1;
+        int i = p.getX()-2;
+        int color = oData.getColor(p);
+        
+        int nextColor = oData.getColor(new Point(p.getX()-1,p.getY()));
+        
+        if (nextColor==Color.EMPTY.getColor() || nextColor==color) consecutives = false;
         
         while (i>=0 && consecutives && !found)
         {
@@ -47,14 +52,13 @@ public class OthelloMove {
             
             if (tmpColor==Color.EMPTY.getColor()) {
                 found = true;
-            }else{
+                pt = new Point(i,p.getY());
+            }else if(tmpColor==color) {
                 consecutives = false;
             }
             
             i--;
         }
-        
-        if (found) pt = new Point(p.getX()+1,p.getY());
         
         return pt;
     }
@@ -75,7 +79,12 @@ public class OthelloMove {
         
         boolean consecutives = true;
         boolean found = false;
-        int i = p.getY()+1;
+        int i = p.getX()+2;
+        int color = oData.getColor(p);
+        
+        int nextColor = oData.getColor(new Point(p.getX()+1,p.getY()));
+        
+        if (nextColor==Color.EMPTY.getColor() || nextColor==color) consecutives = false;
         
         while (i<oData.getSize() && consecutives && !found)
         {
@@ -83,14 +92,13 @@ public class OthelloMove {
             
             if (tmpColor==Color.EMPTY.getColor()) {
                 found = true;
-            }else{
+                pt = new Point(i,p.getY());
+            }else if(tmpColor==color){
                 consecutives = false;
             }
             
             i++;
         }
-        
-        if (found) pt = new Point(p.getX()-1,p.getY());
         
         return pt;
     }
@@ -111,7 +119,12 @@ public class OthelloMove {
         
         boolean consecutives = true;
         boolean found = false;
-        int j = p.getY()-1;
+        int j = p.getY()-2;
+        int color = oData.getColor(p);
+        
+        int nextColor = oData.getColor(new Point(p.getX(),p.getY()-1));
+        
+        if (nextColor==Color.EMPTY.getColor() || nextColor==color) consecutives = false;
         
         while (j>=0 && consecutives && !found)
         {
@@ -119,14 +132,13 @@ public class OthelloMove {
             
             if (tmpColor==Color.EMPTY.getColor()) {
                 found = true;
-            }else{
+                pt = new Point(p.getX(),j);
+            }else if(tmpColor==color) {
                 consecutives = false;
             }
             
             j--;
         }
-        
-        if (found) pt = new Point(p.getX(),p.getY()+1);
         
         return pt;
     }
@@ -147,22 +159,26 @@ public class OthelloMove {
         
         boolean consecutives = true;
         boolean found = false;
-        int j = p.getY()+1;
+        int j = p.getY()+2;
+        int color = oData.getColor(p);
         
+        int nextColor = oData.getColor(new Point(p.getX(),p.getY()+1));
+        
+        if (nextColor==Color.EMPTY.getColor() || nextColor==color) consecutives = false;
+       
         while (j<oData.getSize() && consecutives && !found)
         {
             int tmpColor = oData.getColor(new Point(p.getX(),j));
             
             if (tmpColor==Color.EMPTY.getColor()) {
                 found = true;
-            }else{
+                pt = new Point(p.getX(),j);
+            }else if(tmpColor==color) {
                 consecutives = false;
             }
             
             j++;
         }
-        
-        if (found) pt = new Point(p.getX(),p.getY()-1);
         
         return pt;
     }
@@ -183,8 +199,13 @@ public class OthelloMove {
         
         boolean consecutives = true;
         boolean found = false;
-        int i = p.getX()-1;
-        int j = p.getY()+1;
+        int i = p.getX()-2;
+        int j = p.getY()+2;
+        int color = oData.getColor(p);
+        
+        int nextColor = oData.getColor(new Point(p.getX()-1,p.getY()+1));
+        
+        if (nextColor==Color.EMPTY.getColor() || nextColor==color) consecutives = false;
         
         while ((i>=0 && j<oData.getSize()) && consecutives && !found)
         {
@@ -192,14 +213,13 @@ public class OthelloMove {
             
             if (tmpColor==Color.EMPTY.getColor()) {
                 found = true;
-            }else{
+                pt = new Point(i,j);
+            }else if(tmpColor==color) {
                 consecutives = false;
             }
             i--;
             j++;
         }
-        
-        if (found) pt = new Point(p.getX()+1,p.getY()-1);
         
         return pt;
     }
@@ -220,8 +240,13 @@ public class OthelloMove {
         
         boolean consecutives = true;
         boolean found = false;
-        int i = p.getX()-1;
-        int j = p.getY()-1;
+        int i = p.getX()-2;
+        int j = p.getY()-2;
+        int color = oData.getColor(p);
+        
+        int nextColor = oData.getColor(new Point(p.getX()-1,p.getY()-1));
+        
+        if (nextColor==Color.EMPTY.getColor() || nextColor==color) consecutives = false;
         
         while ((i>=0 && j>=0) && consecutives && !found)
         {
@@ -229,14 +254,13 @@ public class OthelloMove {
             
             if (tmpColor==Color.EMPTY.getColor()) {
                 found = true;
-            }else{
+                pt = new Point(i,j);
+            }else if(tmpColor==color) {
                 consecutives = false;
             }
             i--;
             j--;
         }
-        
-        if (found) pt = new Point(p.getX()+1,p.getY()+1);
         
         return pt;
     }
@@ -257,8 +281,12 @@ public class OthelloMove {
         
         boolean consecutives = true;
         boolean found = false;
-        int i = p.getX()+1;
-        int j = p.getY()+1;
+        int i = p.getX()+2;
+        int j = p.getY()+2;
+        int color = oData.getColor(p);
+        int nextColor = oData.getColor(new Point(p.getX()+1,p.getY()+1)); 
+        
+        if (nextColor==Color.EMPTY.getColor() || nextColor==color) consecutives = false;
         
         while ((i<oData.getSize() && j<oData.getSize()) && consecutives && !found)
         {
@@ -266,14 +294,13 @@ public class OthelloMove {
             
             if (tmpColor==Color.EMPTY.getColor()) {
                 found = true;
-            }else{
+                pt = new Point(i,j);
+            }else if(tmpColor==color) {
                 consecutives = false;
             }
             i++;
             j++;
         }
-        
-        if (found) pt = new Point(p.getX()+1,p.getY()+1);
         
         return pt;
     }
@@ -294,8 +321,13 @@ public class OthelloMove {
         
         boolean consecutives = true;
         boolean found = false;
-        int i = p.getX()-1;
-        int j = p.getY()+1;
+        int i = p.getX()-2;
+        int j = p.getY()+2;
+        int color = oData.getColor(p);
+        
+        int nextColor = oData.getColor(new Point(p.getX()-1,p.getY()+1));
+        
+        if (nextColor==Color.EMPTY.getColor() || nextColor==color) consecutives = false;
         
         while ((i>=0 && j<oData.getSize()) && consecutives && !found)
         {
@@ -303,14 +335,13 @@ public class OthelloMove {
             
             if (tmpColor==Color.EMPTY.getColor()) {
                 found = true;
-            }else{
+                pt = new Point(i,j);
+            }else if(tmpColor==color) {
                 consecutives = false;
             }
             i--;
             j++;
         }
-        
-        if (found) pt = new Point(p.getX()+1,p.getY()-1);
         
         return pt;
     }
@@ -318,8 +349,9 @@ public class OthelloMove {
     /**
     * Given a color, function will look for black or white array of pieces depending of the color
     * of the piece given from the parameter.
-    * 
-    * After that, it will check movements for the given point in all directions.
+    * After that, it will check movements for the given color in all directions focusing its pieces with same
+    * color as paramater introduced and then it will insert in to a separate vectors positions found and directions
+    * because one point can be found more times and its only necessary update the directions that the position can do movement.
     * 
     * @param color is the color of piece which want know its possible movements.
     * 
@@ -328,46 +360,139 @@ public class OthelloMove {
     public Vector<Pair<Point, Integer>> getMovements(int color)
     {
         Vector<Pair<Point, Integer>> movements = new Vector();
-        Vector<Point> pieces;
+        Vector<Point> positions = new Vector();
+        Vector<Integer> directions = new Vector();
+        Vector<Point> pieces=null;
         Point tmp;
         
         if (color == Color.BLACK.getColor()) {
-            pieces = oData.getWhitePieces();
-        }else if(color == Color.WHITE.getColor()){
             pieces = oData.getBlackPieces();
-                        
-            for (int i=0; i<pieces.size(); i++) {
-                
-                int dirs=0x0;
-                
-                tmp = searchRight(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.RIGHT.getVal();
-                
-                tmp = searchLeft(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.LEFT.getVal();
-                
-                tmp = searchUp(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.UP.getVal();
-                
-                tmp = searchDown(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.DOWN.getVal();
-                
-                tmp = searchRightUpDiagonal(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.RIGHTDUP.getVal();
-                
-                tmp = searchLeftUpDiagonal(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.LEFTDUP.getVal();
-                
-                tmp = searchRightDownDiagonal(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.RIGHTDDOWN.getVal();
-                
-                tmp = searchLeftDownDiagonal(pieces.get(i));
-                if (tmp.getX()!=-1 && tmp.getY()!=-1) dirs |= Direction.LEFTDDOWN.getVal();
-                
-                if ((dirs & 0xFF)>0) movements.add(new Pair(tmp, dirs));
-
-            }
+        }else if(color == Color.WHITE.getColor()){
+            pieces = oData.getWhitePieces();
         }
+                        
+        for (int i=0; i<pieces.size(); i++) {
+
+            int dir=0x0;
+            int pos=0;
+
+            tmp = searchRight(pieces.get(i));
+            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            {
+                pos = positions.indexOf(tmp);
+                dir = Direction.LEFT.getVal();
+
+                if (pos>=0) {
+                    directions.set(pos, (directions.get(pos) | dir));
+                }else{
+                    positions.add(tmp);
+                    directions.add(dir);
+                }
+            }
+
+            tmp = searchLeft(pieces.get(i));
+            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            {
+                pos = positions.indexOf(tmp);
+                dir = Direction.RIGHT.getVal();
+
+                if (pos>=0) {
+                    directions.set(pos, (directions.get(pos) | dir));
+                }else{
+                    positions.add(tmp);
+                    directions.add(dir);
+                }
+            }
+
+
+            tmp = searchUp(pieces.get(i));
+            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            {
+                pos = positions.indexOf(tmp);
+                dir = Direction.DOWN.getVal();
+
+                if (pos>=0) {
+                    directions.set(pos, (directions.get(pos) | dir));
+                }else{
+                    positions.add(tmp);
+                    directions.add(dir);
+                }
+            }
+
+            tmp = searchDown(pieces.get(i));
+            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            {
+                pos = positions.indexOf(tmp);
+                dir = Direction.UP.getVal();
+
+                if (pos>=0) {
+                    directions.set(pos, (directions.get(pos) | dir));
+                }else{
+                    positions.add(tmp);
+                    directions.add(dir);
+                }
+            }
+
+            tmp = searchRightUpDiagonal(pieces.get(i));
+            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            {
+                pos = positions.indexOf(tmp);
+                dir = Direction.LEFTDDOWN.getVal();
+
+                if (pos>=0) {
+                    directions.set(pos, (directions.get(pos) | dir));
+                }else{
+                    positions.add(tmp);
+                    directions.add(dir);
+                }
+            }
+
+            tmp = searchLeftUpDiagonal(pieces.get(i));
+            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            {
+                pos = positions.indexOf(tmp);
+                dir = Direction.RIGHTDDOWN.getVal();
+
+                if (pos>=0) {
+                    directions.set(pos, (directions.get(pos) | dir));
+                }else{
+                    positions.add(tmp);
+                    directions.add(dir);
+                }
+            }
+
+            tmp = searchRightDownDiagonal(pieces.get(i));
+            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            {
+                pos = positions.indexOf(tmp);
+                dir = Direction.LEFTDUP.getVal();
+
+                if (pos>=0) {
+                    directions.set(pos, (directions.get(pos) | dir));
+                }else{
+                    positions.add(tmp);
+                    directions.add(dir);
+                }
+            }
+
+            tmp = searchLeftDownDiagonal(pieces.get(i));
+            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            {
+                pos = positions.indexOf(tmp);
+                dir = Direction.RIGHTDUP.getVal();
+
+                if (pos>=0) {
+                    directions.set(pos, (directions.get(pos) | dir));
+                }else{
+                    positions.add(tmp);
+                    directions.add(dir);
+                }
+            }
+
+        }
+        
+        
+        for (int i=0; i<positions.size(); i++) movements.add(new Pair(positions.get(i), directions.get(i)));
         
         return movements;
     }

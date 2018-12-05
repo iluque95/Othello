@@ -48,4 +48,22 @@ public class Point {
     }
     
     
+    
+    @Override
+    public boolean equals(Object obj){ 
+        return this.hashCode() == obj.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.x + (this.y<<1);
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "("+x+", "+y+")";
+    }
+    
+    
 }
