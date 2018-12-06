@@ -5,10 +5,18 @@
  */
 package Player;
 
-/**
- *
- * @author marti
- */
-public class Random {
-    
+import Logic.Board;
+import Util.Direction;
+import Util.Point;
+import java.util.Vector;
+import javafx.util.Pair;
+
+public class Random implements Player{
+    private final String name = "Random";
+    public movement(Board t, int color){
+        //Pedir movimientos posibles con BOARD
+        Vector<Pair<Point, Direction>> moves;//Pedir en board;
+        java.util.Random rnd = new java.util.Random();
+        return moves.get(0+rnd.nextInt(moves.size()-1));  
+    }
 }
