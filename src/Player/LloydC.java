@@ -5,10 +5,26 @@
  */
 package Player;
 
+import Logic.Board;
+import Util.Point;
+
 /**
  *
  * @author marti
  */
-public class LloydC {
+public class LloydC implements Player{
+    
+     public String name()
+    {
+        return "LloydC";      
+        
+    }
+    
+    public Point movement(Board t, int color)
+    {
+        
+        return new Point(1,2);
+                
+    }
     
 }

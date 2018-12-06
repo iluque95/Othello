@@ -19,11 +19,15 @@ public class GUI extends JFrame{
     /**
      * Creates new form NewJFrame
      * @param t
+     * @param b
      */
     public GUI(Thread t) {
         initComponents();
         s=null;
         pare = t;
+        this.b = b;
+        pare.interrupt();
+        
     }
     
     
@@ -35,6 +39,8 @@ public class GUI extends JFrame{
     static int  Step;
     boolean acabat = false;
     Thread pare = null;
+    
+    Board b = null;
     
     private Point s;
 
@@ -130,385 +136,385 @@ public class GUI extends JFrame{
             }
         });
 
-        fill_73.setBackground(new java.awt.Color(128, 255, 0));
+        fill_73.setBackground(new java.awt.Color(102, 102, 102));
         fill_73.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_73.setOpaque(true);
         jLayeredPane1.add(fill_73);
         fill_73.setBounds(150, 0, 50, 50);
 
-        fill_03.setBackground(new java.awt.Color(128, 255, 0));
+        fill_03.setBackground(new java.awt.Color(102, 102, 102));
         fill_03.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_03.setOpaque(true);
         jLayeredPane1.add(fill_03);
         fill_03.setBounds(150, 350, 50, 50);
 
-        fill_13.setBackground(new java.awt.Color(128, 255, 0));
+        fill_13.setBackground(new java.awt.Color(102, 102, 102));
         fill_13.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_13.setOpaque(true);
         jLayeredPane1.add(fill_13);
         fill_13.setBounds(150, 300, 50, 50);
 
-        fill_23.setBackground(new java.awt.Color(128, 255, 0));
+        fill_23.setBackground(new java.awt.Color(102, 102, 102));
         fill_23.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_23.setOpaque(true);
         jLayeredPane1.add(fill_23);
         fill_23.setBounds(150, 250, 50, 50);
 
-        fill_33.setBackground(new java.awt.Color(128, 255, 0));
+        fill_33.setBackground(new java.awt.Color(102, 102, 102));
         fill_33.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_33.setOpaque(true);
         jLayeredPane1.add(fill_33);
         fill_33.setBounds(150, 200, 50, 50);
 
-        fill_43.setBackground(new java.awt.Color(128, 255, 0));
+        fill_43.setBackground(new java.awt.Color(102, 102, 102));
         fill_43.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_43.setOpaque(true);
         jLayeredPane1.add(fill_43);
         fill_43.setBounds(150, 150, 50, 50);
 
-        fill_53.setBackground(new java.awt.Color(128, 255, 0));
+        fill_53.setBackground(new java.awt.Color(102, 102, 102));
         fill_53.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_53.setOpaque(true);
         jLayeredPane1.add(fill_53);
         fill_53.setBounds(150, 100, 50, 50);
 
-        fill_63.setBackground(new java.awt.Color(128, 255, 0));
+        fill_63.setBackground(new java.awt.Color(102, 102, 102));
         fill_63.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_63.setOpaque(true);
         jLayeredPane1.add(fill_63);
         fill_63.setBounds(150, 50, 50, 50);
 
-        fill_74.setBackground(new java.awt.Color(128, 255, 0));
+        fill_74.setBackground(new java.awt.Color(102, 102, 102));
         fill_74.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_74.setOpaque(true);
         jLayeredPane1.add(fill_74);
         fill_74.setBounds(200, 0, 50, 50);
 
-        fill_64.setBackground(new java.awt.Color(128, 255, 0));
+        fill_64.setBackground(new java.awt.Color(102, 102, 102));
         fill_64.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_64.setOpaque(true);
         jLayeredPane1.add(fill_64);
         fill_64.setBounds(200, 50, 50, 50);
 
-        fill_54.setBackground(new java.awt.Color(128, 255, 0));
+        fill_54.setBackground(new java.awt.Color(102, 102, 102));
         fill_54.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_54.setOpaque(true);
         jLayeredPane1.add(fill_54);
         fill_54.setBounds(200, 100, 50, 50);
 
-        fill_44.setBackground(new java.awt.Color(128, 255, 0));
+        fill_44.setBackground(new java.awt.Color(102, 102, 102));
         fill_44.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_44.setOpaque(true);
         jLayeredPane1.add(fill_44);
         fill_44.setBounds(200, 150, 50, 50);
 
-        fill_34.setBackground(new java.awt.Color(128, 255, 0));
+        fill_34.setBackground(new java.awt.Color(102, 102, 102));
         fill_34.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_34.setOpaque(true);
         jLayeredPane1.add(fill_34);
         fill_34.setBounds(200, 200, 50, 50);
 
-        fill_24.setBackground(new java.awt.Color(128, 255, 0));
+        fill_24.setBackground(new java.awt.Color(102, 102, 102));
         fill_24.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_24.setOpaque(true);
         jLayeredPane1.add(fill_24);
         fill_24.setBounds(200, 250, 50, 50);
 
-        fill_14.setBackground(new java.awt.Color(128, 255, 0));
+        fill_14.setBackground(new java.awt.Color(102, 102, 102));
         fill_14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_14.setOpaque(true);
         jLayeredPane1.add(fill_14);
         fill_14.setBounds(200, 300, 50, 50);
 
-        fill_04.setBackground(new java.awt.Color(128, 255, 0));
+        fill_04.setBackground(new java.awt.Color(102, 102, 102));
         fill_04.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_04.setOpaque(true);
         jLayeredPane1.add(fill_04);
         fill_04.setBounds(200, 350, 50, 50);
 
-        fill_72.setBackground(new java.awt.Color(128, 255, 0));
+        fill_72.setBackground(new java.awt.Color(102, 102, 102));
         fill_72.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_72.setOpaque(true);
         jLayeredPane1.add(fill_72);
         fill_72.setBounds(100, 0, 50, 50);
 
-        fill_62.setBackground(new java.awt.Color(128, 255, 0));
+        fill_62.setBackground(new java.awt.Color(102, 102, 102));
         fill_62.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_62.setOpaque(true);
         jLayeredPane1.add(fill_62);
         fill_62.setBounds(100, 50, 50, 50);
 
-        fill_52.setBackground(new java.awt.Color(128, 255, 0));
+        fill_52.setBackground(new java.awt.Color(102, 102, 102));
         fill_52.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_52.setOpaque(true);
         jLayeredPane1.add(fill_52);
         fill_52.setBounds(100, 100, 50, 50);
 
-        fill_42.setBackground(new java.awt.Color(128, 255, 0));
+        fill_42.setBackground(new java.awt.Color(102, 102, 102));
         fill_42.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_42.setOpaque(true);
         jLayeredPane1.add(fill_42);
         fill_42.setBounds(100, 150, 50, 50);
 
-        fill_32.setBackground(new java.awt.Color(128, 255, 0));
+        fill_32.setBackground(new java.awt.Color(102, 102, 102));
         fill_32.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_32.setOpaque(true);
         jLayeredPane1.add(fill_32);
         fill_32.setBounds(100, 200, 50, 50);
 
-        fill_22.setBackground(new java.awt.Color(128, 255, 0));
+        fill_22.setBackground(new java.awt.Color(102, 102, 102));
         fill_22.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_22.setOpaque(true);
         jLayeredPane1.add(fill_22);
         fill_22.setBounds(100, 250, 50, 50);
 
-        fill_12.setBackground(new java.awt.Color(128, 255, 0));
+        fill_12.setBackground(new java.awt.Color(102, 102, 102));
         fill_12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_12.setOpaque(true);
         jLayeredPane1.add(fill_12);
         fill_12.setBounds(100, 300, 50, 50);
 
-        fill_02.setBackground(new java.awt.Color(128, 255, 0));
+        fill_02.setBackground(new java.awt.Color(102, 102, 102));
         fill_02.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_02.setOpaque(true);
         jLayeredPane1.add(fill_02);
         fill_02.setBounds(100, 350, 50, 50);
 
-        fill_75.setBackground(new java.awt.Color(128, 255, 0));
+        fill_75.setBackground(new java.awt.Color(102, 102, 102));
         fill_75.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_75.setOpaque(true);
         jLayeredPane1.add(fill_75);
         fill_75.setBounds(250, 0, 50, 50);
 
-        fill_65.setBackground(new java.awt.Color(128, 255, 0));
+        fill_65.setBackground(new java.awt.Color(102, 102, 102));
         fill_65.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_65.setOpaque(true);
         jLayeredPane1.add(fill_65);
         fill_65.setBounds(250, 50, 50, 50);
 
-        fill_55.setBackground(new java.awt.Color(128, 255, 0));
+        fill_55.setBackground(new java.awt.Color(102, 102, 102));
         fill_55.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_55.setOpaque(true);
         jLayeredPane1.add(fill_55);
         fill_55.setBounds(250, 100, 50, 50);
 
-        fill_45.setBackground(new java.awt.Color(128, 255, 0));
+        fill_45.setBackground(new java.awt.Color(102, 102, 102));
         fill_45.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_45.setOpaque(true);
         jLayeredPane1.add(fill_45);
         fill_45.setBounds(250, 150, 50, 50);
 
-        fill_35.setBackground(new java.awt.Color(128, 255, 0));
+        fill_35.setBackground(new java.awt.Color(102, 102, 102));
         fill_35.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_35.setOpaque(true);
         jLayeredPane1.add(fill_35);
         fill_35.setBounds(250, 200, 50, 50);
 
-        fill_25.setBackground(new java.awt.Color(128, 255, 0));
+        fill_25.setBackground(new java.awt.Color(102, 102, 102));
         fill_25.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_25.setOpaque(true);
         jLayeredPane1.add(fill_25);
         fill_25.setBounds(250, 250, 50, 50);
 
-        fill_15.setBackground(new java.awt.Color(128, 255, 0));
+        fill_15.setBackground(new java.awt.Color(102, 102, 102));
         fill_15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_15.setOpaque(true);
         jLayeredPane1.add(fill_15);
         fill_15.setBounds(250, 300, 50, 50);
 
-        fill_05.setBackground(new java.awt.Color(128, 255, 0));
+        fill_05.setBackground(new java.awt.Color(102, 102, 102));
         fill_05.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_05.setOpaque(true);
         jLayeredPane1.add(fill_05);
         fill_05.setBounds(250, 350, 50, 50);
 
-        fill_76.setBackground(new java.awt.Color(128, 255, 0));
+        fill_76.setBackground(new java.awt.Color(102, 102, 102));
         fill_76.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_76.setOpaque(true);
         jLayeredPane1.add(fill_76);
         fill_76.setBounds(300, 0, 50, 50);
 
-        fill_66.setBackground(new java.awt.Color(128, 255, 0));
+        fill_66.setBackground(new java.awt.Color(102, 102, 102));
         fill_66.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_66.setOpaque(true);
         jLayeredPane1.add(fill_66);
         fill_66.setBounds(300, 50, 50, 50);
 
-        fill_56.setBackground(new java.awt.Color(128, 255, 0));
+        fill_56.setBackground(new java.awt.Color(102, 102, 102));
         fill_56.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_56.setOpaque(true);
         jLayeredPane1.add(fill_56);
         fill_56.setBounds(300, 100, 50, 50);
 
-        fill_46.setBackground(new java.awt.Color(128, 255, 0));
+        fill_46.setBackground(new java.awt.Color(102, 102, 102));
         fill_46.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_46.setOpaque(true);
         jLayeredPane1.add(fill_46);
         fill_46.setBounds(300, 150, 50, 50);
 
-        fill_36.setBackground(new java.awt.Color(128, 255, 0));
+        fill_36.setBackground(new java.awt.Color(102, 102, 102));
         fill_36.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_36.setOpaque(true);
         jLayeredPane1.add(fill_36);
         fill_36.setBounds(300, 200, 50, 50);
 
-        fill_26.setBackground(new java.awt.Color(128, 255, 0));
+        fill_26.setBackground(new java.awt.Color(102, 102, 102));
         fill_26.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_26.setOpaque(true);
         jLayeredPane1.add(fill_26);
         fill_26.setBounds(300, 250, 50, 50);
 
-        fill_16.setBackground(new java.awt.Color(128, 255, 0));
+        fill_16.setBackground(new java.awt.Color(102, 102, 102));
         fill_16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_16.setOpaque(true);
         jLayeredPane1.add(fill_16);
         fill_16.setBounds(300, 300, 50, 50);
 
-        fill_06.setBackground(new java.awt.Color(128, 255, 0));
+        fill_06.setBackground(new java.awt.Color(102, 102, 102));
         fill_06.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_06.setOpaque(true);
         jLayeredPane1.add(fill_06);
         fill_06.setBounds(300, 350, 50, 50);
 
-        fill_71.setBackground(new java.awt.Color(128, 255, 0));
+        fill_71.setBackground(new java.awt.Color(102, 102, 102));
         fill_71.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_71.setOpaque(true);
         jLayeredPane1.add(fill_71);
         fill_71.setBounds(50, 0, 50, 50);
 
-        fill_61.setBackground(new java.awt.Color(128, 255, 0));
+        fill_61.setBackground(new java.awt.Color(102, 102, 102));
         fill_61.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_61.setOpaque(true);
         jLayeredPane1.add(fill_61);
         fill_61.setBounds(50, 50, 50, 50);
 
-        fill_51.setBackground(new java.awt.Color(128, 255, 0));
+        fill_51.setBackground(new java.awt.Color(102, 102, 102));
         fill_51.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_51.setOpaque(true);
         jLayeredPane1.add(fill_51);
         fill_51.setBounds(50, 100, 50, 50);
 
-        fill_41.setBackground(new java.awt.Color(128, 255, 0));
+        fill_41.setBackground(new java.awt.Color(102, 102, 102));
         fill_41.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_41.setOpaque(true);
         jLayeredPane1.add(fill_41);
         fill_41.setBounds(50, 150, 50, 50);
 
-        fill_31.setBackground(new java.awt.Color(128, 255, 0));
+        fill_31.setBackground(new java.awt.Color(102, 102, 102));
         fill_31.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_31.setOpaque(true);
         jLayeredPane1.add(fill_31);
         fill_31.setBounds(50, 200, 50, 50);
 
-        fill_21.setBackground(new java.awt.Color(128, 255, 0));
+        fill_21.setBackground(new java.awt.Color(102, 102, 102));
         fill_21.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_21.setOpaque(true);
         jLayeredPane1.add(fill_21);
         fill_21.setBounds(50, 250, 50, 50);
 
-        fill_11.setBackground(new java.awt.Color(128, 255, 0));
+        fill_11.setBackground(new java.awt.Color(102, 102, 102));
         fill_11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_11.setOpaque(true);
         jLayeredPane1.add(fill_11);
         fill_11.setBounds(50, 300, 50, 50);
 
-        fill_01.setBackground(new java.awt.Color(128, 255, 0));
+        fill_01.setBackground(new java.awt.Color(102, 102, 102));
         fill_01.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_01.setOpaque(true);
         jLayeredPane1.add(fill_01);
         fill_01.setBounds(50, 350, 50, 50);
 
-        fill_57.setBackground(new java.awt.Color(128, 255, 0));
+        fill_57.setBackground(new java.awt.Color(102, 102, 102));
         fill_57.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_57.setOpaque(true);
         jLayeredPane1.add(fill_57);
         fill_57.setBounds(350, 100, 50, 50);
 
-        fill_47.setBackground(new java.awt.Color(128, 255, 0));
+        fill_47.setBackground(new java.awt.Color(102, 102, 102));
         fill_47.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_47.setOpaque(true);
         jLayeredPane1.add(fill_47);
         fill_47.setBounds(350, 150, 50, 50);
 
-        fill_37.setBackground(new java.awt.Color(128, 255, 0));
+        fill_37.setBackground(new java.awt.Color(102, 102, 102));
         fill_37.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_37.setOpaque(true);
         jLayeredPane1.add(fill_37);
         fill_37.setBounds(350, 200, 50, 50);
 
-        fill_27.setBackground(new java.awt.Color(128, 255, 0));
+        fill_27.setBackground(new java.awt.Color(102, 102, 102));
         fill_27.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_27.setOpaque(true);
         jLayeredPane1.add(fill_27);
         fill_27.setBounds(350, 250, 50, 50);
 
-        fill_07.setBackground(new java.awt.Color(128, 255, 0));
+        fill_07.setBackground(new java.awt.Color(102, 102, 102));
         fill_07.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_07.setOpaque(true);
         jLayeredPane1.add(fill_07);
         fill_07.setBounds(350, 350, 50, 50);
 
-        fill_17.setBackground(new java.awt.Color(128, 255, 0));
+        fill_17.setBackground(new java.awt.Color(102, 102, 102));
         fill_17.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_17.setOpaque(true);
         jLayeredPane1.add(fill_17);
         fill_17.setBounds(350, 300, 50, 50);
 
-        fill_67.setBackground(new java.awt.Color(128, 255, 0));
+        fill_67.setBackground(new java.awt.Color(102, 102, 102));
         fill_67.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_67.setOpaque(true);
         jLayeredPane1.add(fill_67);
         fill_67.setBounds(350, 50, 50, 50);
 
-        fill_77.setBackground(new java.awt.Color(128, 255, 0));
+        fill_77.setBackground(new java.awt.Color(102, 102, 102));
         fill_77.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_77.setOpaque(true);
         jLayeredPane1.add(fill_77);
         fill_77.setBounds(350, 0, 50, 50);
 
-        fill_70.setBackground(new java.awt.Color(128, 255, 0));
+        fill_70.setBackground(new java.awt.Color(102, 102, 102));
         fill_70.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_70.setOpaque(true);
         jLayeredPane1.add(fill_70);
         fill_70.setBounds(0, 0, 50, 50);
 
-        fill_60.setBackground(new java.awt.Color(128, 255, 0));
+        fill_60.setBackground(new java.awt.Color(102, 102, 102));
         fill_60.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_60.setOpaque(true);
         jLayeredPane1.add(fill_60);
         fill_60.setBounds(0, 50, 50, 50);
 
-        fill_50.setBackground(new java.awt.Color(128, 255, 0));
+        fill_50.setBackground(new java.awt.Color(102, 102, 102));
         fill_50.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_50.setOpaque(true);
         jLayeredPane1.add(fill_50);
         fill_50.setBounds(0, 100, 50, 50);
 
-        fill_40.setBackground(new java.awt.Color(128, 255, 0));
+        fill_40.setBackground(new java.awt.Color(102, 102, 102));
         fill_40.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_40.setOpaque(true);
         jLayeredPane1.add(fill_40);
         fill_40.setBounds(0, 150, 50, 50);
 
-        fill_30.setBackground(new java.awt.Color(128, 255, 0));
+        fill_30.setBackground(new java.awt.Color(102, 102, 102));
         fill_30.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_30.setOpaque(true);
         jLayeredPane1.add(fill_30);
         fill_30.setBounds(0, 200, 50, 50);
 
-        fill_20.setBackground(new java.awt.Color(128, 255, 0));
+        fill_20.setBackground(new java.awt.Color(102, 102, 102));
         fill_20.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_20.setOpaque(true);
         jLayeredPane1.add(fill_20);
         fill_20.setBounds(0, 250, 50, 50);
 
-        fill_10.setBackground(new java.awt.Color(128, 255, 0));
+        fill_10.setBackground(new java.awt.Color(102, 102, 102));
         fill_10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_10.setOpaque(true);
         jLayeredPane1.add(fill_10);
         fill_10.setBounds(0, 300, 50, 50);
 
-        fill_00.setBackground(new java.awt.Color(128, 255, 0));
+        fill_00.setBackground(new java.awt.Color(102, 102, 102));
         fill_00.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         fill_00.setOpaque(true);
         jLayeredPane1.add(fill_00);
@@ -584,34 +590,51 @@ public class GUI extends JFrame{
         
     }//GEN-LAST:event_ratoliPres
    
+    public Point getPoint(){return s;}
+    
+    
+    public void updateBoard(Board b){this.b=b;}
+    
+    public void pinta_tauler(Board b)
+    {     
+        updateBoard(b);
+        paint(this.getGraphics());
+        
+        
+    }
+    
+    
+    
     
      @Override
     public void paint(Graphics g)
     {
-     super.paint(g);
+        super.paint(g);
      
-    for (int i=0; i<8; i++){
-        for (int j=0; j<8; j++){
-            g.setColor(Color.RED);
-            if (true){
-                g.drawOval(whichx(i),whichy(j),40,40);
-                g.fillOval(whichx(i),whichy(j),40,40);                
+        int [][] tauler = b.get_tauler();
+        super.paint(g);
+        for (int i=0; i<8; i++){
+            for (int j=0; j<8; j++){
+                g.setColor(Color.BLACK);
+                if (tauler[i][j] == 1){
+                    g.drawOval(whichx(i),whichy(j),40,40);
+                    g.fillOval(whichx(i),whichy(j),40,40);                
+                }
+                else if (tauler[i][j] == -1 ){
+                    g.setColor(Color.WHITE);
+                    g.drawOval(whichx(i),whichy(j),40,40);
+                    g.fillOval(whichx(i),whichy(j),40,40);
+
+                }
+
             }
-            else{
-                g.setColor(Color.BLUE);
-                g.drawOval(whichx(i),whichy(j),40,40);
-                g.fillOval(whichx(i),whichy(j),40,40);
-                
-            }
-            
         }
-     }
      
     }
     
         
     private static int whichx(int col){
-        return ((50*col+12));
+        return ((50*col+15));
     }
     
     private static int whichy(int fil){

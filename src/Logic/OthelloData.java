@@ -29,6 +29,15 @@ public class OthelloData {
         WPieces = new Vector();
         BPieces = new Vector();
         
+        // Inicializar el array
+        
+        for (int i=0;i<8;++i)
+            for (int j=0;j<8;++j)
+                board[i][j] = 0;
+        
+        
+        
+        
         pieces[Color.WHITE.getColor()+1] = pieces[Color.BLACK.getColor()+1] = 2;
         pieces[Color.EMPTY.getColor()+1] = 60;
 
@@ -58,6 +67,10 @@ public class OthelloData {
             WPieces.add(new Point(3,3));
             WPieces.add(new Point(4,4));
         }
+        
+        
+        
+        
     }
     
     

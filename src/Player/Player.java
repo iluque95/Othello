@@ -1,9 +1,10 @@
 package Player;
 
 import Logic.Board;
+import Util.Point;
 
 public interface Player {
     
-    public int movement(Board t, int color);
+    public Point movement(Board t, int color);
     public String name();
 }

@@ -6,6 +6,7 @@
 package Player;
 
 import Logic.Board;
+import Util.Point;
 
 /**
  *
@@ -15,14 +16,14 @@ public class Manual implements Player{
     
     public String name()
     {
-        return "Manual";      
+        return "manual";      
         
     }
     
-    public int movement(Board t, int color)
+    public Point movement(Board t, int color)
     {
         
-        return 4;
+        return new Point(2,2);
                 
     }
     

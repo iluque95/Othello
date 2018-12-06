@@ -20,6 +20,11 @@ public class Board {
         move = new OthelloMove(data);
     }
     
+    public int[][] get_tauler()
+    {
+        return data.board;        
+    }
+    
     
     
     
