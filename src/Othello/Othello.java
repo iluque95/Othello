@@ -60,7 +60,7 @@ public class Othello {
         // Declarar GUI
         Board b = start_gui_and_board();
         
-        esperar_tirada();
+        esperar_tirada(); // Sincronitzacio threads
         
         
         
@@ -78,7 +78,7 @@ public class Othello {
         {
             if (turn)
             {
-                if (jugador1.name()=="manual"){
+                if (jugador1 instanceof Manual){
                     esperar_tirada();
                     System.out.println("Manual Ha tirat : ");
                     Point p = gui.getPoint();
@@ -88,12 +88,12 @@ public class Othello {
                 else{ // Qualsevol altre jugador
                     Point p = jugador1.movement(b, 1);
                     System.out.println(jugador1.name()+" ha tirat en " + p.toString());
-                    if (gui == null ) System.out.println("NULL");
+                    
                     gui.pinta_tauler(b);
                 }
             }
             else{
-                if (jugador2.name()=="manual"){
+                if (jugador2 instanceof Manual){
                     esperar_tirada();
                     System.out.println("Manual Ha tirat : ");
                     Point p = gui.getPoint();
