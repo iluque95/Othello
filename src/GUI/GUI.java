@@ -53,7 +53,7 @@ public class GUI extends JFrame{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
+        Jugador1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         fill_73 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 400), new java.awt.Dimension(0, 400), new java.awt.Dimension(32767, 400));
@@ -120,7 +120,7 @@ public class GUI extends JFrame{
         fill_20 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 400), new java.awt.Dimension(0, 400), new java.awt.Dimension(32767, 400));
         fill_10 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 400), new java.awt.Dimension(0, 400), new java.awt.Dimension(32767, 400));
         fill_00 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 400), new java.awt.Dimension(0, 400), new java.awt.Dimension(32767, 400));
-        jTextField3 = new javax.swing.JTextField();
+        Jugador2 = new javax.swing.JTextField();
         Estat_Joc = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -520,7 +520,7 @@ public class GUI extends JFrame{
         jLayeredPane1.add(fill_00);
         fill_00.setBounds(0, 350, 50, 50);
 
-        Estat_Joc.setText("ESTAT ACTUAL");
+        Estat_Joc.setText("0 PECES");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -533,16 +533,15 @@ public class GUI extends JFrame{
                     .addGroup(layout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Jugador2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                        .addComponent(Estat_Joc)
-                        .addGap(39, 39, 39))))
+                            .addComponent(Jugador1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(Estat_Joc)))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -552,12 +551,12 @@ public class GUI extends JFrame{
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(64, 64, 64)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Jugador1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64)
+                .addComponent(Jugador2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(54, 54, 54)
                 .addComponent(Estat_Joc)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -574,9 +573,6 @@ public class GUI extends JFrame{
         
         int fila = rata_x / 8;
         int col = rata_y / 8;
-        
-        System.out.println("MIDA TAULER : " + pan_x + " " + pan_y);
-        System.out.println("Rata : " + rata_x + " " + rata_y);
         
         
         int aux = (int) (rata_x / (pan_x / 8 ));
@@ -598,8 +594,7 @@ public class GUI extends JFrame{
     public void pinta_tauler(Board b)
     {     
         updateBoard(b);
-        paint(this.getGraphics());
-        
+        repaint();
         
     }
     
@@ -673,6 +668,12 @@ public class GUI extends JFrame{
     }
     
     
+    public void setPlayers(String p1,String p2){Jugador1.setText(p1);
+        Jugador2.setText(p2);
+    }
+    public void setStatus(String s){Estat_Joc.setText(s);}
+    
+    
     
 
 
@@ -680,6 +681,8 @@ public class GUI extends JFrame{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Estat_Joc;
+    private javax.swing.JTextField Jugador1;
+    private javax.swing.JTextField Jugador2;
     private javax.swing.Box.Filler fill_00;
     private javax.swing.Box.Filler fill_01;
     private javax.swing.Box.Filler fill_02;
@@ -746,7 +749,5 @@ public class GUI extends JFrame{
     private javax.swing.Box.Filler fill_77;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }

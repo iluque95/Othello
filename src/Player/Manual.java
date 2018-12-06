@@ -16,7 +16,7 @@ public class Manual implements Player{
     
     public String name()
     {
-        return "manual";      
+        return "Manual";
         
     }
     
