@@ -11,4 +11,16 @@ package Logic;
  */
 public class Board {
     
+    static OthelloData data;
+    static OthelloMove move;
+    
+    public Board()
+    {
+        data = new OthelloData();
+        move = new OthelloMove(data);
+    }
+    
+    
+    
+    
 }

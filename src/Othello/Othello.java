@@ -17,22 +17,65 @@ public class Othello {
     
     static Player jugador1,jugador2;
     
+    static GUI gui;
     
-    public static void main (String [] args)
+    
+    public static void main (String [] args) throws InterruptedException
     {
         
-        GUI gui = new GUI();
-        gui.setVisible(true);
+        Thread m = Thread.currentThread();
         
-        jugador1 = new Manual();
-        jugador2 = new Manual();
         
-        Point p = null;
+        Thread t = new Thread()
+        {
+            public void run()
+            {
+                java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                gui = new GUI(m);
+                gui.setVisible(true);
+            }
+            });
+                
+            }
+        };
         
-        while (p==null) p = gui.getMovement();
+        t.start();
         
-        System.out.println("Surto amb punt : ");
-        System.out.println(p.getX()+" " + p.getY());
+        try {
+            System.out.println("Vaig a dormir");
+            Thread.sleep(300000);
+        } catch (InterruptedException ex) {
+        System.out.println("I'm resumed");
+        }
+        
+        System.out.println("HEHHEHSHS");
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+       /* java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                gui = new GUI();
+                gui.setVisible(true);
+            }
+        });*/
+        
+        
+        
+        
+        
         
         
         

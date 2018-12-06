@@ -5,20 +5,27 @@ import Util.Point;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.util.Set;
+
+import javax.swing.JFrame;
 
 /**
  *
  * @author Hume
  */
-public class GUI extends javax.swing.JFrame {
+public class GUI extends JFrame{
 
     /**
      * Creates new form NewJFrame
+     * @param t
      */
-    public GUI() {
+    public GUI(Thread t) {
         initComponents();
         s=null;
+        pare = t;
     }
+    
     
     // Private
     static OthelloData data;
@@ -27,6 +34,7 @@ public class GUI extends javax.swing.JFrame {
   //  static Random jugador2;
     static int  Step;
     boolean acabat = false;
+    Thread pare = null;
     
     private Point s;
 
@@ -565,37 +573,17 @@ public class GUI extends javax.swing.JFrame {
         System.out.println("Rata : " + rata_x + " " + rata_y);
         
         
-        System.out.println("Vaig a afegir fitxa " + fila + " " + col);
-        
         int aux = (int) (rata_x / (pan_x / 8 ));
         int aux2 = (int) (rata_y / (pan_y / 8));
         
         
         s = new Point (aux,aux2);
         
-        repaint();
+        pare.interrupt();
+
+        
     }//GEN-LAST:event_ratoliPres
    
-    
-    public Point getMovement()
-    {
-        Point p2 = null;
-        
-        
-        if (s != null ){
-            p2 = s;
-            s = null;
-        }
-       
-       if (p2 != null) System.out.println("P2 dif");
-       return p2;
-        
-        
-    }
-    
-    
-    
-    
     
      @Override
     public void paint(Graphics g)
@@ -654,15 +642,6 @@ public class GUI extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new GUI().setVisible(true);
-            }
-        });
-        
         // Declaracio dels dos jugadors
      //   jugador1 = new Jugador();
      //   jugador2 = new Jugador();
