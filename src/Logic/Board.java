@@ -5,6 +5,10 @@
  */
 package Logic;
 
+import Util.Point;
+import java.util.Vector;
+import javafx.util.Pair;
+
 /**
  *
  * @author marti
@@ -20,14 +24,66 @@ public class Board {
         move = new OthelloMove(data);
     }
     
-    public int[][] get_tauler()
+    public int[][] getBoard()
     {
         return data.board;        
     }
     
+    public int[] getPieces()
+    {
+        return data.pieces;
+    }
+      
+    public boolean isEmpty(Point p)
+    {
+        return data.isEmpty(p);
+    }
     
+    public void add(Point p, int dir, int color)
+    {
+        data.add(p, dir, color);
+    }
     
+    public int getColor(Point p)
+    {
+        return data.getColor(p);
+    }
     
+    public int getQuantityOfPieces(int color)
+    {
+        return data.getQuantityOfPieces(color);
+    }
     
+    public int getQuantityOfPiecesOnBoard()
+    {
+        return data.getQuantityOfPiecesOnBoard();
+    }
     
+    public int getEmptyPositions(){
+        return data.getEmptyPositions();
+    }
+    
+    public Vector<Point> getBlackPieces(){
+        return data.getBlackPieces();
+    }
+    
+    public Vector<Point> getWhitePieces(){
+        return data.getWhitePieces();
+    }
+
+    public void drawBoard()
+    {
+        data.drawBoard();
+    }
+    
+    /**
+     *
+     * @param color
+     * @return
+     */
+    public Vector<Pair<Point, Integer>> getMovements(int color)
+    {
+        return move.getMovements(color);
+    }
+
 }

@@ -611,7 +611,7 @@ public class GUI extends JFrame{
     {
         super.paint(g);
      
-        int [][] tauler = b.get_tauler();
+        int [][] tauler = b.getBoard();
         super.paint(g);
         for (int i=0; i<8; i++){
             for (int j=0; j<8; j++){

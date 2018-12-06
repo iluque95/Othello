@@ -520,6 +520,8 @@ public class OthelloMove {
     */
     public boolean isSolution(int color)
     {
-        return (oData.getQuantityOfPiecesOnBoard()==64 || ((oData.getQuantityOfPieces(Color.BLACK.getColor()) == oData.getQuantityOfPieces(Color.WHITE.getColor())) && getMovements(color).isEmpty()));
+        return (oData.getQuantityOfPiecesOnBoard()==64 || 
+                ((oData.getQuantityOfPieces(Color.BLACK.getColor()) == oData.getQuantityOfPieces(Color.WHITE.getColor())) 
+                && getMovements(color).isEmpty()));
     }
 }
