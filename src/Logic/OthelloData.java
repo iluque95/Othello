@@ -83,7 +83,7 @@ public class OthelloData {
     */
     private boolean validColor(int color)
     {
-        return color==Color.BLACK.getColor() && color==Color.WHITE.getColor();
+        return color==Color.BLACK.getColor() || color==Color.WHITE.getColor();
     }
     
     /**
@@ -172,6 +172,7 @@ public class OthelloData {
             this.board[p.getX()][p.getY()] = color;
             
             if (color == Color.BLACK.getColor()) BPieces.add(p);
+            
             else WPieces.add(p);
             
             pieces[color+1]++;
@@ -184,6 +185,7 @@ public class OthelloData {
                mask = (mask << 1);
            }
         }
+        System.out.println("BPIECES:"+BPieces);
     }
     
     /**

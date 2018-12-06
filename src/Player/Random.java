@@ -15,18 +15,17 @@ import javafx.util.Pair;
  *
  * @author heri
  */
-public class Random {
+public class Random implements Player {
     public String name()
     {
         return "Random";      
     }
     
-    public Point movement(Board t, int color){
+    public Pair<Point, Integer> movement(Board t, int color){
         //Board ha de tener movimientos, los pasamos calculados o los recalculamos en player, los ponemos como atributo de board?
         Vector<Pair<Point, Integer>> list = t.getMovements(color);
         //Jelp to quitar this shit joder, me deja hacer import por que me dice que ya esta importado, y si no lo import no lo understend pa nah
         java.util.Random rnd = new java.util.Random();
-        Pair<Point, Integer> res = list.get(rnd.nextInt(list.size()-1));
-        return res.getKey();
+        return list.get(rnd.nextInt(list.size()-1));
     }
 }

@@ -39,9 +39,9 @@ public class Board {
         return data.isEmpty(p);
     }
     
-    public void add(Point p, int dir, int color)
+    public void add (Pair<Point, Integer>p, int color)
     {
-        data.add(p, dir, color);
+        data.add(p.getKey(), p.getValue(), color);
     }
     
     public int getColor(Point p)

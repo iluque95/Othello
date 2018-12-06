@@ -9,6 +9,8 @@ import GUI.*;
 import Logic.Board;
 import Player.*;
 import Util.*;
+import java.util.Vector;
+import javafx.util.Pair;
 
 /**
  *
@@ -63,30 +65,39 @@ public class Othello {
         
         
         // Declarar jugadors
-        jugador1 = new LloydC();
-        jugador2 = new Manual();        
+        jugador1 = new Manual();
+        jugador2 = new Random();       
         gui.setPlayers(jugador1.name(), jugador2.name());
         
-        boolean turn = true; // 1 = jugador 1 / 0 = jugador 2
+        int turn = 1; // 1 = jugador 1 / 0 = jugador 2
                              // 1 = color_j1 / -1 = color_j2
         
         boolean acabat = false;
         while (!acabat)
         {
-            if (turn)
+            System.out.println("Turn num " + turn);
+            if (turn==1)
             {
+                
                 if (jugador1 instanceof Manual){
                     esperar_tirada();
+                    Vector<Pair<Point, Integer>> list = b.getMovements(turn);
+                    java.util.Random rnd = new java.util.Random();
+                    b.add(list.get(rnd.nextInt(list.size()-1)), turn);
                     System.out.println("Manual Ha tirat : ");
                     Point p = gui.getPoint();
                     System.out.println(p.toString());
-                    /* AFEGIR EL MOVIMENT AQUI EN EL TAULER*/
+                    
+                    
                     
                     
                 }
                 else{ // Qualsevol altre jugador
-                    Point p = jugador1.movement(b, 1);
-                    System.out.println(jugador1.name()+" ha tirat en " + p.toString());
+                    Pair<Point, Integer> aux=jugador1.movement(b, 1);
+                    System.out.println(jugador1.name()+" ha tirat en " + aux.getKey().toString());
+                    
+                    b.add(aux, turn);
+                    
                     /* AFEGIR EL MOVIMENT AQUI EN EL TAULER*/
                     
                 }
@@ -100,17 +111,21 @@ public class Othello {
                     /* AFEGIR EL MOVIMENT AQUI EN EL TAULER*/
                 }
                 else{
-                    Point p = jugador2.movement(b, -1);
-                    System.out.println(jugador2.name()+" ha tirat en " + p.toString());
-                    /* AFEGIR EL MOVIMENT AQUI EN EL TAULER*/
+                    Pair<Point, Integer> aux=jugador2.movement(b, 1);
+                    System.out.println(jugador2.name()+" ha tirat en " + aux.getKey().toString());
+                    
+                    b.add(aux, turn);
                     
                     
                     
                 }
             }
             gui.pinta_tauler(b);
-            turn = !turn;
+            b.drawBoard();
+            turn *= -1;
             gui.setStatus(Integer.toString(b.getQuantityOfPiecesOnBoard())+" PECES");
+            
+            // COMPROVAR SI S'HA ACABAT EL JOC
             
             
         }
