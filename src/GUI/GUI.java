@@ -1,12 +1,15 @@
 package GUI;
 
 import Logic.*;
+import Util.Direction;
 import Util.Point;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.util.Set;
+import java.util.Vector;
+import javafx.util.Pair;
 
 import javax.swing.JFrame;
 
@@ -25,7 +28,9 @@ public class GUI extends JFrame{
         initComponents();
         s=null;
         pare = t;
-        this.b = b;
+        
+       
+        
         pare.interrupt();
         
     }
@@ -41,6 +46,7 @@ public class GUI extends JFrame{
     Thread pare = null;
     
     Board b = null;
+    Vector<Pair<Point, Integer>> mov = null;
     
     private Point s;
 
@@ -122,6 +128,24 @@ public class GUI extends JFrame{
         fill_00 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 400), new java.awt.Dimension(0, 400), new java.awt.Dimension(32767, 400));
         Jugador2 = new javax.swing.JTextField();
         Estat_Joc = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        TurnLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -522,43 +546,161 @@ public class GUI extends JFrame{
 
         Estat_Joc.setText("0 PECES");
 
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel2.setText("7");
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel3.setText("6");
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel4.setText("5");
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel5.setText("4");
+
+        jLabel6.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel6.setText("3");
+
+        jLabel7.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel7.setText("2");
+
+        jLabel8.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel8.setText("1");
+
+        jLabel9.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel9.setText("0");
+
+        jLabel10.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel10.setText("0");
+
+        jLabel11.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel11.setText("1");
+
+        jLabel12.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel12.setText("2");
+
+        jLabel13.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel13.setText("3");
+
+        jLabel14.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel14.setText("4");
+
+        jLabel15.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel15.setText("5");
+
+        jLabel16.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel16.setText("6");
+
+        jLabel17.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel17.setText("7");
+
+        jLabel18.setText("Turn :");
+
+        TurnLabel.setText("UNDEFINED");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(26, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
+                        .addComponent(Jugador2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Jugador1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Jugador2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(Jugador1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(Estat_Joc)
+                            .addComponent(jLabel18))
+                        .addGap(27, 27, 27))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(Estat_Joc)))
-                .addContainerGap(55, Short.MAX_VALUE))
+                        .addComponent(TurnLabel)
+                        .addGap(27, 27, 27))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(78, 78, 78)
+                .addComponent(jLabel10)
+                .addGap(36, 36, 36)
+                .addComponent(jLabel11)
+                .addGap(32, 32, 32)
+                .addComponent(jLabel12)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel13)
+                .addGap(34, 34, 34)
+                .addComponent(jLabel14)
+                .addGap(32, 32, 32)
+                .addComponent(jLabel15)
+                .addGap(34, 34, 34)
+                .addComponent(jLabel16)
+                .addGap(32, 32, 32)
+                .addComponent(jLabel17)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel13)
+                    .addComponent(jLabel14)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel17))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(64, 64, 64)
+                .addGap(58, 58, 58)
                 .addComponent(Jugador1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Jugador2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
+                .addGap(52, 52, 52)
                 .addComponent(Estat_Joc)
+                .addGap(30, 30, 30)
+                .addComponent(jLabel18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(TurnLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addGap(29, 29, 29)
+                .addComponent(jLabel8)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel7)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel6)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addGap(29, 29, 29)
+                .addComponent(jLabel2)
+                .addGap(21, 21, 21))
         );
 
         pack();
@@ -588,12 +730,51 @@ public class GUI extends JFrame{
    
     public Point getPoint(){return s;}
     
+    public static String direccion(int dir)
+    {
+      
+      if (dir==Direction.DOWN.getVal()) {
+          return "Abj";
+      }else if(dir==Direction.LEFT.getVal()) {
+          return "Izq";
+      }else if(dir==Direction.RIGHT.getVal()) {
+          return "Der";
+      }else if(dir==Direction.UP.getVal()) {
+          return "Arr";
+      }else if(dir==Direction.LEFTDDOWN.getVal()) {
+          return "DiIzqAbj";
+      }else if(dir==Direction.LEFTDUP.getVal()) {
+          return "DiIzqArr";
+      }else if(dir==Direction.RIGHTDDOWN.getVal()) {
+          return "DiDerAbj";
+      }else{
+          return "DiDerArr";
+      }
+    }
+    
+    public static String direcciones(int dir)
+    {
+        int mask=0x1;
+        
+        String str="";
+
+        for (int i=0; i<8; i++) {
+           if ((dir & mask) != 0) str+= direccion(dir)+", ";
+           mask = (mask << 1);
+       }
+        
+        return str;
+    }
+    
     
     public void updateBoard(Board b){this.b=b;}
+    public void updateMov (Vector<Pair<Point, Integer>> mov){this.mov = mov;}
+    public void setTurn (String s){TurnLabel.setText(s);}
     
-    public void pinta_tauler(Board b)
-    {     
+    public void pinta_tauler(Board b, Vector<Pair<Point, Integer>> mov)
+    {
         updateBoard(b);
+        updateMov(mov);
         repaint();
         
     }
@@ -610,8 +791,9 @@ public class GUI extends JFrame{
         super.paint(g);
         for (int i=0; i<8; i++){
             for (int j=0; j<8; j++){
-                g.setColor(Color.BLACK);
+                
                 if (tauler[i][j] == 1){
+                    g.setColor(Color.BLACK);
                     g.drawOval(whichx(i),whichy(j),40,40);
                     g.fillOval(whichx(i),whichy(j),40,40);                
                 }
@@ -621,15 +803,27 @@ public class GUI extends JFrame{
                     g.fillOval(whichx(i),whichy(j),40,40);
 
                 }
+                
+                if (i < mov.size()){
+                    Point p = mov.get(i).getKey();
+                    g.setColor(Color.RED);
+                    g.drawOval(whichx(p.getX()),whichy(p.getY()),40,40);
+                    g.setColor(new Color (0,175,0));
+                    g.fillOval(whichx(p.getX()),whichy(p.getY()),40,40);
+                    
+                    System.out.println("Point "+p.toString() + " con direcciones "+direcciones(mov.get(i).getValue()));
+                }
 
             }
         }
+        
+        
      
     }
     
         
     private static int whichx(int col){
-        return ((50*col+15));
+        return ((50*col+50+15));
     }
     
     private static int whichy(int fil){
@@ -683,6 +877,7 @@ public class GUI extends JFrame{
     private javax.swing.JLabel Estat_Joc;
     private javax.swing.JTextField Jugador1;
     private javax.swing.JTextField Jugador2;
+    private javax.swing.JLabel TurnLabel;
     private javax.swing.Box.Filler fill_00;
     private javax.swing.Box.Filler fill_01;
     private javax.swing.Box.Filler fill_02;
@@ -748,6 +943,23 @@ public class GUI extends JFrame{
     private javax.swing.Box.Filler fill_76;
     private javax.swing.Box.Filler fill_77;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
     // End of variables declaration//GEN-END:variables
 }

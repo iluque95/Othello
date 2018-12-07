@@ -36,6 +36,7 @@ public class OthelloMove {
     private Point searchUp(Point p)
     {
         Point pt = new Point(-1, -1);
+        if (p.getX() < 1) return pt;
         
         boolean consecutives = true;
         boolean found = false;
@@ -76,19 +77,22 @@ public class OthelloMove {
     private Point searchDown(Point p)
     {
         Point pt = new Point(-1, -1);
+        if (p.getX() > 6) return pt;
+        
+        
         
         boolean consecutives = true;
         boolean found = false;
         int i = p.getX()+2;
-        int color = oData.getColor(p);
+        int color = oData.getColor(p); // REVISAR POC PROBABLE
         
-        int nextColor = oData.getColor(new Point(p.getX()+1,p.getY()));
+        int nextColor = oData.getColor(new Point(p.getX()+1,p.getY())); // REVISAR HA PETAO
         
         if (nextColor==Color.EMPTY.getColor() || nextColor==color) consecutives = false;
         
         while (i<oData.getSize() && consecutives && !found)
         {
-            int tmpColor = oData.getColor(new Point(i,p.getY()));
+            int tmpColor = oData.getColor(new Point(i,p.getY())); // REVISAR
             
             if (tmpColor==Color.EMPTY.getColor()) {
                 found = true;
@@ -116,6 +120,7 @@ public class OthelloMove {
     private Point searchLeft(Point p)
     {
         Point pt = new Point(-1, -1);
+        if (p.getY() < 1) return pt;
         
         boolean consecutives = true;
         boolean found = false;
@@ -156,6 +161,7 @@ public class OthelloMove {
     private Point searchRight(Point p)
     {
         Point pt = new Point(-1, -1);
+        if (p.getY() > 6) return pt;
         
         boolean consecutives = true;
         boolean found = false;
@@ -196,6 +202,7 @@ public class OthelloMove {
     private Point searchRightUpDiagonal(Point p)
     {
         Point pt = new Point(-1, -1);
+        if (p.getX() < 1 || p.getY() > 6 ) return pt;
         
         boolean consecutives = true;
         boolean found = false;
@@ -237,6 +244,7 @@ public class OthelloMove {
     private Point searchLeftUpDiagonal(Point p)
     {
         Point pt = new Point(-1, -1);
+        if (p.getX() < 1 || p.getY() < 1 ) return pt;
         
         boolean consecutives = true;
         boolean found = false;
@@ -278,6 +286,7 @@ public class OthelloMove {
     private Point searchRightDownDiagonal(Point p)
     {
         Point pt = new Point(-1, -1);
+        if (p.getX() > 6 || p.getY() > 6) return pt;
         
         boolean consecutives = true;
         boolean found = false;
@@ -318,6 +327,7 @@ public class OthelloMove {
     private Point searchLeftDownDiagonal(Point p)
     {
         Point pt = new Point(-1, -1);
+        if (p.getX() < 1 || p.getY() > 6) return pt;
         
         boolean consecutives = true;
         boolean found = false;
@@ -373,8 +383,7 @@ public class OthelloMove {
                         
         for (int i=0; i<pieces.size(); i++) {
 
-            int dir=0x0;
-            int pos=0;
+            int dir,pos;
 
             tmp = searchRight(pieces.get(i));
             if (tmp.getX()!=-1 && tmp.getY()!=-1)

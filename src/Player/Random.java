@@ -27,5 +27,5 @@ public class Random implements Player {
         //Jelp to quitar this shit joder, me deja hacer import por que me dice que ya esta importado, y si no lo import no lo understend pa nah
         java.util.Random rnd = new java.util.Random();
         return list.get(rnd.nextInt(list.size()-1));
-    }
+    }   
 }

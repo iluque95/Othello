@@ -8,8 +8,10 @@ package Logic;
 import Util.Color;
 import Util.Direction;
 import Util.Point;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
+import javafx.util.Pair;
 
 /**
  *
@@ -72,6 +74,36 @@ public class OthelloData {
         
         
         
+    }
+    
+    // pa probar
+    public OthelloData(Vector<Pair<Point, Integer>> fichicas)
+    {
+        
+        board = new int[8][8];
+        pieces = new int[3];
+        WPieces = new Vector();
+        BPieces = new Vector();
+        
+        Iterator<Pair<Point, Integer>> itr = fichicas.iterator();
+        while(itr.hasNext()){
+            Pair<Point, Integer> tmp = itr.next();
+            
+            board[tmp.getKey().getX()][tmp.getKey().getY()]=tmp.getValue();
+            
+            if (tmp.getValue()==Color.BLACK.getColor()) {
+                BPieces.add(tmp.getKey());
+            }else{
+                WPieces.add(tmp.getKey());
+            }
+            
+        }
+        
+        pieces[Color.BLACK.getColor()+1] = BPieces.size();
+        
+        pieces[Color.WHITE.getColor()+1] = WPieces.size();
+        
+        pieces[Color.EMPTY.getColor()+1] = 64 -(BPieces.size() + WPieces.size());
     }
     
     
@@ -168,6 +200,9 @@ public class OthelloData {
     */
     public void add(Point p, int dir, int color)
     { //REVISAR
+        System.out.println("DIR = " + dir);
+        
+        
         if (validColor(color)) {
             
             this.board[p.getX()][p.getY()] = color;
@@ -182,7 +217,7 @@ public class OthelloData {
             int mask=0x1;
             
             for (int i=0; i<8; i++) {
-               if ((dir & mask) != 0) changeColor(p, mask, color);
+               if ((dir & mask) != 0) System.out.println("XANGEKOLOR");//changeColor(p, mask, color);
                mask = (mask << 1);
            }
         }
