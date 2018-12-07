@@ -66,7 +66,7 @@ public class Othello {
         
         // Declarar jugadors
         jugador1 = new Manual();
-        jugador2 = new Random();       
+        jugador2 = new Manual();       
         gui.setPlayers(jugador1.name(), jugador2.name());
         
         int turn = 1; // 1 = jugador 1 / 0 = jugador 2
@@ -75,6 +75,7 @@ public class Othello {
         boolean acabat = false;
         while (!acabat)
         {
+            gui.setStatus(Integer.toString(b.getQuantityOfPiecesOnBoard())+" PECES");
             System.out.println("Turn num " + turn);
             if (turn==1)
             {
@@ -88,9 +89,6 @@ public class Othello {
                     Point p = gui.getPoint();
                     System.out.println(p.toString());
                     
-                    
-                    
-                    
                 }
                 else{ // Qualsevol altre jugador
                     Pair<Point, Integer> aux=jugador1.movement(b, 1);
@@ -98,17 +96,17 @@ public class Othello {
                     
                     b.add(aux, turn);
                     
-                    /* AFEGIR EL MOVIMENT AQUI EN EL TAULER*/
-                    
                 }
             }
             else{
                 if (jugador2 instanceof Manual){
                     esperar_tirada();
+                    Vector<Pair<Point, Integer>> list = b.getMovements(turn);
+                    java.util.Random rnd = new java.util.Random();
+                    b.add(list.get(rnd.nextInt(list.size()-1)), turn);
                     System.out.println("Manual Ha tirat : ");
                     Point p = gui.getPoint();
                     System.out.println(p.toString());
-                    /* AFEGIR EL MOVIMENT AQUI EN EL TAULER*/
                 }
                 else{
                     Pair<Point, Integer> aux=jugador2.movement(b, 1);
@@ -123,8 +121,8 @@ public class Othello {
             gui.pinta_tauler(b);
             b.drawBoard();
             turn *= -1;
-            gui.setStatus(Integer.toString(b.getQuantityOfPiecesOnBoard())+" PECES");
             
+            if (b.isOver()) acabat = true;
             // COMPROVAR SI S'HA ACABAT EL JOC
             
             

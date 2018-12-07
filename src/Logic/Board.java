@@ -85,5 +85,12 @@ public class Board {
     {
         return move.getMovements(color);
     }
+    
+    
+    // AFEGIDA PER COMPROVAR SI SACABA EL JOC
+    public boolean isOver()
+    {
+        return false;
+    }
 
 }

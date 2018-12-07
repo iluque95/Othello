@@ -40,6 +40,7 @@ public class OthelloData {
         
         pieces[Color.WHITE.getColor()+1] = pieces[Color.BLACK.getColor()+1] = 2;
         pieces[Color.EMPTY.getColor()+1] = 60;
+                
 
         Random rnd = new Random();
         
@@ -95,7 +96,7 @@ public class OthelloData {
     */
     public boolean isEmpty(Point p)
     {
-        return this.board[p.getX()][p.getY()]==0;
+        return this.board[p.getX()][p.getY()]==Color.EMPTY.getColor();
     }
     
     /**
@@ -107,7 +108,7 @@ public class OthelloData {
     * @param color is the color of piece which it will put in the board.
     */
     public void changeColor(Point p, int dir, int color)
-    {
+    { // REVISAR
         int i=p.getX(), j=p.getY();
         
         boolean found = false;
@@ -166,7 +167,7 @@ public class OthelloData {
     * @param color piece
     */
     public void add(Point p, int dir, int color)
-    {
+    { //REVISAR
         if (validColor(color)) {
             
             this.board[p.getX()][p.getY()] = color;
