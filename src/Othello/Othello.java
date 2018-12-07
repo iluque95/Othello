@@ -118,7 +118,7 @@ public class Othello {
             b.drawBoard();
             if (turn == 1) gui.setTurn(jugador1.name());
             else gui.setTurn(jugador2.name());
-            if (turn==1)
+            if (turn==1 && moviments.size()>0)
             {
                 
                 
@@ -171,7 +171,7 @@ public class Othello {
                     
                 }
             }
-            else{
+            else if( moviments.size()>0){
                 if (jugador2 instanceof Manual){
                     System.out.println("MOVIMENTS POSSIBLES : ");
                     System.out.println(moviments);
@@ -220,7 +220,7 @@ public class Othello {
                 }
             }
             
-            // COMPROVAR SI PUEDE TIRAR
+            // COMPROVAR SI PUEDE TIRAR ( arreglat pero no avisa, afegir a GUI)
             
             
             turn *= -1;
