@@ -219,10 +219,7 @@ public class OthelloData {
             int mask=0x1;
             
             for (int i=0; i<8; i++) {
-               if ((dir & mask) != 0) {
-                   changeColor(p, mask, color);
-                   System.out.println("XANGEKULOR");
-               }
+               if ((dir & mask) != 0) changeColor(p, mask, color);
                mask = (mask << 1);
            }
         }
