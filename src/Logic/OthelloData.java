@@ -200,7 +200,7 @@ public class OthelloData {
     */
     public void add(Point p, int dir, int color)
     { //REVISAR
-        System.out.println("DIR = " + dir);
+        System.out.println("VOY A AÑADIR= " + p);
         
         
         if (validColor(color)) {
@@ -214,10 +214,15 @@ public class OthelloData {
             pieces[color+1]++;
             pieces[Color.EMPTY.getColor()+1]--;
             
+            System.out.println("AFEGIT A LA POSICIO : " + p.getX()+" " + p.getY());
+            
             int mask=0x1;
             
             for (int i=0; i<8; i++) {
-               if ((dir & mask) != 0) System.out.println("XANGEKOLOR");//changeColor(p, mask, color);
+               if ((dir & mask) != 0) {
+                   changeColor(p, mask, color);
+                   System.out.println("XANGEKULOR");
+               }
                mask = (mask << 1);
            }
         }

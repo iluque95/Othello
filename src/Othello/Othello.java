@@ -101,8 +101,8 @@ public class Othello {
         
         
         // Declarar jugadors
-        jugador1 = new Random();
-        jugador2 = new Random();       
+        jugador1 = new Manual();
+        jugador2 = new Manual();       
         gui.setPlayers(jugador1.name(), jugador2.name());
         
         int turn = 1; // 1 = jugador 1 / 0 = jugador 2
@@ -115,7 +115,8 @@ public class Othello {
             System.out.println("Turn num " + turn);
             Vector<Pair<Point, Integer>> moviments = b.getMovements(turn);
             gui.pinta_tauler(b,moviments);
-            b.drawBoard();
+            //b.drawBoard();
+            
             if (turn == 1) gui.setTurn(jugador1.name());
             else gui.setTurn(jugador2.name());
             if (turn==1)
@@ -143,7 +144,7 @@ public class Othello {
                         while (i<moviments.size() && !valid){
                             if (moviments.get(i).getKey().getX() == p.getX() && moviments.get(i).getKey().getY() == p.getY()){
                                 valid = true;
-                                System.out.println("ES VALID");
+                                System.out.println("CHOSEN : " + moviments.get(i).getKey() + " " +direcciones(moviments.get(i).getValue()) );
                             }
                             else ++i; 
                             
@@ -158,8 +159,7 @@ public class Othello {
                                                
                     }
                     
-                    System.out.println("Direcciones " + direcciones(moviments.get(i).getValue()));
-                    b.add(new Pair(p,moviments.get(i).getValue()), turn);
+                    b.add(moviments.get(i), turn);
                     System.out.println(p.toString());
                     
                 }
@@ -176,10 +176,6 @@ public class Othello {
                     System.out.println("MOVIMENTS POSSIBLES : ");
                     System.out.println(moviments);
                     esperar_tirada();
-                    
-                    //Vector<Pair<Point, Integer>> list = b.getMovements(turn);
-                    //java.util.Random rnd = new java.util.Random();
-                    //b.add(list.get(rnd.nextInt(list.size()-1)), turn);
                     System.out.println("Manual Ha tirat : ");
                     Point p = gui.getPoint();
                     
@@ -202,11 +198,9 @@ public class Othello {
                         }                        
                                                
                     }
-                    System.out.println("Punto elegido : " + p.toString());
-                    System.out.println("Direcciones " + direcciones(moviments.get(i).getValue()));
                     
                     
-                    b.add(new Pair(p,moviments.get(i).getValue()), turn);
+                    b.add(moviments.get(i), turn);
                     System.out.println(p.toString());
                 }
                 else{

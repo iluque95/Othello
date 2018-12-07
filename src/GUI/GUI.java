@@ -711,7 +711,6 @@ public class GUI extends JFrame{
         int rata_y = evt.getY();
         double pan_x = jLayeredPane1.getSize().getWidth();
         double pan_y = jLayeredPane1.getSize().getHeight();
-        Step = (int) pan_x/8;
         
         int fila = rata_x / 8;
         int col = rata_y / 8;
@@ -719,9 +718,7 @@ public class GUI extends JFrame{
         
         int aux = (int) (rata_x / (pan_x / 8 ));
         int aux2 = (int) (rata_y / (pan_y / 8));
-        
-        
-        s = new Point (aux,aux2);
+        s = new Point (aux2,aux);
         
         pare.interrupt();
 
@@ -785,33 +782,40 @@ public class GUI extends JFrame{
      @Override
     public void paint(Graphics g)
     {
-        super.paint(g);
-     
         int [][] tauler = b.getBoard();
+        
+        System.out.println("TENDRIA Q PINTAR ESTO");
+        for (int i=0;i<8;++i){
+                for (int j=0;j<8;++j){
+                    System.out.print(tauler[i][j]+" ");
+                }
+                System.out.println("");
+        }
+        
         super.paint(g);
         for (int i=0; i<8; i++){
             for (int j=0; j<8; j++){
                 
                 if (tauler[i][j] == 1){
                     g.setColor(Color.BLACK);
-                    g.drawOval(whichx(i),whichy(j),40,40);
-                    g.fillOval(whichx(i),whichy(j),40,40);                
+                    g.drawOval(whichx(j),whichy(i),40,40);
+                    g.fillOval(whichx(j),whichy(i),40,40);                
                 }
                 else if (tauler[i][j] == -1 ){
                     g.setColor(Color.WHITE);
-                    g.drawOval(whichx(i),whichy(j),40,40);
-                    g.fillOval(whichx(i),whichy(j),40,40);
+                    g.drawOval(whichx(j),whichy(i),40,40);
+                    g.fillOval(whichx(j),whichy(i),40,40);
 
                 }
                 
                 if (i < mov.size()){
                     Point p = mov.get(i).getKey();
                     g.setColor(Color.RED);
-                    g.drawOval(whichx(p.getX()),whichy(p.getY()),40,40);
+                    g.drawOval(whichx(p.getY()),whichy(p.getX()),40,40);
                     g.setColor(new Color (0,175,0));
-                    g.fillOval(whichx(p.getX()),whichy(p.getY()),40,40);
+                    g.fillOval(whichx(p.getY()),whichy(p.getX()),40,40);
                     
-                    System.out.println("Point "+p.toString() + " con direcciones "+direcciones(mov.get(i).getValue()));
+                    if (j==0) System.out.println("Point "+p.toString() + " con direcciones "+direcciones(mov.get(i).getValue()));
                 }
 
             }
