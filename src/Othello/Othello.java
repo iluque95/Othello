@@ -91,7 +91,29 @@ public class Othello {
         } catch (InterruptedException ex) {}
         
     }
-    
+    /**
+    * Asks to GUI for a valid movement of manual player
+    */
+    private static Pair<Point, Integer> ManPlay(Vector<Pair<Point, Integer>> moviments){
+        esperar_tirada();
+        Point p = gui.getPoint();
+        boolean valid = false;
+        int i = 0;
+        while(!valid){
+            i = 0;
+            while (i<moviments.size() && !valid){
+                if (moviments.get(i).getKey().getX() == p.getX() && moviments.get(i).getKey().getY() == p.getY()){
+                    valid = true;
+                }
+                else ++i; 
+            }
+            if (!valid){
+                esperar_tirada();
+                p = gui.getPoint();                
+            } 
+        }
+        return moviments.get(i);
+    }
     
     public static void main (String [] args) throws InterruptedException
     {
@@ -101,7 +123,7 @@ public class Othello {
         
         
         // Declarar jugadors
-        jugador1 = new Random();
+        jugador1 = new Manual();
         jugador2 = new Random();       
         gui.setPlayers(jugador1.name(), jugador2.name());
         
@@ -118,96 +140,24 @@ public class Othello {
             b.drawBoard();
             if (turn == 1) gui.setTurn(jugador1.name());
             else gui.setTurn(jugador2.name());
-            if (turn==1 && moviments.size()>0)
+            if (turn==1 && !moviments.isEmpty())
             {
                 
                 
                 if (jugador1 instanceof Manual){
-                    System.out.println("MOVIMENTS POSSIBLES : ");
-                    System.out.println(moviments);
-                    esperar_tirada();
                     
-                    //Vector<Pair<Point, Integer>> list = b.getMovements(turn);
-                    //java.util.Random rnd = new java.util.Random();
-                    //b.add(list.get(rnd.nextInt(list.size()-1)), turn);
-                    System.out.println("Manual Ha tirat : ");
-                    Point p = gui.getPoint();
-                    
-                    System.out.println("Punto elegido : " + p.toString());
-                    
-                    
-                    boolean valid = false;
-                    int i=0;                    
-                    while (!valid){
-                        System.out.println("moviments:"+moviments+" punt:"+p);
-                        while (i<moviments.size() && !valid){
-                            if (moviments.get(i).getKey().getX() == p.getX() && moviments.get(i).getKey().getY() == p.getY()){
-                                valid = true;
-                                System.out.println("ES VALID");
-                            }
-                            else ++i; 
-                            
-                        }
-                        
-                        if (!valid){
-                            System.out.println("SOY ILEGAL");
-                            esperar_tirada();
-                            p = gui.getPoint();
-                            i=0;
-                        }                        
-                                               
-                    }
-                    
-                    System.out.println("Direcciones " + direcciones(moviments.get(i).getValue()));
-                    b.add(new Pair(p,moviments.get(i).getValue()), turn);
-                    System.out.println(p.toString());
-                    
+                    b.add(ManPlay(moviments),turn);                    
                 }
                 else{ // Qualsevol altre jugador
                     Pair<Point, Integer> aux=jugador1.movement(b, 1);
                     System.out.println(jugador1.name()+" ha tirat en " + aux.getKey().toString());
-                    
                     b.add(aux, turn);
                     
                 }
             }
-            else if( moviments.size()>0){
+            else if( !moviments.isEmpty()){
                 if (jugador2 instanceof Manual){
-                    System.out.println("MOVIMENTS POSSIBLES : ");
-                    System.out.println(moviments);
-                    esperar_tirada();
-                    
-                    //Vector<Pair<Point, Integer>> list = b.getMovements(turn);
-                    //java.util.Random rnd = new java.util.Random();
-                    //b.add(list.get(rnd.nextInt(list.size()-1)), turn);
-                    System.out.println("Manual Ha tirat : ");
-                    Point p = gui.getPoint();
-                    
-                    boolean valid = false;
-                    int i=0;                    
-                    while (!valid){
-                        while (i<moviments.size() && !valid){
-                            if (moviments.get(i).getKey().getX() == p.getX() && moviments.get(i).getKey().getY() == p.getY()){
-                                valid = true;
-                                System.out.println("ES VALID");
-                            }
-                            else ++i; 
-                            
-                        }
-                        
-                        if (!valid){
-                            esperar_tirada();
-                            p = gui.getPoint();
-                            i=0;
-                        }                        
-                                               
-                    }
-                    System.out.println("Punto elegido : " + p.toString());
-                    System.out.println("Direcciones " + direcciones(moviments.get(i).getValue()));
-                    
-                    
-                    b.add(new Pair(p,moviments.get(i).getValue()), turn);
-                    System.out.println(p.toString());
+                    b.add(ManPlay(moviments),turn);                    
                 }
                 else{
                     Pair<Point, Integer> aux=jugador2.movement(b, 1);
@@ -220,9 +170,14 @@ public class Othello {
                 }
             }
             
-            // COMPROVAR SI PUEDE TIRAR ( arreglat pero no avisa, afegir a GUI)
-            
-            
+            // COMPROVAR SI PUEDE TIRAR Hacer notificar a GUI de modo visual
+            if(moviments.isEmpty()){
+                System.out.println("No moves for this player");
+                if(b.getMovements(-turn).isEmpty()){
+                    System.out.println("Geim ober. There's no moves for any player");
+                    break; //Bernie :****
+                }
+            }
             turn *= -1;
             
             if (b.isOver()) acabat = true;

@@ -823,11 +823,11 @@ public class GUI extends JFrame{
     
         
     private static int whichx(int col){
-        return ((50*col+50+15));
+        return ((50*col+50+17));
     }
     
     private static int whichy(int fil){
-        return (50*fil+77);
+        return (50*fil+48);
     }
     
     public static void main(String args[]) {
