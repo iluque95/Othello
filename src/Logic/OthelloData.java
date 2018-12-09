@@ -72,8 +72,6 @@ public class OthelloData {
         }
         
         
-        
-        
     }
     
     // pa probar
@@ -219,7 +217,7 @@ public class OthelloData {
             int mask=0x1;
             
             for (int i=0; i<8; i++) {
-               if ((dir & mask) != 0) changeColor(p, mask, color);
+               //if ((dir & mask) != 0) changeColor(p, mask, color);
                mask = (mask << 1);
            }
         }

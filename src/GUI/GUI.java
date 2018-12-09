@@ -26,11 +26,13 @@ public class GUI extends JFrame{
      */
     public GUI(Thread t) {
         initComponents();
+        
+        Jugador1.setEditable(false);
+        Jugador2.setEditable(false);
+        
+        
         s=null;
         pare = t;
-        
-       
-        
         pare.interrupt();
         
     }
@@ -127,7 +129,7 @@ public class GUI extends JFrame{
         fill_10 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 400), new java.awt.Dimension(0, 400), new java.awt.Dimension(32767, 400));
         fill_00 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 400), new java.awt.Dimension(0, 400), new java.awt.Dimension(32767, 400));
         Jugador2 = new javax.swing.JTextField();
-        Estat_Joc = new javax.swing.JLabel();
+        pecesj1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -146,11 +148,16 @@ public class GUI extends JFrame{
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         TurnLabel = new javax.swing.JLabel();
+        pj1 = new javax.swing.JLabel();
+        pj2 = new javax.swing.JLabel();
+        pecesj2 = new javax.swing.JLabel();
+        WLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setForeground(new java.awt.Color(255, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Versus");
+        jLabel1.setText("VS");
 
         jLayeredPane1.setBackground(new java.awt.Color(255, 255, 255));
         jLayeredPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -544,7 +551,7 @@ public class GUI extends JFrame{
         jLayeredPane1.add(fill_00);
         fill_00.setBounds(0, 350, 50, 50);
 
-        Estat_Joc.setText("0 PECES");
+        pecesj1.setText("UF");
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel2.setText("7");
@@ -598,6 +605,12 @@ public class GUI extends JFrame{
 
         TurnLabel.setText("UNDEFINED");
 
+        pj1.setText("Peces J1:");
+
+        pj2.setText("Peces J2:");
+
+        pecesj2.setText("UF");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -615,25 +628,42 @@ public class GUI extends JFrame{
                     .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(Jugador2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(Jugador1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(Jugador2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(29, 29, 29))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(Jugador1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Estat_Joc)
-                            .addComponent(jLabel18))
-                        .addGap(27, 27, 27))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(TurnLabel)
-                        .addGap(27, 27, 27))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(pecesj2)
+                                    .addComponent(pecesj1))
+                                .addGap(33, 33, 33))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(TurnLabel)
+                                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel18)
+                                .addGap(25, 25, 25))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(pj1)
+                                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(pj2)
+                                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(WLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(78, 78, 78)
                 .addComponent(jLabel10)
@@ -676,13 +706,21 @@ public class GUI extends JFrame{
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Jugador2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
-                .addComponent(Estat_Joc)
-                .addGap(30, 30, 30)
+                .addGap(42, 42, 42)
                 .addComponent(jLabel18)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(TurnLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(53, 53, 53)
+                .addComponent(pj1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pecesj1)
+                .addGap(28, 28, 28)
+                .addComponent(pj2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pecesj2)
+                .addGap(18, 18, 18)
+                .addComponent(WLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel9)
@@ -763,10 +801,29 @@ public class GUI extends JFrame{
         return str;
     }
     
-    
+    /* SETTERS */
     public void updateBoard(Board b){this.b=b;}
     public void updateMov (Vector<Pair<Point, Integer>> mov){this.mov = mov;}
-    public void setTurn (String s){TurnLabel.setText(s);}
+    public void setTurn (String s){TurnLabel.setText(s);}   
+    public void setWinner(String s){
+        jLabel18.setVisible(false);
+        TurnLabel.setVisible(false);
+        pj1.setVisible(false);
+        pecesj1.setVisible(false);
+        pj2.setVisible(false);
+        pecesj2.setVisible(false);
+        
+       // WLabel.setText("Winner: " + s);
+       WLabel.setText("<html>Winner :<br/>"+s+"</html>");
+        
+    }
+    public void setNumPieces(int j1, int j2){
+        pecesj1.setText(Integer.toString(j1));
+        pecesj2.setText(Integer.toString(j2));
+    }
+    
+    
+    
     
     public void pinta_tauler(Board b, Vector<Pair<Point, Integer>> mov)
     {
@@ -831,45 +888,14 @@ public class GUI extends JFrame{
     }
     
     private static int whichy(int fil){
-        return (50*fil+48);
-    }
-    
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        // Declaracio dels dos jugadors
-     //   jugador1 = new Jugador();
-     //   jugador2 = new Jugador();
-        
-        
+        return (50*fil+48+30);
     }
     
     
     public void setPlayers(String p1,String p2){Jugador1.setText(p1);
         Jugador2.setText(p2);
     }
-    public void setStatus(String s){Estat_Joc.setText(s);}
+    public void setStatus(String s){pecesj1.setText(s);}
     
     
     
@@ -878,10 +904,10 @@ public class GUI extends JFrame{
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Estat_Joc;
     private javax.swing.JTextField Jugador1;
     private javax.swing.JTextField Jugador2;
     private javax.swing.JLabel TurnLabel;
+    private javax.swing.JLabel WLabel;
     private javax.swing.Box.Filler fill_00;
     private javax.swing.Box.Filler fill_01;
     private javax.swing.Box.Filler fill_02;
@@ -965,5 +991,9 @@ public class GUI extends JFrame{
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JLabel pecesj1;
+    private javax.swing.JLabel pecesj2;
+    private javax.swing.JLabel pj1;
+    private javax.swing.JLabel pj2;
     // End of variables declaration//GEN-END:variables
 }

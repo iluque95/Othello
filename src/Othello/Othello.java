@@ -91,6 +91,17 @@ public class Othello {
         } catch (InterruptedException ex) {}
         
     }
+    
+    
+    static String getWinner(Board b, Player j1, Player j2)
+    {
+        int p_j1 = b.getQuantityOfPieces(Color.BLACK.getColor()); // Peces jugador negre
+        int p_j2 = b.getQuantityOfPieces(Color.WHITE.getColor()); // Peces jugador blanc
+        
+        if (p_j1 > p_j2) return "J1 "+j1.name();
+        else if (p_j1 < p_j2) return "J2 "+j2.name();
+        else return "DRAW";
+    }
     /**
     * Asks to GUI for a valid movement of manual player
     */
@@ -124,7 +135,7 @@ public class Othello {
         
         // Declarar jugadors
         jugador1 = new Manual();
-        jugador2 = new Random();       
+        jugador2 = new Manual();       
         gui.setPlayers(jugador1.name(), jugador2.name());
         
         int turn = 1; // 1 = jugador 1 / 0 = jugador 2
@@ -133,54 +144,21 @@ public class Othello {
         boolean acabat = false;
         while (!acabat)
         {
+            /* ESTABLECER PARAMETROS GUI */
             gui.setStatus(Integer.toString(b.getQuantityOfPiecesOnBoard())+" PECES");
-            System.out.println("Turn num " + turn);
             Vector<Pair<Point, Integer>> moviments = b.getMovements(turn);
             gui.pinta_tauler(b,moviments);
-            //b.drawBoard();
+            if (turn == 1) gui.setTurn("J1 : "+jugador1.name());
+            else gui.setTurn("J2 : "+jugador2.name());
+            gui.setNumPieces(b.getQuantityOfPieces(Color.BLACK.getColor()), b.getQuantityOfPieces(Color.WHITE.getColor()));
+            /* FIN ESTABLECER PARAMETROS GUI */
             
-            if (turn == 1) gui.setTurn(jugador1.name());
-            else gui.setTurn(jugador2.name());
             if (turn==1 && !moviments.isEmpty())
             {
-                
-                
-                if (jugador1 instanceof Manual){
-                    
+                if (jugador1 instanceof Manual){                    
                     b.add(ManPlay(moviments),turn);                    
-                    //Vector<Pair<Point, Integer>> list = b.getMovements(turn);
-                    //java.util.Random rnd = new java.util.Random();
-                    //b.add(list.get(rnd.nextInt(list.size()-1)), turn);
-                    System.out.println("Manual Ha tirat : ");
-                    Point p = gui.getPoint();
-                    
+                    Point p = gui.getPoint();                    
                     System.out.println("Punto elegido : " + p.toString());
-                    
-                    
-                    boolean valid = false;
-                    int i=0;                    
-                    while (!valid){
-                        System.out.println("moviments:"+moviments+" punt:"+p);
-                        while (i<moviments.size() && !valid){
-                            if (moviments.get(i).getKey().getX() == p.getX() && moviments.get(i).getKey().getY() == p.getY()){
-                                valid = true;
-                                System.out.println("CHOSEN : " + moviments.get(i).getKey() + " " +direcciones(moviments.get(i).getValue()) );
-                            }
-                            else ++i; 
-                            
-                        }
-                        
-                        if (!valid){
-                            System.out.println("SOY ILEGAL");
-                            esperar_tirada();
-                            p = gui.getPoint();
-                            i=0;
-                        }                        
-                                               
-                    }
-                    
-                    b.add(moviments.get(i), turn);
-                    System.out.println(p.toString());
                     
                 }
                 else{ // Qualsevol altre jugador
@@ -190,18 +168,17 @@ public class Othello {
                     
                 }
             }
-            else if( !moviments.isEmpty()){
+            else if( !moviments.isEmpty()){ // Tira jugador2
                 if (jugador2 instanceof Manual){
-                    b.add(ManPlay(moviments),turn);                    
+                    b.add(ManPlay(moviments),turn);
+                    Point p = gui.getPoint();                    
+                    System.out.println("Punto elegido : " + p.toString());
+                    
                 }
                 else{
                     Pair<Point, Integer> aux=jugador2.movement(b, 1);
-                    System.out.println(jugador2.name()+" ha tirat en " + aux.getKey().toString());
-                    
+                    System.out.println(jugador2.name()+" ha tirat en " + aux.getKey().toString());                    
                     b.add(aux, turn);
-                    
-                    
-                    
                 }
             }
             
@@ -210,16 +187,23 @@ public class Othello {
                 System.out.println("No moves for this player");
                 if(b.getMovements(-turn).isEmpty()){
                     System.out.println("Geim ober. There's no moves for any player");
-                    break; //Bernie :****
+                    acabat = true;
                 }
             }
             turn *= -1;
             
-            if (b.isOver()) acabat = true;
-            // COMPROVAR SI S'HA ACABAT EL JOC
-            
-            
         }
+        
+        gui.setWinner(getWinner(b,jugador1,jugador2));
+        
+        
+        
+        
+        
+        
+        // HA ACABAT, FER RECOMPTE
+        
+        
      
     }
     
