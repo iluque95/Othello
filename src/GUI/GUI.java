@@ -764,43 +764,7 @@ public class GUI extends JFrame{
     }//GEN-LAST:event_ratoliPres
    
     public Point getPoint(){return s;}
-    
-    public static String direccion(int dir)
-    {
-      
-      if (dir==Direction.DOWN.getVal()) {
-          return "Abj";
-      }else if(dir==Direction.LEFT.getVal()) {
-          return "Izq";
-      }else if(dir==Direction.RIGHT.getVal()) {
-          return "Der";
-      }else if(dir==Direction.UP.getVal()) {
-          return "Arr";
-      }else if(dir==Direction.LEFTDDOWN.getVal()) {
-          return "DiIzqAbj";
-      }else if(dir==Direction.LEFTDUP.getVal()) {
-          return "DiIzqArr";
-      }else if(dir==Direction.RIGHTDDOWN.getVal()) {
-          return "DiDerAbj";
-      }else{
-          return "DiDerArr";
-      }
-    }
-    
-    public static String direcciones(int dir)
-    {
-        int mask=0x1;
-        
-        String str="";
-
-        for (int i=0; i<8; i++) {
-           if ((dir & mask) != 0) str+= direccion(dir)+", ";
-           mask = (mask << 1);
-       }
-        
-        return str;
-    }
-    
+  
     /* SETTERS */
     public void updateBoard(Board b){this.b=b;}
     public void updateMov (Vector<Pair<Point, Integer>> mov){this.mov = mov;}
@@ -872,7 +836,7 @@ public class GUI extends JFrame{
                     g.setColor(new Color (0,175,0));
                     g.fillOval(whichx(p.getY()),whichy(p.getX()),40,40);
                     
-                    if (j==0) System.out.println("Point "+p.toString() + " con direcciones "+direcciones(mov.get(i).getValue()));
+                    if (j==0) System.out.println("Point "+p.toString() + " con direcciones "+Direction.getDirs(mov.get(i).getValue()));
                 }
 
             }

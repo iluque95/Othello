@@ -47,6 +47,11 @@ public class Point {
         this.y = y;
     }
     
+    public boolean validPoint()
+    {
+        return getX()!=-1 && getY()!=-1;
+    }
+    
     
     
     @Override

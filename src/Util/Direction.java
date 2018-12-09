@@ -30,7 +30,7 @@ public enum Direction {
         return val;
     }
     
-       public static String direccion(int dir)
+    private static String dirToString(int dir)
     {
       
       if (dir==Direction.DOWN.getVal()) {
@@ -47,19 +47,21 @@ public enum Direction {
           return "DiIzqArr";
       }else if(dir==Direction.RIGHTDDOWN.getVal()) {
           return "DiDerAbj";
-      }else{
+      }else if (dir==Direction.RIGHTDUP.getVal()) {
           return "DiDerArr";
+      }else{
+          return "Undefined dir 0x"+Integer.toHexString(dir);
       }
     }
     
-    public static String direcciones(int dir)
+    public static String getDirs(int dir)
     {
         int mask=0x1;
         
         String str="";
 
         for (int i=0; i<8; i++) {
-           if ((dir & mask) != 0) str+= direccion(dir)+", ";
+           if ((dir & mask) != 0) str+= dirToString(mask)+", ";
            mask = (mask << 1);
        }
         

@@ -174,7 +174,7 @@ public class OthelloData {
             if (getColor(pt) == color) {
                 found = true;
             }else{
-                this.board[pt.getX()][pt.getY()]=color*(-1);
+                this.board[pt.getX()][pt.getY()]=color;
                 this.pieces[color+1]++;
                 this.pieces[(color*(-1))+1]--;
                 
@@ -217,7 +217,7 @@ public class OthelloData {
             int mask=0x1;
             
             for (int i=0; i<8; i++) {
-               //if ((dir & mask) != 0) changeColor(p, mask, color);
+               if ((dir & mask) != 0) changeColor(p, mask, color);
                mask = (mask << 1);
            }
         }
@@ -314,9 +314,13 @@ public class OthelloData {
         for (int i=0; i<getSize(); i++) {
             System.out.print(i+"| ");
             for (int j=0; j<getSize(); j++) {
-                System.out.print(getColor(new Point(i,j))+" ");
+                int tmpColor=getColor(new Point(i,j));
+                
+                if (j>0 && tmpColor!=(-1)) System.out.print(" ");
+                System.out.print(tmpColor);
             }
             System.out.println("");
         }
+        
     }
 }

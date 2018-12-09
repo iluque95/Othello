@@ -8,6 +8,7 @@ package Logic;
 import Util.Point;
 import Util.Color;
 import Util.Direction;
+import Util.Movement;
 import java.util.Vector;
 import javafx.util.Pair;
 
@@ -17,10 +18,12 @@ import javafx.util.Pair;
  */
 public class OthelloMove {
     OthelloData oData;
+    Vector<Movement> lastMovements;
     
     public OthelloMove(OthelloData oData)
     {
         this.oData = oData;
+        this.lastMovements = null;
     }
     
     /**
@@ -374,6 +377,7 @@ public class OthelloMove {
         Vector<Integer> directions = new Vector();
         Vector<Point> pieces=null;
         Point tmp;
+        lastMovements=null;
         
         if (color == Color.BLACK.getColor()) {
             pieces = oData.getBlackPieces();
@@ -386,7 +390,7 @@ public class OthelloMove {
             int dir,pos;
 
             tmp = searchRight(pieces.get(i));
-            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            if (tmp.validPoint())
             {
                 pos = positions.indexOf(tmp);
                 dir = Direction.LEFT.getVal();
@@ -400,7 +404,7 @@ public class OthelloMove {
             }
 
             tmp = searchLeft(pieces.get(i));
-            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            if (tmp.validPoint())
             {
                 pos = positions.indexOf(tmp);
                 dir = Direction.RIGHT.getVal();
@@ -415,7 +419,7 @@ public class OthelloMove {
 
 
             tmp = searchUp(pieces.get(i));
-            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            if (tmp.validPoint())
             {
                 pos = positions.indexOf(tmp);
                 dir = Direction.DOWN.getVal();
@@ -429,7 +433,7 @@ public class OthelloMove {
             }
 
             tmp = searchDown(pieces.get(i));
-            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            if (tmp.validPoint())
             {
                 pos = positions.indexOf(tmp);
                 dir = Direction.UP.getVal();
@@ -442,8 +446,8 @@ public class OthelloMove {
                 }
             }
 
-            tmp = searchRightUpDiagonal(pieces.get(i));
-            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+             tmp = searchRightUpDiagonal(pieces.get(i));
+            if (tmp.validPoint())
             {
                 pos = positions.indexOf(tmp);
                 dir = Direction.LEFTDDOWN.getVal();
@@ -457,7 +461,7 @@ public class OthelloMove {
             }
 
             tmp = searchLeftUpDiagonal(pieces.get(i));
-            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            if (tmp.validPoint())
             {
                 pos = positions.indexOf(tmp);
                 dir = Direction.RIGHTDDOWN.getVal();
@@ -471,7 +475,7 @@ public class OthelloMove {
             }
 
             tmp = searchRightDownDiagonal(pieces.get(i));
-            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            if (tmp.validPoint())
             {
                 pos = positions.indexOf(tmp);
                 dir = Direction.LEFTDUP.getVal();
@@ -485,7 +489,7 @@ public class OthelloMove {
             }
 
             tmp = searchLeftDownDiagonal(pieces.get(i));
-            if (tmp.getX()!=-1 && tmp.getY()!=-1)
+            if (tmp.validPoint())
             {
                 pos = positions.indexOf(tmp);
                 dir = Direction.RIGHTDUP.getVal();
@@ -510,13 +514,12 @@ public class OthelloMove {
     * Calls the function which add the piece in a given position and apply the movement modifing the board
     * with corresponding colors.
     * 
-    * @param p is a empty point of the board
-    * @param dir is in which direction it can be effect the movement.
+    * @param i is a valid movement in vector.
     * @param color is the color of piece which it will put in the board.
     */
-    public void applyMovement(Point p, int dir, int color)
+    public void applyMovement(int i, int color)
     {
-        oData.add(p, dir, color);
+        oData.add(lastMovements.get(i).getPosition(), lastMovements.get(i).getDirections(), color);
     }
     
     /**
