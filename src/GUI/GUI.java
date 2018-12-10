@@ -82,6 +82,9 @@ public class GUI extends JFrame {
     Board b = null;
     Vector<Movement> mov = null; 
     private Point s;
+    javazoom.jl.player.Player p;
+    boolean play = true;
+    
     
     private void ratoliPres(java.awt.event.MouseEvent evt) {                            
         /* OBTAIN MOUSE POSITION */
@@ -201,6 +204,7 @@ public class GUI extends JFrame {
         pj2 = new javax.swing.JLabel();
         pecesj2 = new javax.swing.JLabel();
         WLabel = new javax.swing.JLabel();
+        BMusic = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -728,11 +732,18 @@ public class GUI extends JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        BMusic.setText("PAUSE");
+        BMusic.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BMusicActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -771,9 +782,13 @@ public class GUI extends JFrame {
                         .addComponent(jLabel17)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(BMusic))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -815,7 +830,9 @@ public class GUI extends JFrame {
                             .addComponent(jLabel17))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLayeredPane1)))
-                .addGap(51, 51, 51))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BMusic)
+                .addGap(14, 14, 14))
         );
 
         pack();
@@ -824,6 +841,19 @@ public class GUI extends JFrame {
     private void jLayeredPane1ratoliPres(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLayeredPane1ratoliPres
         ratoliPres(evt);
     }//GEN-LAST:event_jLayeredPane1ratoliPres
+
+    private void BMusicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BMusicActionPerformed
+        try {
+            resume_or_pause();
+        } catch (IOException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JavaLayerException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+    }//GEN-LAST:event_BMusicActionPerformed
 
     /**
      * @param args the command line arguments
@@ -886,7 +916,7 @@ public class GUI extends JFrame {
             if (n == 1) FIS = new FileInputStream(new File(mus1));
             else FIS = new FileInputStream(new File(mus2));
             BIS = new BufferedInputStream(FIS);
-            player = new javazoom.jl.player.Player(BIS);
+            p = new javazoom.jl.player.Player(BIS);
             total_length = FIS.available();
             
             new Thread()
@@ -894,7 +924,7 @@ public class GUI extends JFrame {
                 public void run()
                 {
                     try{
-                        player.play();
+                        p.play();
                         
                     }
                     catch(Exception e)
@@ -910,6 +940,21 @@ public class GUI extends JFrame {
         }
         
         
+        
+    }
+    
+    private void resume_or_pause() throws IOException, FileNotFoundException, JavaLayerException
+    {
+        if (play){ // VOLEM PAUSAR
+            p.close();
+            BMusic.setText("PLAY");
+        }
+        else{
+            playMusic();
+            BMusic.setText("PAUSE");
+        }        
+        
+        play = !play;
         
     }
     
@@ -984,6 +1029,7 @@ public class GUI extends JFrame {
     public void setStatus(String s){pecesj1.setText(s);}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BMusic;
     private javax.swing.JTextField Jugador1;
     private javax.swing.JTextField Jugador2;
     private javax.swing.JLabel LabelColor;
