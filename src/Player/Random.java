@@ -8,6 +8,7 @@ package Player;
 import Logic.Board;
 import java.util.Vector;
 import Util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  *
@@ -21,11 +22,23 @@ public class Random implements Player {
     }
     
     @Override
+    
+    
+    
     public Movement movement(Board t, int color){
         //Board ha de tener movimientos, los pasamos calculados o los recalculamos en player, los ponemos como atributo de board?
         Vector<Movement> list = t.getMovements(color);
-        //Jelp to quitar this shit joder, me deja hacer import por que me dice que ya esta importado, y si no lo import no lo understend pa nah
-        java.util.Random rnd = new java.util.Random();
-        return list.get(rnd.nextInt(list.size()-1));
+        
+        Movement p;
+        
+        System.out.println("LIST.SIZE = " + list.size());
+        
+        
+        p = list.get(ThreadLocalRandom.current().nextInt(0, list.size()));
+        
+       // ThreadLocalRandom.current().nextI
+        
+        
+        return p;
     }   
 }

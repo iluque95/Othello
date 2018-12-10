@@ -2,6 +2,7 @@ package GUI;
 
 import static GUI.GUI.resize;
 import Logic.*;
+import Player.Player;
 import Util.Direction;
 import Util.Movement;
 import Util.Point;
@@ -12,6 +13,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
@@ -23,9 +26,11 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JFrame;
-
-
+import javazoom.jl.decoder.JavaLayerException;
 
 /**
  *
@@ -36,7 +41,7 @@ public class GUI extends JFrame {
     /**
      * Creates new form GUI2
      */
-    public GUI(Thread t) throws IOException {
+    public GUI(Thread t) throws IOException, FileNotFoundException, JavaLayerException {
         initComponents();        
         /* SET TAGS PROPERTIES*/        
         Jugador1.setEditable(false);
@@ -47,6 +52,8 @@ public class GUI extends JFrame {
         ImageIcon n = new ImageIcon(resize(image,jLabel19.getWidth(),jLabel19.getHeight()));
         
         jLabel19.setIcon(n);
+        playMusic();
+        System.out.println("AUdio OP");
         
         
         
@@ -55,7 +62,7 @@ public class GUI extends JFrame {
         pare = t;
         
         /* INTERRUPT FATHER*/
-        pare.interrupt();        
+        pare.interrupt();
     }
     
     public static BufferedImage resize(BufferedImage img, int newW, int newH) { 
@@ -829,7 +836,7 @@ public class GUI extends JFrame {
     public void updateMov (Vector<Movement> mov){this.mov = mov;}
     public void setTurn (String s, int t){TurnLabel.setText(s);    
         if (t == 1) LabelColor.setText("Negres");
-        else if (t == -1) LabelColor.setText("Blanques");        
+        else if (t == -1) LabelColor.setText("Blanques");      
     }   
     public void setWinner(String s){
         jLabel18.setVisible(false);
@@ -838,6 +845,7 @@ public class GUI extends JFrame {
         pecesj1.setVisible(false);
         pj2.setVisible(false);
         pecesj2.setVisible(false);
+        LabelColor.setVisible(false);
         
        // WLabel.setText("Winner: " + s);
        WLabel.setText("<html>Winner :<br/>"+s+"</html>");
@@ -858,6 +866,53 @@ public class GUI extends JFrame {
         repaint();
         
     }
+    
+    private void playMusic() throws FileNotFoundException, IOException, JavaLayerException{
+        long total_length;
+        long pouse;
+        
+        FileInputStream FIS;
+        BufferedInputStream BIS;
+        javazoom.jl.player.Player player;
+        
+        String mus1="src/resources/Music.mp3";
+        String mus2="src/resources/Music2.mp3";
+        
+        File myFile = null;
+        
+        try{
+            int n = ThreadLocalRandom.current().nextInt(0,2);
+            
+            if (n == 1) FIS = new FileInputStream(new File(mus1));
+            else FIS = new FileInputStream(new File(mus2));
+            BIS = new BufferedInputStream(FIS);
+            player = new javazoom.jl.player.Player(BIS);
+            total_length = FIS.available();
+            
+            new Thread()
+            {
+                public void run()
+                {
+                    try{
+                        player.play();
+                        
+                    }
+                    catch(Exception e)
+                    {
+                        
+                    }
+                }
+            }.start();
+            
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+    }
+    
     
     
     

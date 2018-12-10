@@ -9,11 +9,16 @@ import GUI.*;
 import Logic.Board;
 import Player.*;
 import Util.*;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.util.Pair;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javazoom.jl.decoder.JavaLayerException;
 
 /**
  *
@@ -39,6 +44,8 @@ public class Othello {
                 try {
                     gui = new GUI(m);
                 } catch (IOException ex) {
+                    Logger.getLogger(Othello.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (JavaLayerException ex) {
                     Logger.getLogger(Othello.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 gui.updateBoard(b);
@@ -133,7 +140,7 @@ public class Othello {
                     
                 }
                 else{ // Qualsevol altre jugador
-                    Movement aux=jugador1.movement(b, 1);
+                    Movement aux=jugador1.movement(b, turn);
                     System.out.println(jugador1.name()+" ha tirat en " + aux.getPosition().toString());
                     b.add(aux, turn);
                     
@@ -147,7 +154,7 @@ public class Othello {
                     
                 }
                 else{
-                    Movement aux=jugador2.movement(b, 1);
+                    Movement aux=jugador2.movement(b, turn);
                     System.out.println(jugador2.name()+" ha tirat en " + aux.getPosition().toString());                    
                     b.add(aux, turn);
                 }
@@ -161,7 +168,7 @@ public class Othello {
                     acabat = true;
                 }
             }
-            turn *= -1;
+            else turn *= -1;
             
         }
         
