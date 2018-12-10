@@ -9,7 +9,10 @@ import GUI.*;
 import Logic.Board;
 import Player.*;
 import Util.*;
+import java.io.IOException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.util.Pair;
 
 /**
@@ -33,7 +36,11 @@ public class Othello {
                 java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                gui = new GUI(m);
+                try {
+                    gui = new GUI(m);
+                } catch (IOException ex) {
+                    Logger.getLogger(Othello.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 gui.updateBoard(b);
                 gui.setVisible(true);
             }
@@ -112,8 +119,8 @@ public class Othello {
             gui.setStatus(Integer.toString(b.getQuantityOfPiecesOnBoard())+" PECES");
             Vector<Movement> moviments = b.getMovements(turn);
             gui.pinta_tauler(b,moviments);
-            if (turn == 1) gui.setTurn("J1 : "+jugador1.name());
-            else gui.setTurn("J2 : "+jugador2.name());
+            if (turn == 1) gui.setTurn("J1 : "+jugador1.name(),turn);
+            else gui.setTurn("J2 : "+jugador2.name(),turn);
             gui.setNumPieces(b.getQuantityOfPieces(Color.BLACK.getColor()), b.getQuantityOfPieces(Color.WHITE.getColor()));
             /* FIN ESTABLECER PARAMETROS GUI */
             

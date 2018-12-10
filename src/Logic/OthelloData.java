@@ -171,6 +171,7 @@ public class OthelloData {
             
             pt = new Point(i, j);
             
+
             if (getColor(pt) == color) {
                 found = true;
             }else{
