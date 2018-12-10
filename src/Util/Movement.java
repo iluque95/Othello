@@ -48,6 +48,6 @@ public class Movement {
 
     @Override
     public int hashCode() {
-        return this.getPosition().getX() + (this.getPosition().getY()<<1);
+        return (this.getPosition().getX()<<4) + this.getPosition().getY();
     }
 }
