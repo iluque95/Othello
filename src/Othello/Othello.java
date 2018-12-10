@@ -20,10 +20,6 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javazoom.jl.decoder.JavaLayerException;
 
-/**
- *
- * @author marti
- */
 public class Othello {
     
     static Player jugador1,jugador2;
@@ -56,8 +52,6 @@ public class Othello {
             }
         };        
         t.start();
-        
-        
         return b;
         
     }
@@ -178,16 +172,6 @@ public class Othello {
         }
         
         gui.setWinner(getWinner(b,jugador1,jugador2));
-        
-        
-        
-        
-        
-        
-        // HA ACABAT, FER RECOMPTE
-        
-        
-     
     }
     
 }
