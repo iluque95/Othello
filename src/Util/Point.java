@@ -61,7 +61,7 @@ public class Point {
 
     @Override
     public int hashCode() {
-        return this.x + (this.y<<1);
+        return (this.x<<4) + this.y;
     }
     
     @Override
