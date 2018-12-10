@@ -5,6 +5,7 @@
  */
 package Logic;
 
+import Util.Movement;
 import Util.Point;
 import java.util.Vector;
 import javafx.util.Pair;
@@ -39,9 +40,9 @@ public class Board {
         return data.isEmpty(p);
     }
     
-    public void add (Pair<Point, Integer>p, int color)
+    public void add (Movement m, int color)
     {
-        data.add(p.getKey(), p.getValue(), color);
+        data.add(m.getPosition() , m.getDirections(), color);
     }
     
     public int getColor(Point p)
@@ -81,7 +82,7 @@ public class Board {
      * @param color
      * @return
      */
-    public Vector<Pair<Point, Integer>> getMovements(int color)
+    public Vector<Movement> getMovements(int color)
     {
         return move.getMovements(color);
     }

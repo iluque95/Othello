@@ -69,7 +69,7 @@ public class Othello {
     /**
     * Asks to GUI for a valid movement of manual player
     */
-    private static Pair<Point, Integer> ManPlay(Vector<Pair<Point, Integer>> moviments){
+    private static Movement ManPlay(Vector<Movement> moviments){
         esperar_tirada();
         Point p = gui.getPoint();
         boolean valid = false;
@@ -77,7 +77,7 @@ public class Othello {
         while(!valid){
             i = 0;
             while (i<moviments.size() && !valid){
-                if (moviments.get(i).getKey().getX() == p.getX() && moviments.get(i).getKey().getY() == p.getY()){
+                if (moviments.get(i).getPosition().getX() == p.getX() && moviments.get(i).getPosition().getY() == p.getY()){
                     valid = true;
                 }
                 else ++i; 
@@ -110,7 +110,7 @@ public class Othello {
         {
             /* ESTABLECER PARAMETROS GUI */
             gui.setStatus(Integer.toString(b.getQuantityOfPiecesOnBoard())+" PECES");
-            Vector<Pair<Point, Integer>> moviments = b.getMovements(turn);
+            Vector<Movement> moviments = b.getMovements(turn);
             gui.pinta_tauler(b,moviments);
             if (turn == 1) gui.setTurn("J1 : "+jugador1.name());
             else gui.setTurn("J2 : "+jugador2.name());
@@ -126,8 +126,8 @@ public class Othello {
                     
                 }
                 else{ // Qualsevol altre jugador
-                    Pair<Point, Integer> aux=jugador1.movement(b, 1);
-                    System.out.println(jugador1.name()+" ha tirat en " + aux.getKey().toString());
+                    Movement aux=jugador1.movement(b, 1);
+                    System.out.println(jugador1.name()+" ha tirat en " + aux.getPosition().toString());
                     b.add(aux, turn);
                     
                 }
@@ -140,8 +140,8 @@ public class Othello {
                     
                 }
                 else{
-                    Pair<Point, Integer> aux=jugador2.movement(b, 1);
-                    System.out.println(jugador2.name()+" ha tirat en " + aux.getKey().toString());                    
+                    Movement aux=jugador2.movement(b, 1);
+                    System.out.println(jugador2.name()+" ha tirat en " + aux.getPosition().toString());                    
                     b.add(aux, turn);
                 }
             }

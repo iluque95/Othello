@@ -2,6 +2,7 @@ package GUI;
 
 import Logic.*;
 import Util.Direction;
+import Util.Movement;
 import Util.Point;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -48,7 +49,7 @@ public class GUI extends JFrame{
     Thread pare = null;
     
     Board b = null;
-    Vector<Pair<Point, Integer>> mov = null;
+    Vector<Movement> mov = null;
     
     private Point s;
 
@@ -777,7 +778,7 @@ public class GUI extends JFrame{
   
     /* SETTERS */
     public void updateBoard(Board b){this.b=b;}
-    public void updateMov (Vector<Pair<Point, Integer>> mov){this.mov = mov;}
+    public void updateMov (Vector<Movement> mov){this.mov = mov;}
     public void setTurn (String s){TurnLabel.setText(s);}   
     public void setWinner(String s){
         jLabel18.setVisible(false);
@@ -799,7 +800,7 @@ public class GUI extends JFrame{
     
     
     
-    public void pinta_tauler(Board b, Vector<Pair<Point, Integer>> mov)
+    public void pinta_tauler(Board b, Vector<Movement> mov)
     {
         updateBoard(b);
         updateMov(mov);
@@ -840,13 +841,13 @@ public class GUI extends JFrame{
                 }
                 
                 if (i < mov.size()){
-                    Point p = mov.get(i).getKey();
+                    Point p = mov.get(i).getPosition();
                     g.setColor(Color.RED);
                     g.drawOval(whichx(p.getY()),whichy(p.getX()),40,40);
                     g.setColor(new Color (0,175,0));
                     g.fillOval(whichx(p.getY()),whichy(p.getX()),40,40);
                     
-                    if (j==0) System.out.println("Point "+p.toString() + " con direcciones "+Direction.getDirs(mov.get(i).getValue()));
+                    if (j==0) System.out.println("Point "+p.toString() + " con direcciones "+Direction.getDirs(mov.get(i).getDirections()));
                 }
 
             }
@@ -862,7 +863,7 @@ public class GUI extends JFrame{
     }
     
     private static int whichy(int fil){
-        return (50*fil+48+30);
+        return (50*fil+48);
     }
     
     

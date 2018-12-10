@@ -6,9 +6,8 @@
 package Player;
 
 import Logic.Board;
-import Util.Point;
+import Util.Movement;
 import java.util.Vector;
-import javafx.util.Pair;
 
 /**
  *
@@ -22,10 +21,11 @@ public class Manual implements Player{
         
     }
     
-    public Pair<Point,Integer> movement(Board t, int color)
+    @Override
+    public Movement movement(Board t, int color)
     {       
           //Board ha de tener movimientos, los pasamos calculados o los recalculamos en player, los ponemos como atributo de board?
-        Vector<Pair<Point, Integer>> list = t.getMovements(color);
+        Vector<Movement> list = t.getMovements(color);
         //Jelp to quitar this shit joder, me deja hacer import por que me dice que ya esta importado, y si no lo import no lo understend pa nah
         java.util.Random rnd = new java.util.Random();
         return list.get(rnd.nextInt(list.size()-1));

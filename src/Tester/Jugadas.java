@@ -7,7 +7,6 @@ package Tester;
 
 import Logic.OthelloData;
 import Logic.OthelloMove;
-import static Tester.Board.direcciones;
 import Util.Point;
 import java.util.Vector;
 import javafx.util.Pair;

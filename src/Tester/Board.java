@@ -10,6 +10,7 @@ import Logic.OthelloMove;
 import Util.Point;
 import Util.Color;
 import Util.Direction;
+import Util.Movement;
 import java.util.Iterator;
 import java.util.Vector;
 import javafx.util.Pair;
@@ -19,43 +20,6 @@ import javafx.util.Pair;
  * @author itiel
  */
 public class Board {
-    
-    
-    public static String direccion(int dir)
-    {
-      
-      if (dir==Direction.DOWN.getVal()) {
-          return "Abj";
-      }else if(dir==Direction.LEFT.getVal()) {
-          return "Izq";
-      }else if(dir==Direction.RIGHT.getVal()) {
-          return "Der";
-      }else if(dir==Direction.UP.getVal()) {
-          return "Arr";
-      }else if(dir==Direction.LEFTDDOWN.getVal()) {
-          return "DiIzqAbj";
-      }else if(dir==Direction.LEFTDUP.getVal()) {
-          return "DiIzqArr";
-      }else if(dir==Direction.RIGHTDDOWN.getVal()) {
-          return "DiDerAbj";
-      }else{
-          return "DiDerArr";
-      }
-    }
-    
-    public static String direcciones(int dir)
-    {
-        int mask=0x1;
-        
-        String str="";
-
-        for (int i=0; i<8; i++) {
-           if ((dir & mask) != 0) str+= direccion(dir)+", ";
-           mask = (mask << 1);
-       }
-        
-        return str;
-    }
     
     public static void main(String args[]) {
         OthelloData od = new OthelloData();
@@ -99,14 +63,14 @@ public class Board {
         System.out.println("Black: "+Color.BLACK.getColor());
         System.out.println("White: "+Color.WHITE.getColor());
         
-        Vector<Pair<Point,Integer>> moves = om.getMovements(Color.BLACK.getColor());
+        Vector<Movement> moves = om.getMovements(Color.BLACK.getColor());
         
         System.out.println("\nSe han encontrado "+moves.size()+" movimientos;");
         
-        Iterator<Pair<Point,Integer>> itr = moves.iterator();
+        Iterator<Movement> itr = moves.iterator();
         while(itr.hasNext()){
-            Pair<Point,Integer> tmp = itr.next();
-            System.out.println(tmp.getKey() +" Con movimientos en las direcciones: " + direcciones(tmp.getValue()));
+            Movement tmp = itr.next();
+            System.out.println(tmp.getPosition() +" Con movimientos en las direcciones: " + Direction.getDirs(tmp.getDirections()));
         }
          
         
