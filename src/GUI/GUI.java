@@ -659,15 +659,6 @@ public class GUI extends JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel18)
-                .addGap(28, 28, 28))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TurnLabel)
-                    .addComponent(LabelColor))
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -695,6 +686,12 @@ public class GUI extends JFrame {
                         .addGap(29, 29, 29)
                         .addComponent(pecesj2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(TurnLabel)
+                    .addComponent(LabelColor)
+                    .addComponent(jLabel18))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -878,6 +875,9 @@ public class GUI extends JFrame {
                 System.out.println("");
         }
         
+        System.out.println("TODAS LAS DIRECCIONES EN EL GUI");
+        System.out.println(mov.toString());
+        
         super.paint(g);
         for (int i=0; i<8; i++){
             for (int j=0; j<8; j++){
@@ -894,17 +894,19 @@ public class GUI extends JFrame {
 
                 }
                 
-                if (i < mov.size()){
-                    Point p = mov.get(i).getPosition();
+               
+                
+
+            }
+        }
+        
+        for (int k=0;k<mov.size();++k){
+                    Point p = mov.get(k).getPosition();
                     g.setColor(Color.RED);
                     g.drawOval(whichx(p.getY()),whichy(p.getX()),40,40);
                     g.setColor(new Color (0,175,0));
                     g.fillOval(whichx(p.getY()),whichy(p.getX()),40,40);
                     
-                    if (j==0) System.out.println("Point "+p.toString() + " con direcciones "+Direction.getDirs(mov.get(i).getDirections()));
-                }
-
-            }
         }
         
         

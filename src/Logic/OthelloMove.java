@@ -330,7 +330,7 @@ public class OthelloMove {
     private Point searchLeftDownDiagonal(Point p)
     {
         Point pt = new Point(-1, -1);
-        if (p.getX() < 1 || p.getY() > 6) return pt;
+        if (p.getX() > 6 || p.getY() < 1) return pt;
         
         boolean consecutives = true;
         boolean found = false;
@@ -342,7 +342,7 @@ public class OthelloMove {
         
         if (nextColor==Color.EMPTY.getColor() || nextColor==color) consecutives = false;
         
-        while ((i>=0 && j<oData.getSize()) && consecutives && !found)
+        while ((i< oData.getSize() && j>=0) && consecutives && !found)
         {
             int tmpColor = oData.getColor(new Point(i,j));
             
