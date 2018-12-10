@@ -20,13 +20,11 @@ public class Movement {
     private Point position;
     private int color;
     private int directions;
-    private int pieces;
     
-    public Movement(Point position, int directions, int pieces)
+    public Movement(Point position, int directions)
     {
        this.position = position;
        this.directions = directions;
-       this.pieces = pieces;
     }
 
     /**
@@ -42,15 +40,14 @@ public class Movement {
     public int getDirections() {
         return directions;
     }
-
-    /**
-     * @return the pieces
-     */
-    public int getPieces() {
-        return pieces;
+    
+    @Override
+    public boolean equals(Object obj){ 
+        return this.hashCode() == obj.hashCode();
     }
-    
-    
-    
-    
+
+    @Override
+    public int hashCode() {
+        return this.getPosition().getX() + (this.getPosition().getY()<<1);
+    }
 }

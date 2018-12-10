@@ -13,6 +13,7 @@ import java.util.Vector;
 import javafx.util.Pair;
 import Util.Color;
 import Util.Direction;
+import Util.Movement;
 import java.util.Iterator;
 
 /**
@@ -24,47 +25,38 @@ public class Jugadas {
         
         Vector<Pair<Point, Integer>> fichicas = new Vector();
         
-        fichicas.add(new Pair(new Point(2,2), Color.BLACK.getColor()));
+        fichicas.add(new Pair(new Point(2,3), Color.BLACK.getColor()));
+        fichicas.add(new Pair(new Point(2,4), Color.BLACK.getColor()));
+        fichicas.add(new Pair(new Point(1,5), Color.BLACK.getColor()));
+        fichicas.add(new Pair(new Point(3,3), Color.BLACK.getColor()));
+        fichicas.add(new Pair(new Point(4,3), Color.BLACK.getColor()));
         
-        fichicas.add(new Pair(new Point(3,2), Color.WHITE.getColor()));
+        fichicas.add(new Pair(new Point(3,4), Color.WHITE.getColor()));
+        fichicas.add(new Pair(new Point(4,4), Color.WHITE.getColor()));
+        
 
-
-        fichicas.add(new Pair(new Point(2,3), Color.WHITE.getColor()));
-        
-        fichicas.add(new Pair(new Point(1,2), Color.WHITE.getColor()));
-        
-        fichicas.add(new Pair(new Point(1,1), Color.WHITE.getColor()));
-        
-        fichicas.add(new Pair(new Point(0,1), Color.WHITE.getColor()));
-        
-        fichicas.add(new Pair(new Point(0,2), Color.WHITE.getColor()));
-        
-        fichicas.add(new Pair(new Point(0,3), Color.BLACK.getColor()));
-        
-        
-        
         OthelloData od = new OthelloData(fichicas);
         OthelloMove om = new OthelloMove(od);
         
         od.drawBoard();
         
-                System.out.println("Black: "+Color.BLACK.getColor());
+        System.out.println("Black: "+Color.BLACK.getColor());
         System.out.println("White: "+Color.WHITE.getColor());
         
-        Vector<Pair<Point,Integer>> moves = om.getMovements(Color.BLACK.getColor());
+        Vector<Movement> moves = om.getMovements(Color.BLACK.getColor());
         
         System.out.println("\nSe han encontrado "+moves.size()+" movimientos;");
         
-        Iterator<Pair<Point,Integer>> itr = moves.iterator();
+        Iterator<Movement> itr = moves.iterator();
         while(itr.hasNext()){
-            Pair<Point,Integer> tmp = itr.next();
-            System.out.println(tmp.getKey() +" Con movimientos en las direcciones: " + Direction.getDirs(tmp.getValue()));
+            Movement tmp = itr.next();
+            System.out.println(tmp.getPosition() +" Con movimientos en las direcciones: " + Direction.getDirs(tmp.getDirections()));
         }
         
         
-        od.add(new Point(0,0), 130, Color.BLACK.getColor());
+        //od.add(new Point(0,0), 130, Color.BLACK.getColor());
         
-        od.drawBoard();
+        //od.drawBoard();
         
         
     

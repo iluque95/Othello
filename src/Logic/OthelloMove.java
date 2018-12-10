@@ -370,11 +370,9 @@ public class OthelloMove {
     * 
     * @return Array of pairs with possible movements in each position and its direction found.
     */
-    public Vector<Pair<Point, Integer>> getMovements(int color)
+    public Vector<Movement> getMovements(int color)
     {
-        Vector<Pair<Point, Integer>> movements = new Vector();
-        Vector<Point> positions = new Vector();
-        Vector<Integer> directions = new Vector();
+        Vector<Movement> mov = new Vector();
         Vector<Point> pieces=null;
         Point tmp;
         lastMovements=null;
@@ -392,28 +390,26 @@ public class OthelloMove {
             tmp = searchRight(pieces.get(i));
             if (tmp.validPoint())
             {
-                pos = positions.indexOf(tmp);
+                pos = mov.indexOf(tmp);
                 dir = Direction.LEFT.getVal();
 
                 if (pos>=0) {
-                    directions.set(pos, (directions.get(pos) | dir));
+                    mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
                 }else{
-                    positions.add(tmp);
-                    directions.add(dir);
+                    mov.add(new Movement(tmp, dir));
                 }
             }
 
             tmp = searchLeft(pieces.get(i));
             if (tmp.validPoint())
             {
-                pos = positions.indexOf(tmp);
+                pos = mov.indexOf(tmp);
                 dir = Direction.RIGHT.getVal();
 
                 if (pos>=0) {
-                    directions.set(pos, (directions.get(pos) | dir));
+                    mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
                 }else{
-                    positions.add(tmp);
-                    directions.add(dir);
+                    mov.add(new Movement(tmp, dir));
                 }
             }
 
@@ -421,93 +417,86 @@ public class OthelloMove {
             tmp = searchUp(pieces.get(i));
             if (tmp.validPoint())
             {
-                pos = positions.indexOf(tmp);
+                pos = mov.indexOf(tmp);
                 dir = Direction.DOWN.getVal();
 
                 if (pos>=0) {
-                    directions.set(pos, (directions.get(pos) | dir));
+                    mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
                 }else{
-                    positions.add(tmp);
-                    directions.add(dir);
+                    mov.add(new Movement(tmp, dir));
                 }
             }
 
             tmp = searchDown(pieces.get(i));
             if (tmp.validPoint())
             {
-                pos = positions.indexOf(tmp);
+                pos = mov.indexOf(tmp);
                 dir = Direction.UP.getVal();
 
                 if (pos>=0) {
-                    directions.set(pos, (directions.get(pos) | dir));
+                    mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
                 }else{
-                    positions.add(tmp);
-                    directions.add(dir);
+                    mov.add(new Movement(tmp, dir));
                 }
             }
 
              tmp = searchRightUpDiagonal(pieces.get(i));
             if (tmp.validPoint())
             {
-                pos = positions.indexOf(tmp);
+                pos = mov.indexOf(tmp);
                 dir = Direction.LEFTDDOWN.getVal();
 
                 if (pos>=0) {
-                    directions.set(pos, (directions.get(pos) | dir));
+                    mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
                 }else{
-                    positions.add(tmp);
-                    directions.add(dir);
+                    mov.add(new Movement(tmp, dir));
                 }
             }
 
             tmp = searchLeftUpDiagonal(pieces.get(i));
             if (tmp.validPoint())
             {
-                pos = positions.indexOf(tmp);
+                pos = mov.indexOf(tmp);
                 dir = Direction.RIGHTDDOWN.getVal();
 
                 if (pos>=0) {
-                    directions.set(pos, (directions.get(pos) | dir));
+                    mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
                 }else{
-                    positions.add(tmp);
-                    directions.add(dir);
+                    mov.add(new Movement(tmp, dir));
                 }
             }
 
             tmp = searchRightDownDiagonal(pieces.get(i));
             if (tmp.validPoint())
             {
-                pos = positions.indexOf(tmp);
+                pos = mov.indexOf(tmp);
                 dir = Direction.LEFTDUP.getVal();
 
                 if (pos>=0) {
-                    directions.set(pos, (directions.get(pos) | dir));
+                    mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
                 }else{
-                    positions.add(tmp);
-                    directions.add(dir);
+                    mov.add(new Movement(tmp, dir));
                 }
             }
 
             tmp = searchLeftDownDiagonal(pieces.get(i));
             if (tmp.validPoint())
             {
-                pos = positions.indexOf(tmp);
+                pos = mov.indexOf(tmp);
                 dir = Direction.RIGHTDUP.getVal();
 
                 if (pos>=0) {
-                    directions.set(pos, (directions.get(pos) | dir));
+                    mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
                 }else{
-                    positions.add(tmp);
-                    directions.add(dir);
+                    mov.add(new Movement(tmp, dir));
                 }
             }
 
         }
+       
+        lastMovements = mov;
         
-        
-        for (int i=0; i<positions.size(); i++) movements.add(new Pair(positions.get(i), directions.get(i)));
-        
-        return movements;
+        return lastMovements;
     }
     
     /**
