@@ -112,12 +112,13 @@ public class Othello {
         
         
         // Declarar jugadors
-        jugador1 = new Manual();
+        jugador1 = new Random();
         jugador2 = new Random();       
         gui.setPlayers(jugador1.name(), jugador2.name());
         
         int turn = 1; // 1 = jugador 1 / 0 = jugador 2
                              // 1 = color_j1 / -1 = color_j2
+                            
         
         boolean acabat = false;
         while (!acabat)
@@ -131,35 +132,6 @@ public class Othello {
             gui.setNumPieces(b.getQuantityOfPieces(Color.BLACK.getColor()), b.getQuantityOfPieces(Color.WHITE.getColor()));
             /* FIN ESTABLECER PARAMETROS GUI */
             
-            if (turn==1 && !moviments.isEmpty())
-            {
-                if (jugador1 instanceof Manual){                    
-                    b.add(ManPlay(moviments),turn);                    
-                    Point p = gui.getPoint();                    
-                    System.out.println("Punto elegido : " + p.toString());
-                    
-                }
-                else{ // Qualsevol altre jugador
-                    Movement aux=jugador1.movement(b, turn);
-                    System.out.println(jugador1.name()+" ha tirat en " + aux.getPosition().toString());
-                    b.add(aux, turn);
-                    
-                }
-            }
-            else if( !moviments.isEmpty()){ // Tira jugador2
-                if (jugador2 instanceof Manual){
-                    b.add(ManPlay(moviments),turn);
-                    Point p = gui.getPoint();                    
-                    System.out.println("Punto elegido : " + p.toString());
-                    
-                }
-                else{
-                    Movement aux=jugador2.movement(b, turn);
-                    System.out.println(jugador2.name()+" ha tirat en " + aux.getPosition().toString());                    
-                    b.add(aux, turn);
-                }
-            }
-            
             // COMPROVAR SI PUEDE TIRAR Hacer notificar a GUI de modo visual
             if(moviments.isEmpty()){
                 System.out.println("No moves for this player");
@@ -168,7 +140,40 @@ public class Othello {
                     acabat = true;
                 }
             }
-            else turn *= -1;
+            
+            else{
+                
+                if (turn==1 && !moviments.isEmpty())
+                {
+                    if (jugador1 instanceof Manual){                    
+                        b.add(ManPlay(moviments),turn);                    
+                        Point p = gui.getPoint();                    
+                        System.out.println("Punto elegido : " + p.toString());
+                    
+                    }
+                    else{ // Qualsevol altre jugador
+                        Movement aux=jugador1.movement(b, turn);
+                        System.out.println(jugador1.name()+" ha tirat en " + aux.getPosition().toString());
+                        b.add(aux, turn);
+
+                    }
+                }
+                else if( !moviments.isEmpty()){ // Tira jugador2
+                    if (jugador2 instanceof Manual){
+                        b.add(ManPlay(moviments),turn);
+                        Point p = gui.getPoint();                    
+                        System.out.println("Punto elegido : " + p.toString());
+
+                    }
+                    else{
+                        Movement aux=jugador2.movement(b, turn);
+                        System.out.println(jugador2.name()+" ha tirat en " + aux.getPosition().toString());                    
+                        b.add(aux, turn);
+                    }
+                }
+                
+            }
+            turn*=-1;
             
         }
         
