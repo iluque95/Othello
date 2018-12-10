@@ -334,11 +334,11 @@ public class OthelloMove {
         
         boolean consecutives = true;
         boolean found = false;
-        int i = p.getX()-2;
-        int j = p.getY()+2;
+        int i = p.getX()+2;
+        int j = p.getY()-2;
         int color = oData.getColor(p);
         
-        int nextColor = oData.getColor(new Point(p.getX()-1,p.getY()+1));
+        int nextColor = oData.getColor(new Point(p.getX()+1,p.getY()-1));
         
         if (nextColor==Color.EMPTY.getColor() || nextColor==color) consecutives = false;
         
@@ -352,8 +352,8 @@ public class OthelloMove {
             }else if(tmpColor==color) {
                 consecutives = false;
             }
-            i--;
-            j++;
+            i++;
+            j--;
         }
         
         return pt;

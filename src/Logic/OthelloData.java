@@ -251,6 +251,18 @@ public class OthelloData {
     }
     
     /**
+    * Check if a given point is in bound of the board.
+    * 
+    * @param p is a point to check.
+    * 
+    * @return true if is in bound, false otherwise.
+    */
+    public boolean isInBound(Point p)
+    {
+        return true;
+    }
+    
+    /**
     * Obtain the quantity of pieces for the given color.
     * 
     * @return size of board
