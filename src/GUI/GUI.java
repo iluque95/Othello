@@ -2,28 +2,20 @@ package GUI;
 
 import static GUI.GUI.resize;
 import Logic.*;
-import Player.Player;
-import Util.Direction;
 import Util.Movement;
 import Util.Point;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.util.Pair;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import java.io.FileInputStream;
@@ -41,21 +33,27 @@ public class GUI extends JFrame {
     /**
      * Creates new form GUI2
      */
+    
+    /* PRIVATES */
+    boolean acabat = false;
+    Thread pare = null;
+    Board b = null;
+    Vector<Movement> mov = null; 
+    private Point s;
+    javazoom.jl.player.Player p;
+    boolean play = true;
+    
+    /* CONSTRUCTOR */
+    
     public GUI(Thread t) throws IOException, FileNotFoundException, JavaLayerException {
         initComponents();        
         /* SET TAGS PROPERTIES*/        
         Jugador1.setEditable(false);
         Jugador2.setEditable(false);
         
-        BufferedImage image = ImageIO.read(getClass().getResource("/resources/Othello.jpg"));
-        
-        ImageIcon n = new ImageIcon(resize(image,jLabel19.getWidth(),jLabel19.getHeight()));
-        
-        jLabel19.setIcon(n);
+        /* SET GUI PROPERTIES */
         playMusic();
-        System.out.println("AUdio OP");
-        
-        
+        setPicture();
         
         /* SET VARIABLES */        
         s=null;
@@ -65,42 +63,27 @@ public class GUI extends JFrame {
         pare.interrupt();
     }
     
+    /* METODES */
+    
     public static BufferedImage resize(BufferedImage img, int newW, int newH) { 
-    Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-    BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+        Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+        BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
 
-    Graphics2D g2d = dimg.createGraphics();
-    g2d.drawImage(tmp, 0, 0, null);
-    g2d.dispose();
-
-    return dimg;
-}  
-    
-    // Private
-    boolean acabat = false;
-    Thread pare = null;
-    Board b = null;
-    Vector<Movement> mov = null; 
-    private Point s;
-    javazoom.jl.player.Player p;
-    boolean play = true;
-    
-    
+        Graphics2D g2d = dimg.createGraphics();
+        g2d.drawImage(tmp, 0, 0, null);
+        g2d.dispose();
+        return dimg;
+    }  
+        
     private void ratoliPres(java.awt.event.MouseEvent evt) {                            
         /* OBTAIN MOUSE POSITION */
         int rata_x = evt.getX();
         int rata_y = evt.getY();
         double pan_x = jLayeredPane1.getSize().getWidth();
         double pan_y = jLayeredPane1.getSize().getHeight();
-        
-        System.out.println("pan_x = " + pan_x);
-        System.out.println("pan_y = " + pan_y);
-        
         int aux = (int) (rata_x / (pan_x / 8 ));
         int aux2 = (int) (rata_y / (pan_y / 8));
         s = new Point (aux2,aux);
-        
-        System.out.println("X = " + aux2 + " Y = " + aux);
         
         /* INTERRUPT Othello*/
         pare.interrupt();
@@ -648,23 +631,36 @@ public class GUI extends JFrame {
         jLabel17.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel17.setText("H");
 
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel1.add(Jugador1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 18, 90, -1));
+
         jLabel1.setForeground(new java.awt.Color(255, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("VS");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(35, 53, 56, -1));
+        jPanel1.add(Jugador2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 86, 91, -1));
 
         jLabel18.setText("Turn :");
+        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
 
         TurnLabel.setText("UNDEFINED");
+        jPanel1.add(TurnLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 148, -1, -1));
 
         LabelColor.setText("UNDEFINED");
+        jPanel1.add(LabelColor, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 169, -1, -1));
 
         pj1.setText("Peces J1:");
+        jPanel1.add(pj1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
 
         pecesj1.setText("UF");
+        jPanel1.add(pecesj1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
 
         pj2.setText("Peces J2:");
+        jPanel1.add(pj2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, -1, -1));
 
         pecesj2.setText("UF");
+        jPanel1.add(pecesj2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, -1, -1));
+        jPanel1.add(WLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 304, 78, 42));
 
         BMusic.setText("PAUSE");
         BMusic.addActionListener(new java.awt.event.ActionListener() {
@@ -672,78 +668,7 @@ public class GUI extends JFrame {
                 BMusicActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Jugador1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Jugador2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(pj1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(pecesj1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(pj2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(pecesj2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(BMusic))
-                            .addComponent(WLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TurnLabel)
-                    .addComponent(LabelColor)
-                    .addComponent(jLabel18))
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(Jugador1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(Jugador2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(TurnLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(LabelColor)
-                .addGap(18, 18, 18)
-                .addComponent(pj1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pecesj1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pj2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pecesj2)
-                .addGap(18, 18, 18)
-                .addComponent(WLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BMusic)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jPanel1.add(BMusic, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 352, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -787,14 +712,12 @@ public class GUI extends JFrame {
                         .addGap(26, 26, 26)
                         .addComponent(jLabel17)
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -815,7 +738,7 @@ public class GUI extends JFrame {
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                 .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -835,7 +758,8 @@ public class GUI extends JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(33, 33, 33)))
                 .addContainerGap())
         );
 
@@ -854,8 +778,6 @@ public class GUI extends JFrame {
         } catch (JavaLayerException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
         
     }//GEN-LAST:event_BMusicActionPerformed
 
@@ -890,15 +812,11 @@ public class GUI extends JFrame {
         pecesj2.setText(Integer.toString(j2));
     }
     
-    
-    
-    
     public void pinta_tauler(Board b, Vector<Movement> mov)
     {
         updateBoard(b);
         updateMov(mov);
-        repaint();
-        
+        repaint();    
     }
     
     private void playMusic() throws FileNotFoundException, IOException, JavaLayerException{
@@ -943,8 +861,13 @@ public class GUI extends JFrame {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
-        
+    }
+    
+    private void setPicture() throws IOException
+    {
+        BufferedImage image = ImageIO.read(getClass().getResource  ("/resources/Othello.jpg"));        
+        ImageIcon n = new ImageIcon(resize(image,jLabel19.getWidth(),jLabel19.getHeight()));        
+        jLabel19.setIcon(n);
     }
     
     private void resume_or_pause() throws IOException, FileNotFoundException, JavaLayerException
@@ -957,13 +880,8 @@ public class GUI extends JFrame {
             playMusic();
             BMusic.setText("PAUSE");
         }        
-        
-        play = !play;
-        
+        play = !play;        
     }
-    
-    
-    
     
     
      @Override
@@ -971,16 +889,13 @@ public class GUI extends JFrame {
     {
         int [][] tauler = b.getBoard();
         
-        System.out.println("TENDRIA Q PINTAR ESTO");
+        System.out.println("TABLERO : ");
         for (int i=0;i<8;++i){
                 for (int j=0;j<8;++j){
                     System.out.print(tauler[i][j]+" ");
                 }
                 System.out.println("");
         }
-        
-        System.out.println("TODAS LAS DIRECCIONES EN EL GUI");
-        System.out.println(mov.toString());
         
         super.paint(g);
         for (int i=0; i<8; i++){
@@ -997,24 +912,16 @@ public class GUI extends JFrame {
                     g.fillOval(whichx(j),whichy(i),40,40);
 
                 }
-                
-               
-                
-
             }
         }
         
         for (int k=0;k<mov.size();++k){
-                    Point p = mov.get(k).getPosition();
-                    g.setColor(Color.RED);
-                    g.drawOval(whichx(p.getY()),whichy(p.getX()),40,40);
-                    g.setColor(new Color (0,175,0));
-                    g.fillOval(whichx(p.getY()),whichy(p.getX()),40,40);
-                    
-        }
-        
-        
-     
+            Point p = mov.get(k).getPosition();
+            g.setColor(Color.RED);
+            g.drawOval(whichx(p.getY()),whichy(p.getX()),40,40);
+            g.setColor(new Color (0,175,0));
+            g.fillOval(whichx(p.getY()),whichy(p.getX()),40,40);                    
+        }   
     }
     
         
