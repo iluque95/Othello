@@ -98,7 +98,7 @@ public class Othello {
         return moviments.get(i);
     }
     
-    public static void main (String [] args) throws InterruptedException
+    public static void main (String [] args) throws InterruptedException, CloneNotSupportedException
     {
         // Declarar GUI
         Board b = start_gui_and_board();        
@@ -107,7 +107,7 @@ public class Othello {
         
         // Declarar jugadors
         jugador1 = new Manual();
-        jugador2 = new Random();       
+        jugador2 = new Manual();       
         gui.setPlayers(jugador1.name(), jugador2.name());
         
         int turn = 1; // 1 = jugador 1 / 0 = jugador 2
@@ -172,6 +172,13 @@ public class Othello {
         }
         
         gui.setWinner(getWinner(b,jugador1,jugador2));
+        
+        
+        
+        
+        
+        
+        
     }
     
 }

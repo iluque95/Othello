@@ -16,19 +16,36 @@ import javafx.util.Pair;
  */
 public class Board {
     
-    static OthelloData data;
-    static OthelloMove move;
+    private OthelloData data;
+    public OthelloMove move;
     
     public Board()
     {
         data = new OthelloData();
         move = new OthelloMove(data);
+        
+    }
+    
+    
+    public Board(Board b) throws CloneNotSupportedException
+    {
+        
+        try{
+            data = new OthelloData(b.getData());
+        }
+        catch (Exception e){}
+        move = new OthelloMove(data);
+        
     }
     
     public int[][] getBoard()
     {
         return data.board;        
     }
+    
+    
+    public OthelloData getData (){ return data;}
+    
     
     public int[] getPieces()
     {
@@ -87,11 +104,5 @@ public class Board {
         return move.getMovements(color);
     }
     
-    
-    // AFEGIDA PER COMPROVAR SI SACABA EL JOC
-    public boolean isOver()
-    {
-        return false;
-    }
 
 }

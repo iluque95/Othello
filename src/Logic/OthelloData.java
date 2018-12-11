@@ -8,6 +8,7 @@ package Logic;
 import Util.Color;
 import Util.Direction;
 import Util.Point;
+import static java.lang.System.arraycopy;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
@@ -19,10 +20,41 @@ import javafx.util.Pair;
  */
 public class OthelloData {
     
-    int[][] board;
-    int[] pieces;
-    Vector<Point> WPieces;
-    Vector<Point> BPieces;
+    public int[][] board;
+    public int[] pieces;
+    public Vector<Point> WPieces;
+    public Vector<Point> BPieces;
+    
+    
+    public OthelloData(OthelloData d) throws CloneNotSupportedException
+    {
+        
+       // board = (int[][]) d.board.clone();
+        
+        board = new int [8][8];
+        WPieces = new Vector();
+        BPieces = new Vector();
+        
+        
+      /*  for (int i=0; i<d.getWhitePieces().size(); i++)
+        {
+            WPieces.add(d.getWhitePieces().get(i));
+            board[d.getWhitePieces().get(i).getX()][d.getWhitePieces().get(i).getY()] = Color.WHITE.getColor();
+        }
+        
+        for (int i=0; i<d.getBlackPieces().size(); i++)
+        {
+            BPieces.add(d.getBlackPieces().get(i));
+            board[d.getBlackPieces().get(i).getX()][d.getBlackPieces().get(i).getY()] = Color.BLACK.getColor();
+        }*/
+        
+        pieces = d.pieces.clone();        
+        WPieces = (Vector) d.WPieces.clone();
+        BPieces = (Vector) d.BPieces.clone();
+        
+    }
+    
+    
     
     public OthelloData()
     {
@@ -198,9 +230,7 @@ public class OthelloData {
     * @param color piece
     */
     public void add(Point p, int dir, int color)
-    { //REVISAR
-        System.out.println("VOY A AÑADIR= " + p);
-        
+    { 
         
         if (validColor(color)) {
             
@@ -213,7 +243,6 @@ public class OthelloData {
             pieces[color+1]++;
             pieces[Color.EMPTY.getColor()+1]--;
             
-            System.out.println("AFEGIT A LA POSICIO : " + p.getX()+" " + p.getY());
             
             int mask=0x1;
             

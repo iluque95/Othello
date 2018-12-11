@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javazoom.jl.decoder.JavaLayerException;
 
 /**
@@ -190,6 +191,7 @@ public class GUI extends JFrame {
         BMusic = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 51, 51));
 
         jLayeredPane1.setBackground(new java.awt.Color(255, 255, 255));
         jLayeredPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -668,7 +670,7 @@ public class GUI extends JFrame {
                 BMusicActionPerformed(evt);
             }
         });
-        jPanel1.add(BMusic, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 352, -1, -1));
+        jPanel1.add(BMusic, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 352, 80, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -868,13 +870,20 @@ public class GUI extends JFrame {
         BufferedImage image = ImageIO.read(getClass().getResource  ("/resources/Othello.jpg"));        
         ImageIcon n = new ImageIcon(resize(image,jLabel19.getWidth(),jLabel19.getHeight()));        
         jLabel19.setIcon(n);
+        
+       // this.add(new JLabel(new ImageIcon("resources/Background.jpg")));
+
+        
+        
+        
+        
     }
     
     private void resume_or_pause() throws IOException, FileNotFoundException, JavaLayerException
     {
         if (play){ // VOLEM PAUSAR
             p.close();
-            BMusic.setText("PLAY");
+            BMusic.setText("PLAYM");
         }
         else{
             playMusic();
@@ -892,7 +901,10 @@ public class GUI extends JFrame {
         System.out.println("TABLERO : ");
         for (int i=0;i<8;++i){
                 for (int j=0;j<8;++j){
-                    System.out.print(tauler[i][j]+" ");
+                    if (tauler[i][j] == 1){
+                        System.out.print("B ");
+                    }
+                    else if (tauler[i][j] == -1) System.out.print("W ");
                 }
                 System.out.println("");
         }
