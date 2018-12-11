@@ -20,27 +20,43 @@ import javafx.util.Pair;
  */
 public class OthelloData {
     
-    public int[][] board;
-    public int[] pieces;
-    public Vector<Point> WPieces;
-    public Vector<Point> BPieces;
+    private int[][] board;
+    private int[] pieces;
+    private Vector<Point> WPieces;
+    private Vector<Point> BPieces;
     
     
     public OthelloData(OthelloData d) throws CloneNotSupportedException
     {
         
-       // board = (int[][]) d.board.clone();
         
         board = new int[8][8];
         pieces = new int[3];
         WPieces = new Vector();
         BPieces = new Vector();
         
-        
-        board = d.board.clone();
-        pieces = d.pieces.clone();        
         WPieces = (Vector) d.WPieces.clone();
         BPieces = (Vector) d.BPieces.clone();
+        pieces = d.pieces.clone();
+        
+        int i;
+        
+        for (i=0;i<WPieces.size();++i){
+            Point p = WPieces.get(i);
+            board[p.getX()][p.getY()] = Color.WHITE.getColor();
+            
+            if (i<BPieces.size()){
+                p = BPieces.get(i);
+                board[p.getX()][p.getY()] = Color.BLACK.getColor();
+            }            
+        }
+        
+        while (i<BPieces.size()){
+            Point p = BPieces.get(i);
+            board[p.getX()][p.getY()] = Color.BLACK.getColor();
+            ++i;
+            
+        }        
         
     }
     
@@ -52,15 +68,7 @@ public class OthelloData {
         pieces = new int[3];
         WPieces = new Vector();
         BPieces = new Vector();
-        
-        // Inicializar el array
-        
-        for (int i=0;i<8;++i)
-            for (int j=0;j<8;++j)
-                board[i][j] = 0;
-        
-        
-        
+                
         
         pieces[Color.WHITE.getColor()+1] = pieces[Color.BLACK.getColor()+1] = 2;
         pieces[Color.EMPTY.getColor()+1] = 60;
@@ -290,6 +298,14 @@ public class OthelloData {
     public int getQuantityOfPieces(int color)
     {
         return pieces[color+1];
+    }
+    
+    public int[][] getBoard(){
+        return board;
+    }
+    
+    public int [] getPieces(){
+        return pieces;
     }
     
     /**

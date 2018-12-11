@@ -167,6 +167,7 @@ public class Othello {
                 }
                 
             }
+            
             turn*=-1;
             
         }

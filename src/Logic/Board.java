@@ -40,8 +40,9 @@ public class Board {
     
     public int[][] getBoard()
     {
-        return data.board;        
+        return data.getBoard();        
     }
+    
     
     
     public OthelloData getData (){ return data;}
@@ -49,7 +50,7 @@ public class Board {
     
     public int[] getPieces()
     {
-        return data.pieces;
+        return data.getPieces();
     }
       
     public boolean isEmpty(Point p)
