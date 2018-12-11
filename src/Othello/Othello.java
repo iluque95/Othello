@@ -107,7 +107,7 @@ public class Othello {
         
         
         // Declarar jugadors
-        jugador1 = new Manual();
+        jugador1 = new Random();
         jugador2 = new Manual();       
         gui.setPlayers(jugador1.name(), jugador2.name());
         
@@ -140,31 +140,10 @@ public class Othello {
                 
                 if (turn==1 && !moviments.isEmpty())
                 {
-                    if (jugador1 instanceof Manual){                    
-                        b.add(ManPlay(moviments),turn);                    
-                        Point p = gui.getPoint();                    
-                        System.out.println("Punto elegido : " + p.toString());
-                    
-                    }
-                    else{ // Qualsevol altre jugador
-                        Movement aux=jugador1.movement(b, turn);
-                        System.out.println(jugador1.name()+" ha tirat en " + aux.getPosition().toString());
-                        b.add(aux, turn);
-
-                    }
+                    tirar_jugada(b, turn, moviments, jugador1);
                 }
                 else if( !moviments.isEmpty()){ // Tira jugador2
-                    if (jugador2 instanceof Manual){
-                        b.add(ManPlay(moviments),turn);
-                        Point p = gui.getPoint();                    
-                        System.out.println("Punto elegido : " + p.toString());
-
-                    }
-                    else{
-                        Movement aux=jugador2.movement(b, turn);
-                        System.out.println(jugador2.name()+" ha tirat en " + aux.getPosition().toString());                    
-                        b.add(aux, turn);
-                    }
+                    tirar_jugada(b, turn, moviments, jugador2);
                 }
                 
             }
@@ -182,5 +161,20 @@ public class Othello {
         
         
     }
-    
+
+    private static void tirar_jugada(Board b, int turn, Vector<Movement> moviments, Player jugador) {
+        if (jugador instanceof Manual){
+            b.add(ManPlay(moviments),turn);
+            Point p = gui.getPoint();
+            System.out.println("Punto elegido : " + p.toString());
+
+        }
+        else{ // Qualsevol altre jugador
+            Movement aux= jugador.movement(b, turn);
+            System.out.println(jugador1.name()+" ha tirat en " + aux.getPosition().toString());
+            b.add(aux, turn);
+
+        }
+    }
+
 }
