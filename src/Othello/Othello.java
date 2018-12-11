@@ -21,6 +21,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javazoom.jl.decoder.JavaLayerException;
 
 public class Othello {
+    /* CLASE PRINCIPAL*/
     
     static Player jugador1,jugador2;
     
