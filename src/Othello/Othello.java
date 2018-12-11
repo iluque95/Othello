@@ -173,6 +173,13 @@ public class Othello {
         }
         
         gui.setWinner(getWinner(b,jugador1,jugador2));
+        
+        
+        
+        
+        
+        
+        
     }
     
 }
