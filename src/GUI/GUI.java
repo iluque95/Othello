@@ -899,6 +899,9 @@ public class GUI extends JFrame {
         int [][] tauler = b.getBoard();
         
         System.out.println("TABLERO : ");
+        b.drawBoard();
+
+        /*
         for (int i=0;i<8;++i){
                 for (int j=0;j<8;++j){
                     if (tauler[i][j] == 1){
@@ -908,8 +911,10 @@ public class GUI extends JFrame {
                 }
                 System.out.println("");
         }
+        */
         
         super.paint(g);
+        /*
         for (int i=0; i<8; i++){
             for (int j=0; j<8; j++){
                 
@@ -926,7 +931,39 @@ public class GUI extends JFrame {
                 }
             }
         }
-        
+        */
+
+        int i;
+        Point pt;
+
+        for (i=0;i<b.getWhitePieces().size(); ++i){
+
+            pt = b.getWhitePieces().get(i);
+
+            g.setColor(Color.WHITE);
+            g.drawOval(whichx(pt.getY()),whichy(pt.getX()),40,40);
+            g.fillOval(whichx(pt.getY()),whichy(pt.getX()),40,40);
+
+            if (i<b.getBlackPieces().size()){
+
+                pt = b.getBlackPieces().get(i);
+
+                g.setColor(Color.BLACK);
+                g.drawOval(whichx(pt.getY()),whichy(pt.getX()),40,40);
+                g.fillOval(whichx(pt.getY()),whichy(pt.getX()),40,40);
+            }
+        }
+
+        while (i<b.getBlackPieces().size()){
+            pt = b.getBlackPieces().get(i);
+
+            g.setColor(Color.BLACK);
+            g.drawOval(whichx(pt.getY()),whichy(pt.getX()),40,40);
+            g.fillOval(whichx(pt.getY()),whichy(pt.getX()),40,40);
+
+            ++i;
+        }
+
         for (int k=0;k<mov.size();++k){
             Point p = mov.get(k).getPosition();
             g.setColor(Color.RED);

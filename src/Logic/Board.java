@@ -18,11 +18,13 @@ public class Board {
     
     private OthelloData data;
     public OthelloMove move;
+    private Vector<Movement> movements;
     
     public Board()
     {
         data = new OthelloData();
         move = new OthelloMove(data);
+        movements = null;
         
     }
     
@@ -35,6 +37,8 @@ public class Board {
         }
         catch (Exception e){}
         move = new OthelloMove(data);
+
+        movements = (Vector) b.movements.clone();
         
     }
     
@@ -58,9 +62,11 @@ public class Board {
         return data.isEmpty(p);
     }
     
-    public void add (Movement m, int color)
+    // Cambiar esto por un puntero a un vector de movimientos.
+    public void add (int i, int color)
     {
-        data.add(m.getPosition() , m.getDirections(), color);
+        data.add(movements.elementAt(i).getPosition(), movements.elementAt(i).getDirections(), color);
+        movements = null;
     }
     
     public int getColor(Point p)
@@ -90,6 +96,8 @@ public class Board {
         return data.getWhitePieces();
     }
 
+    public Movement getMovement(int i) { return movements.elementAt(i);}
+
     public void drawBoard()
     {
         data.drawBoard();
@@ -100,9 +108,13 @@ public class Board {
      * @param color
      * @return
      */
+
+    // Pedir al othelloMove movimientos y guardarlos en un private y dsps el user escoger que
+    // indice del vector aplicar movimiento.
     public Vector<Movement> getMovements(int color)
     {
-        return move.getMovements(color);
+        if (movements==null) movements = move.getMovements(color);
+        return movements;
     }
     
 

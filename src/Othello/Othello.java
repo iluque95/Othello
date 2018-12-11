@@ -78,7 +78,7 @@ public class Othello {
     /**
     * Asks to GUI for a valid movement of manual player
     */
-    private static Movement ManPlay(Vector<Movement> moviments){
+    private static int ManPlay(Vector<Movement> moviments){
         esperar_tirada();
         Point p = gui.getPoint();
         boolean valid = false;
@@ -96,7 +96,7 @@ public class Othello {
                 p = gui.getPoint();                
             } 
         }
-        return moviments.get(i);
+        return i;
     }
     
     public static void main (String [] args) throws InterruptedException, CloneNotSupportedException
@@ -108,7 +108,7 @@ public class Othello {
         
         // Declarar jugadors
         jugador1 = new Random();
-        jugador2 = new Manual();       
+        jugador2 = new LloydC();
         gui.setPlayers(jugador1.name(), jugador2.name());
         
         int turn = 1; // 1 = jugador 1 / 0 = jugador 2
@@ -170,8 +170,8 @@ public class Othello {
 
         }
         else{ // Qualsevol altre jugador
-            Movement aux= jugador.movement(b, turn);
-            System.out.println(jugador1.name()+" ha tirat en " + aux.getPosition().toString());
+            int aux= jugador.movement(b, turn);
+            System.out.println(jugador1.name()+" ha tirat en " + b.getMovement(aux).getPosition().toString());
             b.add(aux, turn);
 
         }

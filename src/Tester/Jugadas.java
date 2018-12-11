@@ -56,8 +56,11 @@ public class Jugadas {
         //od.add(new Point(0,0), 130, Color.BLACK.getColor());
         
         //od.drawBoard();
-        
-        
+
+
+        Vector<Movement> pichas = null;
+
+        System.out.println("El vector tiene tamaño "+pichas.size());
     
         
         

@@ -47,7 +47,7 @@ public class Test {
         Logic.Board b = new Logic.Board ();
         
         Movement c = new Movement (new Point(2,4), Direction.DOWN.getVal());
-        b.add(c, -1);
+        //b.add(c, -1);
         
         System.out.println("PRIMER TABLERO : ");
         System.out.println("WHITE : " + b.getWhitePieces());
@@ -64,7 +64,7 @@ public class Test {
         //System.out.println("SEGUNDO TABLERO : ");
         copia.drawBoard();
         
-        copia.add(new Movement (new Point(4,2), Direction.RIGHT.getVal()), 1);
+        //copia.add(new Movement (new Point(4,2), Direction.RIGHT.getVal()), 1);
         System.out.println("PRIMER TABLERO : ");
         System.out.println("WHITE : " + b.getWhitePieces());
         System.out.println("BLACK : " + b.getBlackPieces());

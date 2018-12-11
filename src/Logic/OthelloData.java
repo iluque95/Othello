@@ -34,7 +34,8 @@ public class OthelloData {
         pieces = new int[3];
         WPieces = new Vector();
         BPieces = new Vector();
-        
+
+        // MIRAR ESTO; SE PUEDE APROVECHAR LOS BUCLES, NO HACE FALTA CLONAR ANTES.
         WPieces = (Vector) d.WPieces.clone();
         BPieces = (Vector) d.BPieces.clone();
         pieces = d.pieces.clone();
@@ -249,7 +250,6 @@ public class OthelloData {
                mask = (mask << 1);
            }
         }
-        System.out.println("BPIECES:"+BPieces);
     }
     
     /**
@@ -364,8 +364,9 @@ public class OthelloData {
             for (int j=0; j<getSize(); j++) {
                 int tmpColor=getColor(new Point(i,j));
                 
-                if (j>0 && tmpColor!=(-1)) System.out.print(" ");
-                System.out.print(tmpColor);
+               if (tmpColor==Color.BLACK.getColor()) System.out.print("B ");
+               else if (tmpColor==Color.WHITE.getColor()) System.out.print("W ");
+               else System.out.print("· ");
             }
             System.out.println("");
         }

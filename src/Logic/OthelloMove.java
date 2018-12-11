@@ -18,12 +18,10 @@ import javafx.util.Pair;
  */
 public class OthelloMove {
     OthelloData oData;
-    Vector<Movement> lastMovements;
     
     public OthelloMove(OthelloData oData)
     {
         this.oData = oData;
-        this.lastMovements = null;
     }
     
     /**
@@ -375,7 +373,6 @@ public class OthelloMove {
         Vector<Movement> mov = new Vector();
         Vector<Point> pieces=null;
         Point tmp;
-        lastMovements=null;
         
         if (color == Color.BLACK.getColor()) {
             pieces = oData.getBlackPieces();
@@ -385,130 +382,108 @@ public class OthelloMove {
                         
         for (int i=0; i<pieces.size(); i++) {
 
-            int dir,pos;
+            int dir, pos;
 
             tmp = searchRight(pieces.get(i));
-            if (tmp.validPoint())
-            {
+            if (tmp.validPoint()) {
                 pos = mov.indexOf(tmp);
                 dir = Direction.LEFT.getVal();
 
-                if (pos>=0) {
+                if (pos >= 0) {
                     mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
-                }else{
+                } else {
                     mov.add(new Movement(tmp, dir));
                 }
             }
 
             tmp = searchLeft(pieces.get(i));
-            if (tmp.validPoint())
-            {
+            if (tmp.validPoint()) {
                 pos = mov.indexOf(tmp);
                 dir = Direction.RIGHT.getVal();
 
-                if (pos>=0) {
+                if (pos >= 0) {
                     mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
-                }else{
+                } else {
                     mov.add(new Movement(tmp, dir));
                 }
             }
 
 
             tmp = searchUp(pieces.get(i));
-            if (tmp.validPoint())
-            {
+            if (tmp.validPoint()) {
                 pos = mov.indexOf(tmp);
                 dir = Direction.DOWN.getVal();
 
-                if (pos>=0) {
+                if (pos >= 0) {
                     mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
-                }else{
+                } else {
                     mov.add(new Movement(tmp, dir));
                 }
             }
 
             tmp = searchDown(pieces.get(i));
-            if (tmp.validPoint())
-            {
+            if (tmp.validPoint()) {
                 pos = mov.indexOf(tmp);
                 dir = Direction.UP.getVal();
 
-                if (pos>=0) {
+                if (pos >= 0) {
                     mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
-                }else{
+                } else {
                     mov.add(new Movement(tmp, dir));
                 }
             }
 
-             tmp = searchRightUpDiagonal(pieces.get(i));
-            if (tmp.validPoint())
-            {
+            tmp = searchRightUpDiagonal(pieces.get(i));
+            if (tmp.validPoint()) {
                 pos = mov.indexOf(tmp);
                 dir = Direction.LEFTDDOWN.getVal();
 
-                if (pos>=0) {
+                if (pos >= 0) {
                     mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
-                }else{
+                } else {
                     mov.add(new Movement(tmp, dir));
                 }
             }
 
             tmp = searchLeftUpDiagonal(pieces.get(i));
-            if (tmp.validPoint())
-            {
+            if (tmp.validPoint()) {
                 pos = mov.indexOf(tmp);
                 dir = Direction.RIGHTDDOWN.getVal();
 
-                if (pos>=0) {
+                if (pos >= 0) {
                     mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
-                }else{
+                } else {
                     mov.add(new Movement(tmp, dir));
                 }
             }
 
             tmp = searchRightDownDiagonal(pieces.get(i));
-            if (tmp.validPoint())
-            {
+            if (tmp.validPoint()) {
                 pos = mov.indexOf(tmp);
                 dir = Direction.LEFTDUP.getVal();
 
-                if (pos>=0) {
+                if (pos >= 0) {
                     mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
-                }else{
+                } else {
                     mov.add(new Movement(tmp, dir));
                 }
             }
 
             tmp = searchLeftDownDiagonal(pieces.get(i));
-            if (tmp.validPoint())
-            {
+            if (tmp.validPoint()) {
                 pos = mov.indexOf(tmp);
                 dir = Direction.RIGHTDUP.getVal();
 
-                if (pos>=0) {
+                if (pos >= 0) {
                     mov.set(pos, new Movement(tmp, mov.get(pos).getDirections() | dir));
-                }else{
+                } else {
                     mov.add(new Movement(tmp, dir));
                 }
             }
 
         }
-       
-        lastMovements = mov;
         
-        return lastMovements;
-    }
-    
-    /**
-    * Calls the function which add the piece in a given position and apply the movement modifing the board
-    * with corresponding colors.
-    * 
-    * @param i is a valid movement in vector.
-    * @param color is the color of piece which it will put in the board.
-    */
-    public void applyMovement(int i, int color)
-    {
-        oData.add(lastMovements.get(i).getPosition(), lastMovements.get(i).getDirections(), color);
+        return mov;
     }
     
     /**

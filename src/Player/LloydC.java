@@ -117,23 +117,32 @@ public class LloydC implements Player {
     }
 
     @Override
-    public Movement movement(Board t, int color) {
+    public int movement(Board t, int color) {
         //Demanar moviments possibles del tauler
         Vector<Movement> list = t.getMovements(color);
         Integer n = Integer.MIN_VALUE;
         //Posició amb valor màxim
         int pos = 0;
+
+
+
         //Per cada moviment possible
         for (int i = 0; i < list.size(); ++i) {
             //add ficha
-            int x = heuristic(t, color);
-            if (x > n) {
-                n = x;
-                pos = i;
-            }
-        }
-        return list.get(pos);
 
+            try {
+                Board b = new Board(t);
+                b.add(i, color);
+
+                int x = heuristic(b, color);
+                if (x > n) {
+                    n = x;
+                    pos = i;
+                }
+            }catch(Exception e){}
+
+        }
+        return pos;
     }
 
     private int heuristic(Board b, int color) {
