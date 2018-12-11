@@ -106,7 +106,7 @@ public class Othello {
         
         
         // Declarar jugadors
-        jugador1 = new Random();
+        jugador1 = new Manual();
         jugador2 = new Random();       
         gui.setPlayers(jugador1.name(), jugador2.name());
         
