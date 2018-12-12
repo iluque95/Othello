@@ -66,7 +66,7 @@ public class Board {
     public void add (int i, int color)
     {
         data.add(movements.elementAt(i).getPosition(), movements.elementAt(i).getDirections(), color);
-        movements = null;
+        //movements = null;
     }
     
     public int getColor(Point p)
@@ -113,7 +113,8 @@ public class Board {
     // indice del vector aplicar movimiento.
     public Vector<Movement> getMovements(int color)
     {
-        if (movements==null) movements = move.getMovements(color);
+       
+        movements = move.getMovements(color);
         return movements;
     }
     

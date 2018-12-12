@@ -155,24 +155,14 @@ public class Othello {
         gui.setWinner(getWinner(b,jugador1,jugador2));
         
         
-        
-        
-        
-        
-        
     }
 
     private static void tirar_jugada(Board b, int turn, Vector<Movement> moviments, Player jugador) {
         if (jugador instanceof Manual){
             b.add(ManPlay(moviments),turn);
-            Point p = gui.getPoint();
-            System.out.println("Punto elegido : " + p.toString());
-
         }
         else{ // Qualsevol altre jugador
-            int aux= jugador.movement(b, turn);
-            System.out.println(jugador1.name()+" ha tirat en " + b.getMovement(aux).getPosition().toString());
-            b.add(aux, turn);
+            b.add(jugador.movement(b, turn), turn);
 
         }
     }
