@@ -118,5 +118,12 @@ public class Board {
         return movements;
     }
     
+    public void reset() // RESET TO NEW GAME
+    {
+        data = new OthelloData();
+        move = new OthelloMove(data);
+        movements = null;
+    }
+    
 
 }

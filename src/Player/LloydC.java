@@ -117,24 +117,19 @@ public class LloydC implements Player {
     }
 
     @Override
-    public int movement(Board t, int color) {
+    public int movement(Board t, int color) {    
         //Demanar moviments possibles del tauler
         Vector<Movement> list = t.getMovements(color);
         Integer n = Integer.MIN_VALUE;
         //Posició amb valor màxim
         int pos = 0;
-
-
-
         //Per cada moviment possible
         for (int i = 0; i < list.size(); ++i) {
             //add ficha
-
             try {
                 Board b = new Board(t);
                 b.add(i, color);
-
-                int x = heuristic(b, color);
+                int x = profund(b, -color, color, 2/*****/, false);//prof
                 if (x > n) {
                     n = x;
                     pos = i;
@@ -148,19 +143,20 @@ public class LloydC implements Player {
     private int heuristic(Board b, int color) {
 
         int h = 0;
-
+        int OtherMoves= b.getMovements(-color).size();
+        if(0 == OtherMoves && b.getQuantityOfPieces(color)>b.getQuantityOfPieces(-color)) return Integer.MAX_VALUE;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Point x = new Point(i, j);
                 int xColor = b.getColor(x);
 
-                if (xColor != Color.WHITE.getColor()) {
+                if (xColor != Color.EMPTY.getColor()) {
                     if (top.containsKey(x)) {
-                        h += 400 * (xColor * color);
+                        h += 500 * (xColor * color);
                     } else if (frame.containsKey(x)) {
                         h += 200 * (xColor * color);
                     } else if (bad.containsKey(x)) {
-                        h -= 100 * (xColor * color);
+                        h -= 200 * (xColor * color);
                     }
                 } else if (middle.containsKey(x)) {
                     h += 50 * (xColor * color);
@@ -170,4 +166,37 @@ public class LloydC implements Player {
         return h;
     }
 
+                         
+    
+    public int profund(Board t, int turn, int color, int prof, boolean level){
+        //Turn canvia color per afegir fitxa
+        if (prof < 1){
+            //Demanar moviments possibles del tauler
+           return heuristic(t,color);            
+        }else{
+            //Demanar moviments possibles del tauler
+            Vector<Movement> list = t.getMovements(color);
+            Integer n;
+            if (level) n = Integer.MIN_VALUE;
+            else n = Integer.MAX_VALUE;
+            //Per cada moviment possible
+            for (int i = 0; i < list.size(); ++i) {
+                //add ficha
+                try {
+                    Board b = new Board(t);
+                    b.add(i, turn);
+                    b.drawBoard();
+                    int x = profund(b, -turn, color, prof--, !level);
+                    if ((level && x > n) || (!level && x < n )) {
+                        n = x;
+                    }
+                }catch(Exception e){}
+
+            }
+            return n;
+    
+        }
+    
+    }
 }
+       

@@ -42,7 +42,11 @@ public class GUI extends JFrame {
     Vector<Movement> mov = null; 
     private Point s;
     javazoom.jl.player.Player p;
-    boolean play = true;
+    boolean play = true;    
+    boolean go = false;
+    
+    Thread music;
+    
     
     /* CONSTRUCTOR */
     
@@ -59,6 +63,7 @@ public class GUI extends JFrame {
         /* SET VARIABLES */        
         s=null;
         pare = t;
+        
         
         /* INTERRUPT FATHER*/
         pare.interrupt();
@@ -89,6 +94,15 @@ public class GUI extends JFrame {
         /* INTERRUPT Othello*/
         pare.interrupt();
     }
+    
+    public void shutdown() throws InterruptedException
+    {
+        p.close();
+        music.join();
+    }
+    
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -714,7 +728,7 @@ public class GUI extends JFrame {
                         .addGap(26, 26, 26)
                         .addComponent(jLabel17)
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -809,6 +823,8 @@ public class GUI extends JFrame {
        WLabel.setText("<html>Winner :<br/>"+s+"</html>");
         
     }
+    
+    public boolean getRepeat(){return go;}
     public void setNumPieces(int j1, int j2){
         pecesj1.setText(Integer.toString(j1));
         pecesj2.setText(Integer.toString(j2));
@@ -816,6 +832,7 @@ public class GUI extends JFrame {
     
     public void pinta_tauler(Board b, Vector<Movement> mov)
     {
+        
         updateBoard(b);
         updateMov(mov);
         repaint();    
@@ -843,7 +860,7 @@ public class GUI extends JFrame {
             p = new javazoom.jl.player.Player(BIS);
             total_length = FIS.available();
             
-            new Thread()
+            music = new Thread()
             {
                 public void run()
                 {
@@ -856,7 +873,9 @@ public class GUI extends JFrame {
                         
                     }
                 }
-            }.start();
+            };
+            music.start();
+                   
             
             
         } catch (FileNotFoundException ex) {
