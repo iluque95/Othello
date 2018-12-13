@@ -4,10 +4,13 @@ import static GUI.GUI.resize;
 import Logic.*;
 import Util.Movement;
 import Util.Point;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -23,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javazoom.jl.decoder.JavaLayerException;
 
 /**
@@ -49,7 +53,7 @@ public class GUI extends JFrame {
     
     
     /* CONSTRUCTOR */
-    
+        
     public GUI(Thread t) throws IOException, FileNotFoundException, JavaLayerException {
         initComponents();        
         /* SET TAGS PROPERTIES*/        
@@ -811,13 +815,13 @@ public class GUI extends JFrame {
         else if (t == -1) LabelColor.setText("Blanques");      
     }   
     public void setWinner(String s){
-        jLabel18.setVisible(false);
+        /*jLabel18.setVisible(false);
         TurnLabel.setVisible(false);
         pj1.setVisible(false);
         pecesj1.setVisible(false);
         pj2.setVisible(false);
         pecesj2.setVisible(false);
-        LabelColor.setVisible(false);
+        LabelColor.setVisible(false);*/
         
        // WLabel.setText("Winner: " + s);
        WLabel.setText("<html>Winner :<br/>"+s+"</html>");
@@ -889,14 +893,24 @@ public class GUI extends JFrame {
         BufferedImage image = ImageIO.read(getClass().getResource  ("/resources/Othello.jpg"));        
         ImageIcon n = new ImageIcon(resize(image,jLabel19.getWidth(),jLabel19.getHeight()));        
         jLabel19.setIcon(n);
+    }
+    
+    public void resetLabels()
+    { // Responsable de reestablir les labels
         
-       // this.add(new JLabel(new ImageIcon("resources/Background.jpg")));
-
-        
-        
-        
+        jLabel18.setVisible(true);
+        TurnLabel.setVisible(true);
+        pj1.setVisible(true);
+        pecesj1.setVisible(true);
+        pj2.setVisible(true);
+        pecesj2.setVisible(true);
+        LabelColor.setVisible(true);
+        WLabel.setText("");
+        WLabel.setVisible(false);
         
     }
+    
+    
     
     private void resume_or_pause() throws IOException, FileNotFoundException, JavaLayerException
     {
@@ -915,8 +929,6 @@ public class GUI extends JFrame {
      @Override
     public void paint(Graphics g)
     {
-        int [][] tauler = b.getBoard();
-        
         System.out.println("TABLERO : ");
         b.drawBoard();
 

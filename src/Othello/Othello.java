@@ -10,8 +10,11 @@ import Logic.Board;
 import Player.*;
 import Util.*;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -19,10 +22,14 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.util.Pair;
+import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import javax.swing.JLabel;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javazoom.jl.decoder.JavaLayerException;
 
 public class Othello {
@@ -39,6 +46,8 @@ public class Othello {
     static Repeat p;
     
     static Thread t;
+    static Pick pi;
+    
     
     static Board start_gui_and_board()
     {
@@ -61,7 +70,7 @@ public class Othello {
                     Logger.getLogger(Othello.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 gui.updateBoard(b);           
-                gui.setVisible(true);
+                //gui.setVisible(true);
                 
             }
             });
@@ -165,27 +174,127 @@ public class Othello {
         
     }
     
-    public static void main (String [] args) throws InterruptedException, CloneNotSupportedException
+    static private void pickPlayers() throws IOException, FileNotFoundException, JavaLayerException, InterruptedException
+    {
+        // Crear Thread
+         Thread currentThread = Thread.currentThread();
+        
+        
+        Thread tr = new Thread()
+         {
+             public void run()
+             {
+                 java.awt.EventQueue.invokeLater(new Runnable() {
+                     public void run(){
+                         
+                         try {
+                             pi = new Pick(gui,true,currentThread);
+                         } catch (IOException ex) {
+                             Logger.getLogger(Othello.class.getName()).log(Level.SEVERE, null, ex);
+                         }
+                         pi.setLocation(gui.getX()+40,gui.getY()+100);
+                         pi.setVisible(true);
+                         
+                         
+                     }
+                 });
+             }
+         };
+        
+        tr.start();
+        
+        esperar_tirada(); // ESPERAR CONSTRUCCIO
+        
+        esperar_tirada(); // ESPERAR PER PICKEJAR
+        
+        System.out.println("TIRADA FETA");
+        
+        Pair<String,String> s=null;
+        
+        s = pi.getChoice();
+        
+        
+        System.out.println("S = " + s);
+        
+        
+        
+        String u1 = s.getKey();
+        String u2 = s.getValue();
+        
+        String user1,user2;
+        int prof1=-1,prof2=-1;
+        
+        
+        
+        if (u1.length()>6){
+            user1 = u1.substring(0,u1.indexOf("-"));
+            System.out.println(u1.substring(u1.indexOf("-")+1,u1.length()));
+            prof1 = Integer.parseInt(u1.substring(u1.indexOf("-")+1,u1.length()));            
+        }
+        
+        else user1 = u1;
+        
+        if (u2.length()>6){
+            user2 = u2.substring(0,u2.indexOf("-"));
+            prof2 = Integer.parseInt(u2.substring(u2.indexOf("-")+1,u2.length()));
+            
+        }
+        else user2 = u2;
+        
+        
+        if (null != s.getKey()) switch (user1) {
+            case "Manual":
+                jugador1 = new Manual();
+                break;
+            case "Random":
+                jugador1 = new Random();
+                break;
+            case "LloydC":
+                jugador1 = new LloydC(prof1);
+                break;
+            default:
+                break;
+        }
+        
+        if (null != s.getValue()) switch (user2) {
+            case "Manual":
+                jugador2 = new Manual();
+                break;
+            case "Random":
+                jugador2 = new Random();
+                break;
+            case "LloydC":
+                jugador2 = new LloydC(prof2);
+                break;
+            default:
+                break;
+        }
+        
+        
+        // RESTABLECER ETIQUETAS
+        
+        gui.resetLabels();
+        
+    }
+    
+    
+    public static void main (String [] args) throws InterruptedException, CloneNotSupportedException, IOException, FileNotFoundException, JavaLayerException
     {
         
         boolean exit = false;
         
-            // Declarar GUI
-            Board b = start_gui_and_board();        
-            esperar_tirada(); // Sincronitzacio threads
+        // Declarar GUI
+        Board b = start_gui_and_board();        
+        esperar_tirada(); // Sincronitzacio threads
 
         while (!exit)
-        {
-
-            // Declarar jugadors
-            jugador1 = new Manual();
-            jugador2 = new LloydC();
+        {            
+            pickPlayers();
+            
             gui.setPlayers(jugador1.name(), jugador2.name());
 
             int turn = 1; // 1 = jugador 1 / 0 = jugador 2
                                  // 1 = color_j1 / -1 = color_j2
-                                 
-            
             boolean acabat = false;
             while (!acabat)
             {
@@ -197,6 +306,7 @@ public class Othello {
                 else gui.setTurn("J2 : "+jugador2.name(),turn);
                 gui.setNumPieces(b.getQuantityOfPieces(Color.BLACK.getColor()), b.getQuantityOfPieces(Color.WHITE.getColor()));
                 /* FIN ESTABLECER PARAMETROS GUI */
+                
                 
                 gui.setVisible(true);
                 
@@ -226,6 +336,8 @@ public class Othello {
                 turn*=-1;
 
             }
+            
+            
 
             gui.setWinner(getWinner(b,jugador1,jugador2));            
             exit = checkNextGame(b);

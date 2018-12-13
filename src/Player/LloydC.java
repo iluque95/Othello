@@ -18,8 +18,11 @@ public class LloydC implements Player {
     HashMap<Point, Boolean> frame;
     HashMap<Point, Boolean> bad;
     HashMap<Point, Boolean> middle;
+    
+    int prof;
 
-    public LloydC() {
+    public LloydC(int profunditat) {
+        prof = profunditat;
         this.top = new HashMap<Point, Boolean>() {
             {
                 put(new Point(0, 0), true);
@@ -128,23 +131,28 @@ public class LloydC implements Player {
             //add ficha
             try {
                 Board b = new Board(t);
+                b.drawBoard();
                 b.add(i, color);
-                int x = profund(b, -color, color, 2/*****/, false);//prof
+                int x = profund(b, -color, color, prof/*****/, false);//prof   
+                System.out.println("Valor Heuristic:"+x);
                 if (x > n) {
                     n = x;
                     pos = i;
                 }
             }catch(Exception e){}
-
+            
         }
+        
         return pos;
     }
 
     private int heuristic(Board b, int color) {
-
+        
+        if(8 > b.getQuantityOfPieces(color)+b.getQuantityOfPieces(-color)) return b.getMovements(color).size();
+        b.drawBoard();
         int h = 0;
-        int OtherMoves= b.getMovements(-color).size();
-        if(0 == OtherMoves && b.getQuantityOfPieces(color)>b.getQuantityOfPieces(-color)) return Integer.MAX_VALUE;
+        //int OtherMoves= b.getMovements(-color).size();
+        //if(0 == OtherMoves && b.getQuantityOfPieces(color)>b.getQuantityOfPieces(-color)) return Integer.MAX_VALUE;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Point x = new Point(i, j);
@@ -152,9 +160,9 @@ public class LloydC implements Player {
 
                 if (xColor != Color.EMPTY.getColor()) {
                     if (top.containsKey(x)) {
-                        h += 500 * (xColor * color);
+                        h += 700 * (xColor * color);
                     } else if (frame.containsKey(x)) {
-                        h += 200 * (xColor * color);
+                        h += 400 * (xColor * color);
                     } else if (bad.containsKey(x)) {
                         h -= 200 * (xColor * color);
                     }
@@ -163,7 +171,9 @@ public class LloydC implements Player {
                 }
             }
         }
-        return h;
+        //System.out.println("Heuristic:"+h);
+            if(25 < b.getQuantityOfPiecesOnBoard())return h;
+            else return h+10*b.getQuantityOfPieces(color);
     }
 
                          
@@ -193,10 +203,13 @@ public class LloydC implements Player {
                 }catch(Exception e){}
 
             }
-            return n;
+            //System.out.println("Heuristic:"+n);
+            if(25 < t.getQuantityOfPiecesOnBoard())return n;
+            else return n+10*t.getQuantityOfPieces(color);
     
         }
     
     }
 }
        
+
