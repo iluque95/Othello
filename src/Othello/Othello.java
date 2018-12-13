@@ -48,6 +48,8 @@ public class Othello {
     static Thread t;
     static Pick pi;
     
+   static int n_turnos;
+    
     
     static Board start_gui_and_board()
     {
@@ -134,9 +136,25 @@ public class Othello {
         }
     }
     
-    private static boolean checkNextGame(Board b)
+    private static boolean checkNextGame(Board b, Player j1, Player j2)
     {
          Thread mainThread = Thread.currentThread();
+         
+         String[] statistics = new String[5];
+         
+         statistics[0] = Integer.toString(n_turnos);
+         statistics[1] = Integer.toString(b.getBlackPieces().size());
+         statistics[2] = Integer.toString(b.getWhitePieces().size());
+         statistics[3] = getWinner(b,j1,j2);
+         statistics[4] = Integer.toString(b.getQuantityOfPiecesOnBoard());
+         
+         
+        
+         // statistics[0] = num_turnos
+         // statistics[1] = num_pieces_black
+         // statistics[2] = num_pieces_white
+         // statistics[3] = guanyador
+         // statistics[4] = num_pieces_total
          
          new Thread()
          {
@@ -144,8 +162,8 @@ public class Othello {
              {
                  java.awt.EventQueue.invokeLater(new Runnable() {
                      public void run(){
-                         p = new Repeat(gui, true,mainThread);
-                         p.setLocation(gui.getX()+100,gui.getY()+100);
+                         p = new Repeat(gui, true,mainThread,statistics);
+                         p.setLocation(gui.getX()+40,gui.getY()+100);
                          p.setVisible(true);
                          
                      }
@@ -281,6 +299,7 @@ public class Othello {
     public static void main (String [] args) throws InterruptedException, CloneNotSupportedException, IOException, FileNotFoundException, JavaLayerException
     {
         
+        
         boolean exit = false;
         
         // Declarar GUI
@@ -290,6 +309,7 @@ public class Othello {
         while (!exit)
         {            
             pickPlayers();
+            n_turnos = 0;
             
             gui.setPlayers(jugador1.name(), jugador2.name());
 
@@ -298,6 +318,7 @@ public class Othello {
             boolean acabat = false;
             while (!acabat)
             {
+                ++n_turnos;
                 /* ESTABLECER PARAMETROS GUI */
                 gui.setStatus(Integer.toString(b.getQuantityOfPiecesOnBoard())+" PECES");
                 Vector<Movement> moviments = b.getMovements(turn);
@@ -339,12 +360,12 @@ public class Othello {
             
             
 
-            gui.setWinner(getWinner(b,jugador1,jugador2));            
-            exit = checkNextGame(b);
+            gui.setWinner(getWinner(b,jugador1,jugador2));
+                
+            exit = checkNextGame(b,jugador1,jugador2);
 
         }
         gui.dispatchEvent(new WindowEvent(gui,WindowEvent.WINDOW_CLOSING));
-        
     }
 
    int processors = Runtime.getRuntime().availableProcessors();
