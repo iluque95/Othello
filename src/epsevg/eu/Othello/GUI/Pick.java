@@ -66,8 +66,8 @@ public class Pick extends javax.swing.JDialog {
             Player j1 = (Player) exjugadors[0].getKey();
             Player j2 = (Player) exjugadors[1].getKey();
             
-           // System.out.println("ExPlayer 1 : " + j1.name()+" PROF = " + exjugadors[0].getValue());
-            //System.out.println("ExPlayer 2 : " + j2.name()+" PROF = " + exjugadors[1].getValue());
+           System.out.println("ExPlayer 1 : " + j1.name()+" PROF = " + exjugadors[0].getValue());
+           System.out.println("ExPlayer 2 : " + j2.name()+" PROF = " + exjugadors[1].getValue());
             
              Rulet.setSelectedItem(j1.name());
              Rulet2.setSelectedItem(j2.name());
@@ -87,6 +87,13 @@ public class Pick extends javax.swing.JDialog {
             
         }
         
+        else{
+            prof1=prof2=0;
+            user1=Rulet.getItemAt(Rulet.getSelectedIndex());
+            user2=Rulet2.getItemAt(Rulet2.getSelectedIndex());
+            
+        }
+        
         this.setTitle("Othello - Reversi");
         
        
@@ -94,9 +101,7 @@ public class Pick extends javax.swing.JDialog {
         
         
 
-        prof1=prof2=0;
-        user1=Rulet.getItemAt(Rulet.getSelectedIndex());
-        user2=Rulet2.getItemAt(Rulet2.getSelectedIndex());
+        
         
         this.getRootPane().setDefaultButton(BGo);
         

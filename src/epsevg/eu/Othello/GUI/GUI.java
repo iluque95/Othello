@@ -946,8 +946,8 @@ public class GUI extends JFrame {
      @Override
     public void paint(Graphics g)
     {
-        System.out.println("TABLERO : ");
-        b.drawBoard();
+        //System.out.println("TABLERO : ");
+       // b.drawBoard();
 
         
         super.paint(g);

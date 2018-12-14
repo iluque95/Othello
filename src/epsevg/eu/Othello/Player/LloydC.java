@@ -136,11 +136,11 @@ public class LloydC implements Player {
             //add ficha
             try {
                 Board b = new Board(t);
-                System.out.println("Soy el tablero MAX movement con la i"+i);
-                b.drawBoard();
+               // System.out.println("Soy el tablero MAX movement con la i"+i);
+               // b.drawBoard();
                 b.add(i, color);
                 int x = profund(b, -color, color, prof/*****/, false);//prof   
-                System.out.println("Heristico de MAX movement:"+x);
+              //  System.out.println("Heristico de MAX movement:"+x);
                 if (x > n) {
                     n = x;
                     pos = i;
@@ -156,8 +156,8 @@ public class LloydC implements Player {
     private int heuristic(Board b, int color) {
         
         if(20 > b.getQuantityOfPieces(color)+b.getQuantityOfPieces(-color)) return b.getMovements(color).size();
-        System.out.println("Soy un tablero del heuristico");
-        b.drawBoard();
+        //System.out.println("Soy un tablero del heuristico");
+       // b.drawBoard();
         int h = 0;
         //int OtherMoves= b.getMovements(-color).size();
         //if(0 == OtherMoves && b.getQuantityOfPieces(color)>b.getQuantityOfPieces(-color)) return Integer.MAX_VALUE;
@@ -224,7 +224,7 @@ public class LloydC implements Player {
         }
         //System.out.println("Heuristic:"+h);
             if(25 > b.getQuantityOfPiecesOnBoard())h = h + 20*b.getQuantityOfPieces(color);
-            System.out.println("Soy el resultado del heuristico con valor:"+h);
+            //System.out.println("Soy el resultado del heuristico con valor:"+h);
             return h;
     }
 
@@ -245,7 +245,7 @@ public class LloydC implements Player {
                 try {
                     Board b = new Board(t);
                     b.add(i, turn);
-                    b.drawBoard();
+                    //b.drawBoard();
                     int x = profund(b, -turn, color, prof--, !level);
                     if ((level && x > n) || (!level && x < n )) {
                         n = x;
