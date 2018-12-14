@@ -6,11 +6,17 @@
 package epsevg.eu.Othello.GUI;
 
 import static epsevg.eu.Othello.GUI.GUI.resize;
+import epsevg.eu.Othello.Player.Interface.Player;
+import epsevg.eu.Othello.Player.LloydC;
+import epsevg.eu.Othello.Player.Manual;
+import epsevg.eu.Othello.Player.Random;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -48,18 +54,40 @@ public class Pick extends javax.swing.JDialog {
     /**
      * Creates new form Pick
      */
-    public Pick(GUI parent, boolean modal, Thread pare, String[] exjugadors) throws IOException {
+    public Pick(GUI parent, boolean modal, Thread pare, Pair[] exjugadors) throws IOException {
         super(parent, modal);
         initComponents();
         
         this.pare = pare;
         
         if (exjugadors[0] != null && exjugadors[1] != null){
-             Rulet.setSelectedItem(exjugadors[0]);
-             Rulet2.setSelectedItem(exjugadors[1]);
+            
+            
+            Player j1 = (Player) exjugadors[0].getKey();
+            Player j2 = (Player) exjugadors[1].getKey();
+            
+           // System.out.println("ExPlayer 1 : " + j1.name()+" PROF = " + exjugadors[0].getValue());
+            //System.out.println("ExPlayer 2 : " + j2.name()+" PROF = " + exjugadors[1].getValue());
+            
+             Rulet.setSelectedItem(j1.name());
+             Rulet2.setSelectedItem(j2.name());
+             
+             System.out.println("LA CLASSE ES " + j1.getClass());
+             
+             if (!(j1 instanceof Manual && j1 instanceof Random))
+                PCombo.setSelectedItem(exjugadors[0].getValue().toString());
+                 
+             
+             
+            if (!(j2 instanceof Manual && j2 instanceof Random))
+                PCombo2.setSelectedItem(exjugadors[1].getValue().toString());
+             
+             
              System.out.println("ANTEPASSATS ?");
             
         }
+        
+        this.setTitle("Othello - Reversi");
         
        
         
@@ -72,6 +100,7 @@ public class Pick extends javax.swing.JDialog {
         
         this.getRootPane().setDefaultButton(BGo);
         
+ 
         pare.interrupt();
         
         
@@ -84,29 +113,10 @@ public class Pick extends javax.swing.JDialog {
     public Pair getChoice()
     {
         
-        System.out.println("ENTRO");
-        
         if (user1 == "LloydC" && user2 != "LloydC") return new Pair(user1+"-"+prof1,user2);
         else if (user1 == "LloydC" && user2 == "LloydC") return new Pair (user1+"-"+prof1,user2+"-"+prof2);
         else if (user1 != "LloydC" && user2 != "LloydC") return new Pair (user1,user2);
         else return new Pair (user1,user2+"-"+prof2);
-        
-        
-        
-       /* if (Rulet.getItemAt(Rulet.getSelectedIndex()) == "LloydC"){           
-            
-            if (Rulet2.getItemAt(Rulet2.getSelectedIndex()) == "LloydC"){
-                return new Pair(Rulet.getItemAt(Rulet.getSelectedIndex())+"-"+prof1,Rulet2.getItemAt(Rulet2.getSelectedIndex())+"-"+prof2);                
-            }
-            else return new Pair(Rulet.getItemAt(Rulet.getSelectedIndex())+"-"+prof1,Rulet2.getItemAt(Rulet2.getSelectedIndex()));                        
-        }        
-        else{
-            if (Rulet2.getItemAt(Rulet2.getSelectedIndex()) == "LloydC"){
-                return new Pair(Rulet.getItemAt(Rulet.getSelectedIndex()),Rulet2.getItemAt(Rulet2.getSelectedIndex())+"-"+prof2);       
-            }
-            
-            else return new Pair(Rulet.getItemAt(Rulet.getSelectedIndex()),Rulet2.getItemAt(Rulet2.getSelectedIndex()));
-        }*/
         
         
     }

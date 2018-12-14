@@ -67,7 +67,24 @@ public class GUI extends JFrame {
         /* SET VARIABLES */        
         s=null;
         pare = t;
+        this.setTitle("Othello - Reversi");
         
+        File file = null;
+        try{
+            file = new File(getClass().getClassLoader().getResource("epsevg/eu/Othello/Resources/Java.png").getFile());
+            
+        }
+        catch(Exception e){System.out.println(e+" | No s'ha pogut carregar la icona");}
+                
+                
+        Image image = null;
+        
+       if (file != null) image = ImageIO.read(file);
+        
+       if (image != null) this.setIconImage(image);
+       
+       
+       
         
         /* INTERRUPT FATHER*/
         pare.interrupt();
@@ -890,7 +907,7 @@ public class GUI extends JFrame {
     
     private void setPicture() throws IOException
     {
-        BufferedImage image = ImageIO.read(getClass().getResource  ("/resources/Othello.jpg"));        
+        BufferedImage image = ImageIO.read(getClass().getResource ("/epsevg/eu/Othello/Resources/Othello.jpg"));        
         ImageIcon n = new ImageIcon(resize(image,jLabel19.getWidth(),jLabel19.getHeight()));        
         jLabel19.setIcon(n);
     }

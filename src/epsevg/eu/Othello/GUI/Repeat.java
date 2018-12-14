@@ -48,6 +48,7 @@ public class Repeat extends javax.swing.JDialog {
         jLabel10.setText(Double.toString(w_cent)+" %");
         
         this.getRootPane().setDefaultButton(SB);
+        this.setTitle("Othello - Reversi");
         
         t.interrupt(); // PAPA SAP QUE MHE CONSTRUIT
     }

@@ -38,7 +38,7 @@ public class Othello {
     }
     
     static Player jugador1,jugador2;
-    static String exjugadors[];
+    static Pair exjugadors[];
     public boolean go = false;
     
     static volatile GUI gui;
@@ -188,6 +188,8 @@ public class Othello {
          Thread currentThread = Thread.currentThread();
          
         
+         
+        
         Thread tr = new Thread()
          {
              public void run()
@@ -278,6 +280,18 @@ public class Othello {
                 break;
         }
         
+        if (jugador1 instanceof Manual || jugador1 instanceof Random){
+                exjugadors[0] = new Pair (jugador1,false);                
+        }
+        else exjugadors[0] = new Pair (jugador1,prof1);
+        
+        if (jugador2 instanceof Manual || jugador2 instanceof Random){
+                exjugadors[1] = new Pair (jugador2,false);                
+        }
+        else exjugadors[1] = new Pair (jugador2,prof2);
+        
+        
+        
         
         // RESTABLECER ETIQUETAS
         
@@ -298,7 +312,7 @@ public class Othello {
         Board b = start_gui_and_board();        
         esperar_tirada(); // Sincronitzacio threads
         
-        exjugadors = new String[2];
+        exjugadors = new Pair[2];
         
         exjugadors[0] = exjugadors[1] = null;
         
@@ -366,8 +380,6 @@ public class Othello {
                 
             exit = checkNextGame(b,jugador1,jugador2);
             
-            exjugadors[0] = jugador1.name();
-            exjugadors[1] = jugador2.name();
 
         }
         gui.dispatchEvent(new WindowEvent(gui,WindowEvent.WINDOW_CLOSING));
