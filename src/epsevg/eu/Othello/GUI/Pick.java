@@ -48,39 +48,29 @@ public class Pick extends javax.swing.JDialog {
     /**
      * Creates new form Pick
      */
-    public Pick(GUI parent, boolean modal, Thread pare) throws IOException {
+    public Pick(GUI parent, boolean modal, Thread pare, String[] exjugadors) throws IOException {
         super(parent, modal);
         initComponents();
         
-        panel2 = new JPanel();
-        panel2.setOpaque(false);
-        panel2.setLayout(new FlowLayout());
         this.pare = pare;
         
-        lblBackgroundImage.setLayout(new FlowLayout());
+        if (exjugadors[0] != null && exjugadors[1] != null){
+             Rulet.setSelectedItem(exjugadors[0]);
+             Rulet2.setSelectedItem(exjugadors[1]);
+             System.out.println("ANTEPASSATS ?");
+            
+        }
         
-        BufferedImage image = ImageIO.read(getClass().getResource  ("/resources/Background.jpg"));  
-        
-        lblBackgroundImage.setIcon(new ImageIcon(resize(image,100,getHeight())));
-        lblBackgroundImage.setLayout(new BorderLayout());
+       
         
         
         
-      //  BufferedImage image = ImageIO.read(getClass().getResource  ("/resources/Othello.jpg"));        
-      //  ImageIcon n = new ImageIcon(resize(image,jLabel19.getWidth(),jLabel19.getHeight()));        
-      //  jLabel19.setIcon(n);
-      
-        lblBackgroundImage.add(panel2);
-
-        add(lblBackgroundImage);
-        
-        System.out.println("CONSTRUIT");
-        
-        this.setBackground(Color.RED);
 
         prof1=prof2=0;
         user1=Rulet.getItemAt(Rulet.getSelectedIndex());
         user2=Rulet2.getItemAt(Rulet2.getSelectedIndex());
+        
+        this.getRootPane().setDefaultButton(BGo);
         
         pare.interrupt();
         

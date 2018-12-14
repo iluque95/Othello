@@ -47,9 +47,7 @@ public class Repeat extends javax.swing.JDialog {
         jLabel9.setText(Double.toString(p_cent)+" %");
         jLabel10.setText(Double.toString(w_cent)+" %");
         
-        
-        
-        
+        this.getRootPane().setDefaultButton(SB);
         
         t.interrupt(); // PAPA SAP QUE MHE CONSTRUIT
     }
@@ -277,8 +275,7 @@ public class Repeat extends javax.swing.JDialog {
 
     private void NBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NBActionPerformed
         // TODO add your handling code here:
-        
-        t.interrupt();
+        System.exit(0);
         
         
     }//GEN-LAST:event_NBActionPerformed
