@@ -131,10 +131,11 @@ public class LloydC implements Player {
             //add ficha
             try {
                 Board b = new Board(t);
+                System.out.println("Soy el tablero MAX movement con la i"+i);
                 b.drawBoard();
                 b.add(i, color);
                 int x = profund(b, -color, color, prof/*****/, false);//prof   
-                System.out.println("Valor Heuristic:"+x);
+                System.out.println("Heristico de MAX movement:"+x);
                 if (x > n) {
                     n = x;
                     pos = i;
@@ -142,13 +143,15 @@ public class LloydC implements Player {
             }catch(Exception e){}
             
         }
-        
+        System.out.println("Vector de movimientos movement MAX"+list);
+        System.out.println("Movement MAX Elige posicion"+pos);
         return pos;
     }
 
     private int heuristic(Board b, int color) {
         
-        if(8 > b.getQuantityOfPieces(color)+b.getQuantityOfPieces(-color)) return b.getMovements(color).size();
+        if(20 > b.getQuantityOfPieces(color)+b.getQuantityOfPieces(-color)) return b.getMovements(color).size();
+        System.out.println("Soy un tablero del heuristico");
         b.drawBoard();
         int h = 0;
         //int OtherMoves= b.getMovements(-color).size();
@@ -162,22 +165,64 @@ public class LloydC implements Player {
                     if (top.containsKey(x)) {
                         h += 700 * (xColor * color);
                     } else if (frame.containsKey(x)) {
-                        h += 400 * (xColor * color);
+                        
+                        // AÑADIMOS LO NUEVO DE LA HEURISTICA DONDE EVITAMOS QUE UNA PIEZA
+                        // ASEGURADA, NO SEA COMESTIBLE POR EL OPONENTE
+                        
+                        if (i==0 || i==7) {
+                            if ((b.getColor(i, j-1) != xColor) && (b.getColor(i, j-1) != b.getColor(i, j+1))) h-=100 * (xColor * color);
+                            else h+=400 * (xColor * color); // Incluye al lado de una nuestra
+                        }
+                        
+                        if (j==0 || j==7) {
+                            if ((b.getColor(i-1, j) != xColor) && (b.getColor(i-1, j) != b.getColor(i+1, j))) h-=100 * (xColor * color);
+                            else h+=400 * (xColor * color); // Incluye al lado de una nuestra
+                        }
+                            
+                        
                     } else if (bad.containsKey(x)) {
-                        h -= 200 * (xColor * color);
+                        
+                        // AÑADIMOS LO NUEVO DE LA HEURISTICA DONDE SALVAMOS MARCOS
+                        if (i==1 && (j>1 && j<6)) {
+                            if (b.getColor(0,j-1)==0 || b.getColor(0,j)==0 || b.getColor(0, j+1)==0) h-= 200 * (xColor * color);
+                            else h+=200 * (xColor * color);
+                        } else if (i==6 && (j>1 && j<6)) {
+                            if (b.getColor(7,j-1)==0 || b.getColor(7,j)==0 || b.getColor(7, j+1)==0) h-= 200 * (xColor * color);
+                            else h+=200 * (xColor * color);
+                        } else if (j==1 && (i>1 && i<6)) {
+                            if (b.getColor(i,0)==0 || b.getColor(i-1,0)==0 || b.getColor(i+1, 0)==0) h-= 200 * (xColor * color);
+                            else h+=200 * (xColor * color);
+                        } else if (j==1 && (i>1 && i<6)) {
+                            if (b.getColor(i,7)==0 || b.getColor(i+1,7)==0 || b.getColor(i-1, 7)==0) h-= 200 * (xColor * color);
+                            else h+=200 * (xColor * color);
+                        }else{
+                            if (i==1 && j==1) {
+                                if (b.getColor(0,0)==0 || b.getColor(0, 1)==0 || b.getColor(0, 2)==0 || b.getColor(1,0)==0 || b.getColor(2,0)==0) h-= 200 * (xColor * color);
+                                else h+=200 * (xColor * color); 
+                            }else if(i==1 && j==6) {
+                                if (b.getColor(0,7)==0 || b.getColor(0, 5)==0 || b.getColor(0, 6)==0 || b.getColor(1,7)==0 || b.getColor(2,7)==0) h-= 200 * (xColor * color);
+                                else h+=200 * (xColor * color); 
+                            }else if(i==6 && j==1) {
+                                if (b.getColor(7,0)==0 || b.getColor(5, 0)==0 || b.getColor(6, 0)==0 || b.getColor(7,1)==0 || b.getColor(7,2)==0) h-= 200 * (xColor * color);
+                                else h+=200 * (xColor * color);
+                            }else if(i==6 && j==6) {
+                                if (b.getColor(7,7)==0 || b.getColor(5, 7)==0 || b.getColor(6, 7)==0 || b.getColor(7,5)==0 || b.getColor(7,6)==0) h-= 200 * (xColor * color);
+                                else h+=200 * (xColor * color);
+                            }
+                        }
+                        
+                    } else if (middle.containsKey(x)) {
+                        h += 50 * (xColor * color);
                     }
-                } else if (middle.containsKey(x)) {
-                    h += 50 * (xColor * color);
                 }
             }
         }
         //System.out.println("Heuristic:"+h);
-            if(25 < b.getQuantityOfPiecesOnBoard())return h;
-            else return h+10*b.getQuantityOfPieces(color);
+            if(25 > b.getQuantityOfPiecesOnBoard())h = h + 20*b.getQuantityOfPieces(color);
+            System.out.println("Soy el resultado del heuristico con valor:"+h);
+            return h;
     }
 
-                         
-    
     public int profund(Board t, int turn, int color, int prof, boolean level){
         //Turn canvia color per afegir fitxa
         if (prof < 1){
@@ -211,5 +256,3 @@ public class LloydC implements Player {
     
     }
 }
-       
-

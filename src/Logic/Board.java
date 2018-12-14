@@ -74,6 +74,11 @@ public class Board {
         return data.getColor(p);
     }
     
+    public int getColor(int x, int y)
+    {
+        return data.getColor(new Point(x,y));
+    }
+    
     public int getQuantityOfPieces(int color)
     {
         return data.getQuantityOfPieces(color);
