@@ -23,18 +23,13 @@ public class LloydC implements Player {
     HashMap<Point, Boolean> frame;
     HashMap<Point, Boolean> bad;
     HashMap<Point, Boolean> middle;
-    boolean pruning;
-    String name;
-    
+    HashMap<Point, Boolean> baddest;
+    HashMap<Point, Boolean> never;
+
     int prof;
 
-    public LloydC(int profunditat, boolean poda) {
+    public LloydC(int profunditat, boolean prune) {
         prof = profunditat;
-        pruning = poda;
-      //  if (poda) name="LloydC P"; /* ES UNA PUTADA PARA PARSEAR EN EL GUI, YA LO TENDREMOS EN CUENTA */
-      //  else name="LloydC";
-        name = "LloydC";
-        
         //Hashmaps amb els conjunts de caselles amb un mateix valor
         this.top = new HashMap<Point, Boolean>() {
             {
@@ -45,18 +40,16 @@ public class LloydC implements Player {
                 put(new Point(7, 7), true);
             }
         };
+       
+
 
         this.frame = new HashMap<Point, Boolean>() {
             {
-                //Marc exterior
-                put(new Point(0, 1), true);
+                //Marc exterior excepte dolentes
                 put(new Point(0, 2), true);
                 put(new Point(0, 3), true);
                 put(new Point(0, 4), true);
                 put(new Point(0, 5), true);
-                put(new Point(0, 6), true);
-                put(new Point(1, 0), true);
-                put(new Point(1, 7), true);
                 put(new Point(2, 0), true);
                 put(new Point(2, 7), true);
                 put(new Point(3, 0), true);
@@ -65,21 +58,38 @@ public class LloydC implements Player {
                 put(new Point(4, 7), true);
                 put(new Point(5, 0), true);
                 put(new Point(5, 7), true);
-                put(new Point(6, 0), true);
-                put(new Point(6, 7), true);
-                put(new Point(7, 1), true);
                 put(new Point(7, 2), true);
                 put(new Point(7, 3), true);
                 put(new Point(7, 4), true);
                 put(new Point(7, 5), true);
-                put(new Point(7, 6), true);
-
             }
         };
-
+        
+                this.never = new HashMap<Point, Boolean>() {
+            {
+                //Cantonades
+                put(new Point(1, 1), true);
+                put(new Point(1, 6), true);
+                put(new Point(6, 1), true);
+                put(new Point(6, 6), true);
+            }
+        };
+        this.baddest = new HashMap<Point, Boolean>() {
+            {
+                //Cantonades
+                put(new Point(0, 1), true);
+                put(new Point(0, 6), true);
+                put(new Point(1, 0), true);
+                put(new Point(1, 7), true);
+                put(new Point(6, 0), true);
+                put(new Point(6, 7), true);
+                put(new Point(7, 1), true);
+                put(new Point(7, 6), true);
+            }
+        };
+        
         this.bad = new HashMap<Point, Boolean>() {
             {
-                //Caselles adjacents al marc exterior
                 put(new Point(1, 1), true);
                 put(new Point(1, 2), true);
                 put(new Point(1, 3), true);
@@ -100,7 +110,6 @@ public class LloydC implements Player {
                 put(new Point(6, 4), true);
                 put(new Point(6, 5), true);
                 put(new Point(6, 6), true);
-
             }
         };
 
@@ -130,18 +139,12 @@ public class LloydC implements Player {
 
     
     public String name() {
-        return name;
+        return "LloydC";
 
     }
-    
+
     @Override
-    public int movement(Board t, int color) throws CloneNotSupportedException {  
-        if (pruning) return movement2(t,color);
-        else return movement1(t,color);
-            
-    }
-
-    public int movement1(Board t, int color) {    
+    public int movement(Board t, int color) {    
         //Demanar moviments possibles del tauler
         Vector<Movement> list = t.getMovements(color);
         Integer n = Integer.MIN_VALUE;
@@ -168,7 +171,141 @@ public class LloydC implements Player {
         }
         return pos;
     }
-    
+
+    private int heuristic(Board b, int color) {
+        int my=b.getMovements(color).size();
+        int other=b.getMovements(-color).size();
+        //No hi han moviments + / - infinit
+        if( my==0 && other==0){
+            if(b.getQuantityOfPieces(color) > b.getQuantityOfPieces(-color)) return Integer.MAX_VALUE;
+            else return Integer.MIN_VALUE;
+                }
+        int h = 0;
+        boolean [] cols = new boolean[8];
+        Arrays.fill(cols, Boolean.TRUE);
+        for (int i = 0; i < HEIGHT; i++) {
+            //Mirar columnes del mateix color fer taula de 8 posicions i anar anotant a cada columna
+            boolean row=true;
+            for (int j = 0; j < WIDTH; j++) {
+                
+                Point x = new Point(i, j);
+                int xColor = b.getColor(x);
+                // row observa files assegurades
+                if(row) row = xColor == color;
+                if(cols[j]) cols[j]= xColor == color; 
+
+
+                if (xColor != Color.EMPTY.getColor()) {
+                    //Cantonades del tauler
+                    if (top.containsKey(x)) {                        
+                        h += 10000 * (xColor * color);
+                    //Marc exterior    
+                    } else if (frame.containsKey(x)) {
+                        h+=1000;
+                        //Si hi ha una casella lliure a les vores, devaluem si som al costat del contrari amb un espai al costat
+                        //Verticals
+                        if (i==0 || i==7) {
+                            if ((b.getColor(i, j-1) != xColor) && (b.getColor(i, j-1) != b.getColor(i, j+1))) h -= 200 * (xColor * color);
+                            else h+=200 * (xColor * color); // Incluye al lado de una nuestra
+                        }
+                        //Horitzontals
+                        if (j==0 || j==7) {
+                            if ((b.getColor(i-1, j) != xColor) && (b.getColor(i-1, j) != b.getColor(i+1, j))) h -= 200 * (xColor * color);
+                            else h+=200 * (xColor * color); // Incluye al lado de una nuestra
+                        }
+                            
+                    //Caselles adjacents a les vores    
+                    } else if (bad.containsKey(x)) {
+                        
+                        //Valorar positivament una d'aquestes caselles si els 3 moviments del marc estan ocupats
+                        if (i==1 && (j>1 && j<6)) {
+                            if (b.getColor(0,j-1)==0 || b.getColor(0,j)==0 || b.getColor(0, j+1)==0) h-= 200 * (xColor * color);
+                            else h+=200 * (xColor * color);
+                        } else if (i==6 && (j>1 && j<6)) {
+                            if (b.getColor(7,j-1)==0 || b.getColor(7,j)==0 || b.getColor(7, j+1)==0) h-= 200 * (xColor * color);
+                            else h+=200 * (xColor * color);
+                        } else if (j==1 && (i>1 && i<6)) {
+                            if (b.getColor(i,0)==0 || b.getColor(i-1,0)==0 || b.getColor(i+1, 0)==0) h-= 200 * (xColor * color);
+                            else h+=200 * (xColor * color);
+                        } else if (j==1 && (i>1 && i<6)) {
+                            if (b.getColor(i,7)==0 || b.getColor(i+1,7)==0 || b.getColor(i-1, 7)==0) h-= 200 * (xColor * color);
+                            else h+=200 * (xColor * color);
+                        }else{
+                            if (i==1 && j==1) {
+                                if (b.getColor(0,0)==0 || b.getColor(0, 1)==0 || b.getColor(0, 2)==0 || b.getColor(1,0)==0 || b.getColor(2,0)==0) h-= 600 * (xColor * color);
+                                else h+=200 * (xColor * color); 
+                            }else if(i==1 && j==6) {
+                                if (b.getColor(0,7)==0 || b.getColor(0, 5)==0 || b.getColor(0, 6)==0 || b.getColor(1,7)==0 || b.getColor(2,7)==0) h-= 600 * (xColor * color);
+                                else h+=200 * (xColor * color); 
+                            }else if(i==6 && j==1) {
+                                if (b.getColor(7,0)==0 || b.getColor(5, 0)==0 || b.getColor(6, 0)==0 || b.getColor(7,1)==0 || b.getColor(7,2)==0) h-= 600 * (xColor * color);
+                                else h+=200 * (xColor * color);
+                            }else if(i==6 && j==6) {
+                                if (b.getColor(7,7)==0 || b.getColor(5, 7)==0 || b.getColor(6, 7)==0 || b.getColor(7,5)==0 || b.getColor(7,6)==0) h-= 600 * (xColor * color);
+                                else h+=200 * (xColor * color);
+                            }else{
+                                h-=400 * (xColor * color);
+                            }
+                        }
+                    //Caselles centrals    
+                    } else if (middle.containsKey(x)) {
+                         h += 200 * (xColor * color);
+                    } else if (baddest.containsKey(x)){
+                        if((i==1 && j==0) || (i==0 && j==1)){
+                            if(b.getColor(0, 0)!=0) h+=2000;
+                            else h-=3000;
+                        } else if((i==0 && j==6) || (i==1 && j==7)){
+                            if(b.getColor(0, 7)!=0) h+=2000;
+                            else h-=3000;
+                        } else if((i==6 && j==0) || (i==7 && j==1)){
+                            if(b.getColor(7, 0)!=0) h+=2000;
+                            else h-=3000;
+                        } else if((i==6 && j==7) || (i==7 && j==6)){
+                            if(b.getColor(7, 7)!=0) h+=2000;
+                            else h-=3000;
+                        }
+                        
+                    } else if (never.containsKey(x)){
+                        if(i==1 && j==1){
+                            if(b.getColor(0, 0)!=0) h+=1000;
+                            else h-=5000;
+                        } else if(i==1 && j==6){
+                            if(b.getColor(0, 7)!=0) h+=1000;
+                            else h-=5000;
+                        } else if(i==6 && j==1){
+                            if(b.getColor(7, 0)!=0) h+=1000;
+                            else h-=5000;
+                        } else if(i==6 && j==6){
+                            if(b.getColor(7, 7)!=0) h+=1000;
+                            else h-=5000;
+                        }
+                        
+                    }
+                }
+            }
+            //Tota la fila del mateix color
+            if(row){
+                if(i==0 || i==7)h+= 2000;
+                else h += 500;
+            }
+        }
+        //Incrementem per columna acumulada
+        for(int i=0; i<WIDTH; ++i){
+            if(cols[i]) h+=500;
+        }
+        if(cols[0]) h+= 1000;
+        if(cols[7]) h+= 1000;
+        //System.out.println("Heuristic:"+h);
+            //A partir del torn 50 la diferencia de fitxes amb el contrari puntua
+            if(57 < b.getQuantityOfPiecesOnBoard())h = h + 10*(b.getQuantityOfPieces(color)-b.getQuantityOfPieces(-color));
+            //Entre torn 15 i 50 es valora limitar els moviments del contrari
+            if(15 < b.getQuantityOfPiecesOnBoard() && 50>b.getQuantityOfPiecesOnBoard()){
+                if(my>6) h+=1000;
+            }
+            //if(b.getQuantityOfPiecesOnBoard()>15) h*=my;
+            return h;
+    }
+
     public int profund(Board t, int turn, int color, int prof, boolean level){
         //Turn canvia color per afegir fitxa, color es el que avaluara heuristic
         if (prof < 1){
@@ -199,150 +336,5 @@ public class LloydC implements Player {
         }
     
     }
-
-    private int heuristic(Board b, int color) {
-        int my=b.getMovements(color).size();
-        int other=b.getMovements(-color).size();
-        //No hi han moviments +- infinit
-        if( my==0 && other==0){
-            if(b.getQuantityOfPieces(color) > b.getQuantityOfPieces(-color)) return Integer.MAX_VALUE;
-            else return Integer.MIN_VALUE;
-                }
-        int h = 0;
-        boolean [] cols = new boolean[8];
-        Arrays.fill(cols, Boolean.TRUE);
-        for (int i = 0; i < HEIGHT; i++) {
-            //Mirar columnes del mateix color fer taula de 8 posicions i anar anotant a cada columna
-            boolean row=true;
-            for (int j = 0; j < WIDTH; j++) {
-                
-                Point x = new Point(i, j);
-                int xColor = b.getColor(x);
-                // row observa files assegurades
-                if(row) row = xColor == color;
-                if(cols[j]) cols[j]= xColor == color; 
-
-
-                if (xColor != Color.EMPTY.getColor()) {
-                    //Cantonades del tauler
-                    if (top.containsKey(x)) {                        
-                        h += 700 * (xColor * color);
-                    //Marc exterior    
-                    } else if (frame.containsKey(x)) {
-                        //Si hi ha una casella lliure a les vores, devaluem si som al costat del contrari amb un espai al costat
-                        //Verticals
-                        if (i==0 || i==7) {
-                            if ((b.getColor(i, j-1) != xColor) && (b.getColor(i, j-1) != b.getColor(i, j+1))) h-=400 * (xColor * color);
-                            else h+=400 * (xColor * color); // Incluye al lado de una nuestra
-                        }
-                        //Horitzontals
-                        if (j==0 || j==7) {
-                            if ((b.getColor(i-1, j) != xColor) && (b.getColor(i-1, j) != b.getColor(i+1, j))) h-=400 * (xColor * color);
-                            else h+=400 * (xColor * color); // Incluye al lado de una nuestra
-                        }
-                            
-                    //Caselles adjacents a les vores    
-                    } else if (bad.containsKey(x)) {
-                        
-                        //Valorar positivament una d'aquestes caselles si els 3 moviments del marc estan ocupats
-                        if (i==1 && (j>1 && j<6)) {
-                            if (b.getColor(0,j-1)==0 || b.getColor(0,j)==0 || b.getColor(0, j+1)==0) h-= 200 * (xColor * color);
-                            else h+=200 * (xColor * color);
-                        } else if (i==6 && (j>1 && j<6)) {
-                            if (b.getColor(7,j-1)==0 || b.getColor(7,j)==0 || b.getColor(7, j+1)==0) h-= 200 * (xColor * color);
-                            else h+=200 * (xColor * color);
-                        } else if (j==1 && (i>1 && i<6)) {
-                            if (b.getColor(i,0)==0 || b.getColor(i-1,0)==0 || b.getColor(i+1, 0)==0) h-= 200 * (xColor * color);
-                            else h+=200 * (xColor * color);
-                        } else if (j==1 && (i>1 && i<6)) {
-                            if (b.getColor(i,7)==0 || b.getColor(i+1,7)==0 || b.getColor(i-1, 7)==0) h-= 200 * (xColor * color);
-                            else h+=200 * (xColor * color);
-                        }else{
-                            if (i==1 && j==1) {
-                                if (b.getColor(0,0)==0 || b.getColor(0, 1)==0 || b.getColor(0, 2)==0 || b.getColor(1,0)==0 || b.getColor(2,0)==0) h-= 400 * (xColor * color);
-                                else h+=200 * (xColor * color); 
-                            }else if(i==1 && j==6) {
-                                if (b.getColor(0,7)==0 || b.getColor(0, 5)==0 || b.getColor(0, 6)==0 || b.getColor(1,7)==0 || b.getColor(2,7)==0) h-= 400 * (xColor * color);
-                                else h+=200 * (xColor * color); 
-                            }else if(i==6 && j==1) {
-                                if (b.getColor(7,0)==0 || b.getColor(5, 0)==0 || b.getColor(6, 0)==0 || b.getColor(7,1)==0 || b.getColor(7,2)==0) h-= 400 * (xColor * color);
-                                else h+=200 * (xColor * color);
-                            }else if(i==6 && j==6) {
-                                if (b.getColor(7,7)==0 || b.getColor(5, 7)==0 || b.getColor(6, 7)==0 || b.getColor(7,5)==0 || b.getColor(7,6)==0) h-= 400 * (xColor * color);
-                                else h+=200 * (xColor * color);
-                            }
-                        }
-                    //Caselles centrals    
-                    } else if (middle.containsKey(x)) {
-                        h += 20 * (xColor * color);
-                    }
-                }
-            }
-            //Tota la fila del mateix color
-            if(row) h+= 500;
-        }
-        //Incrementem per columna acumulada
-        for(int i=0; i<WIDTH; ++i){
-            if(cols[i]) h+=500;
-        }
-        //System.out.println("Heuristic:"+h);
-            //A partir del torn 50 la diferencia de fitxes amb el contrari puntua
-            if(50 < b.getQuantityOfPiecesOnBoard())h = h + 50*(b.getQuantityOfPieces(color)-b.getQuantityOfPieces(-color));
-            //Entre torn 15 i 50 es valora limitar els moviments del contrari
-            if(15 < b.getQuantityOfPiecesOnBoard() && 50>b.getQuantityOfPiecesOnBoard()){
-                if(other <5) h+=500;
-                else h-= 200;
-            }
-            //System.out.println("Soy el resultado del heuristico con valor:"+h);
-            return h;
-    }
-
-    
-    
-    private int alfabeta(Board b, int color, int prof, int alfa, int beta) throws CloneNotSupportedException
-     {
-      // Falta mirar si hay solucion
-       if ((prof == 0) || (!b.getMovements(color).isEmpty()))
-       {
-
-
-         alfa = heuristic(b, color);
-       }
-       else {
-         //Demanar moviments possibles del tauler
-         Vector<Movement> list = b.getMovements(color);
-
-         for (int i = 0; i < list.size(); i++) {
-           Board aux = new Board(b);
-             aux.add(i, color);
-             alfa = Math.max(alfa, -alfabeta(aux, -color, prof - 1, -beta, -alfa));
-             if (beta <= alfa) return alfa;
-           }
-         }
-
-       return alfa;
-     }
-
-     public int movement2(Board b, int color) throws CloneNotSupportedException
-     {
-       int a = -10000;
-       int anew = 0;
-       int mov = 0;
-
-       //Demanar moviments possibles del tauler
-       Vector<Movement> list = b.getMovements(color);
-
-       for (int i = 0; i < list.size(); i++)
-       {
-         Board aux = new Board(b);
-           aux.add(i, color);
-           anew = -alfabeta(aux, -color, prof, Integer.MIN_VALUE, Integer.MAX_VALUE);
-           if (anew > a) { 
-               mov = i;
-               a = anew;
-           }
-       }
-
-       return mov;
-     }
 }
+//comentario

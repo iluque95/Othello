@@ -22,9 +22,19 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,17 +44,9 @@ import javazoom.jl.decoder.JavaLayerException;
 public class Othello {
     /* CLASE PRINCIPAL*/
     
-    public Othello(){
-        
-    }
     
-    static Player jugador1,jugador2;
-    
-    
-   // static Pair exjugadors[]; // Borrar mas tarde
-    
-    static Options exjugadors;
-    
+    static Player jugador1,jugador2;    
+    static Options exjugadors;    
     
     public boolean go = false;
     
@@ -55,6 +57,11 @@ public class Othello {
     static Pick pi;
     
     static int n_turnos;
+    
+    static boolean testing; // Boolean per designar estdistiques partides (HERI)
+    
+    
+    
     
     
     static Board start_gui_and_board()
@@ -284,6 +291,14 @@ public class Othello {
         
         boolean exit = false;
         
+        /* ATRIBUTS TESTING*/
+        testing = false; // SET THIS TO TRUE TO TEST
+        int v = 100; // Nombre de vegades bucle (Testing)
+        int g1 = 0;
+        int g2 = 0;
+        int draw = 0;
+        /* FI ATRIBUTS TESTING*/
+        
         // Declarar GUI
         Board b = start_gui_and_board();        
         esperar_tirada(); // Sincronitzacio threads
@@ -293,9 +308,17 @@ public class Othello {
         while (!exit)
         {
             
-            pickPlayers(); // Assignem nous jugadors i ens els guardem per la seguent partida 
+            if (!testing) pickPlayers(); // Assignem nous jugadors i ens els guardem per la seguent partida 
+            else{
+                // --------------- TESTING ----------------------Establim jugadors per a fer estadistiques
+                jugador1 = new LloydC(2,false);
+                jugador2 = new Random();
+            }
             
             n_turnos = 0;
+            
+            
+            
             
             gui.setPlayers(jugador1.name(), jugador2.name());
 
@@ -344,12 +367,53 @@ public class Othello {
                 turn*=-1;
 
             }
+            --v;
 
             gui.setWinner(getWinner(b,jugador1,jugador2));                
-            exit = checkNextGame(b,jugador1,jugador2);
+            if (!testing) exit = checkNextGame(b,jugador1,jugador2);
+            else{
+                exit = (v==0);
+            }
             
+            if (testing)
+            {                
+                String gu = getWinner(b,jugador1,jugador2);
+                if (gu.substring(gu.indexOf(' ')+1,gu.length()).equals(jugador1.name()))
+                {
+                    g1++;
+                    
+                }
+                
+                else if (gu.substring(gu.indexOf(' ')+1,gu.length()).equals(jugador2.name())){
+                    g2++;
+                }
+                else if(gu.equals("DRAW")) draw++;
+                
+                
+                
+                
+                if (v==0)
+                {// Escribir estadisticas
+                    try {
+                        System.out.println("ENTRO");
+                        final Path path = Paths.get("Statistics "+jugador1.name()+" VS "+jugador2.name()+".txt");
+                        Files.write(path, Arrays.asList(" J1 "+jugador1.name()+": "+g1+" WINS | J2 "+jugador2.name()+": "+g2+" WINS | DRAW : "+draw), StandardCharsets.UTF_8,
+                        Files.exists(path) ? StandardOpenOption.APPEND : StandardOpenOption.CREATE);
+                        }
+                        catch (final IOException ioe) {
+                    }
+                    
+                    
+                    
+                }
+                else b.reset();
+                
+            }
+                
         }
         gui.dispatchEvent(new WindowEvent(gui,WindowEvent.WINDOW_CLOSING));
     }
 
-}
+} /*if (p_j1 > p_j2) return "J1 "+j1.name();
+        else if (p_j1 < p_j2) return "J2 "+j2.name();
+        else return "DRAW";*/
