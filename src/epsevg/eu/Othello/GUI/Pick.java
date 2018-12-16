@@ -5,19 +5,14 @@
  */
 package epsevg.eu.Othello.GUI;
 
-import static epsevg.eu.Othello.GUI.GUI.resize;
-import epsevg.eu.Othello.Player.Interface.Player;
-import epsevg.eu.Othello.Player.LloydC;
-import epsevg.eu.Othello.Player.Manual;
-import epsevg.eu.Othello.Player.Random;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
+import epsevg.eu.Othello.Base.Options;
+import static epsevg.eu.Othello.Constants.Constants.LOGO;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,12 +25,11 @@ import javax.swing.*;
  * @author marti
  */
 public class Pick extends javax.swing.JDialog {
-    private JPanel panel2;
-    private JLabel lblBackgroundImage = new JLabel();
     
     private int prof1,prof2;
-    private String user1="UF",user2="UF";
-    
+    private String user1,user2;
+    private boolean poda1,poda2;
+       
     Thread pare;
     
     
@@ -54,75 +48,92 @@ public class Pick extends javax.swing.JDialog {
     /**
      * Creates new form Pick
      */
-    public Pick(GUI parent, boolean modal, Thread pare, Pair[] exjugadors) throws IOException {
+    public Pick(GUI parent, boolean modal, Thread pare, Options exjugadors) throws IOException {
         super(parent, modal);
         initComponents();
         
+        addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+                
+            }
+        });
+        
         this.pare = pare;
         
-        if (exjugadors[0] != null && exjugadors[1] != null){
+        if (exjugadors != null){
+            System.out.println("PLAYED BEFORE");
+            
+            user1 = exjugadors.getFirstPlayer();
+            user2 = exjugadors.getSecondPlayer();
+            
+            prof1 = exjugadors.getP1Prof();
+            prof2 = exjugadors.getP2Prof();
+            
+            poda1 = exjugadors.getP1Poda();
+            poda2 = exjugadors.getP2Poda();
+            
+            if (user1 != "Manual" && user1 != "Random")
+            {
+                PCombo.setSelectedItem(String.valueOf(prof1));
+                jCheckBox1.setSelected(poda1);                
+            }
+                
+            if (user2 != "Manual" && user2 != "Random")
+            {
+                PCombo2.setSelectedItem(String.valueOf(prof2));
+                jCheckBox2.setSelected(poda2);
+                
+            }
             
             
-            Player j1 = (Player) exjugadors[0].getKey();
-            Player j2 = (Player) exjugadors[1].getKey();
+            Rulet.setSelectedItem(user1);
+            Rulet2.setSelectedItem(user2);
+                
             
-           System.out.println("ExPlayer 1 : " + j1.name()+" PROF = " + exjugadors[0].getValue());
-           System.out.println("ExPlayer 2 : " + j2.name()+" PROF = " + exjugadors[1].getValue());
+           // System.out.println("ExPlayer 1 : " + user1+" PROF = " + prof1+" PODA = " + poda1);
+           // System.out.println("ExPlayer 2 : " + user2+" PROF = " + prof2+" PODA = " + poda2);
             
-             Rulet.setSelectedItem(j1.name());
-             Rulet2.setSelectedItem(j2.name());
-             
-             System.out.println("LA CLASSE ES " + j1.getClass());
-             
-             if (!(j1 instanceof Manual && j1 instanceof Random))
-                PCombo.setSelectedItem(exjugadors[0].getValue().toString());
-                 
-             
-             
-            if (!(j2 instanceof Manual && j2 instanceof Random))
-                PCombo2.setSelectedItem(exjugadors[1].getValue().toString());
-             
-             
-             System.out.println("ANTEPASSATS ?");
             
         }
         
+        
         else{
+            System.out.println("First Game");
             prof1=prof2=0;
+            poda1=poda2=false;
             user1=Rulet.getItemAt(Rulet.getSelectedIndex());
             user2=Rulet2.getItemAt(Rulet2.getSelectedIndex());
             
         }
         
         this.setTitle("Othello - Reversi");
-        
-       
-        
-        
-        
-
-        
-        
         this.getRootPane().setDefaultButton(BGo);
         
  
         pare.interrupt();
         
         
-        
-        
     }
     
     
     
-    public Pair getChoice()
+    public Pair<String[],String[]> getChoice()
     {
+        String[] aux1 = new String[3];
+        String[] aux2 = new String[3];
         
-        if (user1 == "LloydC" && user2 != "LloydC") return new Pair(user1+"-"+prof1,user2);
-        else if (user1 == "LloydC" && user2 == "LloydC") return new Pair (user1+"-"+prof1,user2+"-"+prof2);
-        else if (user1 != "LloydC" && user2 != "LloydC") return new Pair (user1,user2);
-        else return new Pair (user1,user2+"-"+prof2);
+        aux1[0] = user1;
+        aux1[1] = String.valueOf(prof1);
+        aux1[2] = String.valueOf(poda1);
         
+        aux2[0] = user2;
+        aux2[1] = String.valueOf(prof2);
+        aux2[2] = String.valueOf(poda2);
+        
+        return new Pair(aux1,aux2);
         
     }
 
@@ -143,6 +154,8 @@ public class Pick extends javax.swing.JDialog {
         BGo = new javax.swing.JButton();
         PCombo = new javax.swing.JComboBox<>();
         PCombo2 = new javax.swing.JComboBox<>();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 0, 0));
@@ -191,51 +204,75 @@ public class Pick extends javax.swing.JDialog {
             }
         });
 
+        jCheckBox1.setText("PODA");
+        jCheckBox1.setEnabled(false);
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+
+        jCheckBox2.setText("PODA");
+        jCheckBox2.setEnabled(false);
+        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(93, 93, 93)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(Rulet2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                                .addComponent(PCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(Rulet, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(PCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(Rulet2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Rulet, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(57, 57, 57)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(71, 71, 71)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBox2)
+                            .addComponent(jCheckBox1))
+                        .addContainerGap(95, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(69, 69, 69)
-                .addComponent(BGo)
-                .addGap(26, 26, 26))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(BGo)
+                        .addGap(40, 40, 40))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(180, 180, 180))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(17, 17, 17)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(Rulet, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                    .addComponent(PCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBox1))
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(Rulet2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BGo)
-                    .addComponent(PCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(PCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBox2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(BGo)
+                .addGap(25, 25, 25))
         );
 
         pack();
@@ -243,9 +280,6 @@ public class Pick extends javax.swing.JDialog {
 
     private void BGoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BGoActionPerformed
         // TODO add your handling code here:
-        
-        
-        
         pare.interrupt();
         try {
             Thread.sleep(50);
@@ -259,9 +293,16 @@ public class Pick extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (Rulet.getItemAt(Rulet.getSelectedIndex()) == "LloydC"){
             PCombo.setEnabled(true);
-            prof1 = Integer.valueOf(PCombo.getItemAt(PCombo.getSelectedIndex()));            
+            jCheckBox1.setEnabled(true);
         }
-        else PCombo.setEnabled(false);
+        else{
+            prof1 = 0;
+            poda1 = false;
+            PCombo.setSelectedItem(String.valueOf(prof1));
+            jCheckBox1.setSelected(poda1);
+            PCombo.setEnabled(false);
+            jCheckBox1.setEnabled(false);
+        }
         user1 = Rulet.getItemAt(Rulet.getSelectedIndex());
     }//GEN-LAST:event_RuletActionPerformed
 
@@ -275,9 +316,17 @@ public class Pick extends javax.swing.JDialog {
         // TODO add your handling code here:
          if (Rulet2.getItemAt(Rulet2.getSelectedIndex()) == "LloydC"){
             PCombo2.setEnabled(true);
-            prof2 = Integer.valueOf(PCombo2.getItemAt(PCombo2.getSelectedIndex()));            
+            jCheckBox2.setEnabled(true);
         }
-        else PCombo2.setEnabled(false);
+         else{
+             prof2 = 0;
+             poda2 = false;
+             PCombo2.setSelectedItem(String.valueOf(prof2));
+             jCheckBox2.setSelected(poda2);
+             
+             PCombo2.setEnabled(false);
+             jCheckBox2.setEnabled(false);
+         }
         user2 = Rulet2.getItemAt(Rulet2.getSelectedIndex());
     }//GEN-LAST:event_Rulet2ActionPerformed
 
@@ -285,6 +334,16 @@ public class Pick extends javax.swing.JDialog {
         // TODO add your handling code here:
         prof1= Integer.parseInt(PCombo.getItemAt(PCombo.getSelectedIndex()));
     }//GEN-LAST:event_PComboActionPerformed
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        if (jCheckBox1.isSelected()) poda1=true;
+        else poda1 = false;
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+         if (jCheckBox2.isSelected()) poda2=true;
+        else poda2 = false;
+    }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -296,6 +355,8 @@ public class Pick extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> PCombo2;
     private javax.swing.JComboBox<String> Rulet;
     private javax.swing.JComboBox<String> Rulet2;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

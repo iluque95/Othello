@@ -12,6 +12,7 @@ import epsevg.eu.Othello.Util.Point;
 import epsevg.eu.Othello.Util.Color;
 import static epsevg.eu.Othello.Constants.Constants.HEIGHT;
 import static epsevg.eu.Othello.Constants.Constants.WIDTH;
+import java.util.Arrays;
 
 import java.util.HashMap;
 import java.util.Vector;
@@ -22,13 +23,22 @@ public class LloydC implements Player {
     HashMap<Point, Boolean> frame;
     HashMap<Point, Boolean> bad;
     HashMap<Point, Boolean> middle;
+    boolean pruning;
+    String name;
     
     int prof;
 
-    public LloydC(int profunditat) {
+    public LloydC(int profunditat, boolean poda) {
         prof = profunditat;
+        pruning = poda;
+      //  if (poda) name="LloydC P"; /* ES UNA PUTADA PARA PARSEAR EN EL GUI, YA LO TENDREMOS EN CUENTA */
+      //  else name="LloydC";
+        name = "LloydC";
+        
+        //Hashmaps amb els conjunts de caselles amb un mateix valor
         this.top = new HashMap<Point, Boolean>() {
             {
+                //Cantonades
                 put(new Point(0, 0), true);
                 put(new Point(0, 7), true);
                 put(new Point(7, 0), true);
@@ -38,7 +48,7 @@ public class LloydC implements Player {
 
         this.frame = new HashMap<Point, Boolean>() {
             {
-
+                //Marc exterior
                 put(new Point(0, 1), true);
                 put(new Point(0, 2), true);
                 put(new Point(0, 3), true);
@@ -69,7 +79,7 @@ public class LloydC implements Player {
 
         this.bad = new HashMap<Point, Boolean>() {
             {
-
+                //Caselles adjacents al marc exterior
                 put(new Point(1, 1), true);
                 put(new Point(1, 2), true);
                 put(new Point(1, 3), true);
@@ -96,7 +106,7 @@ public class LloydC implements Player {
 
         this.middle = new HashMap<Point, Boolean>() {
             {
-
+                //Resta caselles centrals
                 put(new Point(2, 2), true);
                 put(new Point(2, 3), true);
                 put(new Point(2, 4), true);
@@ -120,12 +130,18 @@ public class LloydC implements Player {
 
     
     public String name() {
-        return "LloydC";
+        return name;
 
     }
-
+    
     @Override
-    public int movement(Board t, int color) {    
+    public int movement(Board t, int color) throws CloneNotSupportedException {  
+        if (pruning) return movement2(t,color);
+        else return movement1(t,color);
+            
+    }
+
+    public int movement1(Board t, int color) {    
         //Demanar moviments possibles del tauler
         Vector<Movement> list = t.getMovements(color);
         Integer n = Integer.MIN_VALUE;
@@ -133,14 +149,16 @@ public class LloydC implements Player {
         int pos = 0;
         //Per cada moviment possible
         for (int i = 0; i < list.size(); ++i) {
-            //add ficha
             try {
+                //copiar tauler i afegir fitxa en el moviment actual
                 Board b = new Board(t);
-               // System.out.println("Soy el tablero MAX movement con la i"+i);
-               // b.drawBoard();
+                //System.out.println("Soy el tablero MAX movement con la i"+i);
+                //b.drawBoard();
                 b.add(i, color);
-                int x = profund(b, -color, color, prof/*****/, false);//prof   
-              //  System.out.println("Heristico de MAX movement:"+x);
+                //Enviar a evaluar
+                int x = profund(b, -color, color, prof, false);
+                if( x== Integer.MAX_VALUE) return i;
+                //Obtenir màxim, nivell MAX
                 if (x > n) {
                     n = x;
                     pos = i;
@@ -148,46 +166,85 @@ public class LloydC implements Player {
             }catch(Exception e){}
             
         }
-        System.out.println("Vector de movimientos movement MAX"+list);
-        System.out.println("Movement MAX Elige posicion"+pos);
         return pos;
+    }
+    
+    public int profund(Board t, int turn, int color, int prof, boolean level){
+        //Turn canvia color per afegir fitxa, color es el que avaluara heuristic
+        if (prof < 1){
+           return heuristic(t,color);            
+        }else{
+            //Demanar moviments possibles del tauler
+            Vector<Movement> list = t.getMovements(color);
+            Integer n;
+            //Preparar nivell MIN o MAX
+            if (level) n = Integer.MIN_VALUE;
+            else n = Integer.MAX_VALUE;
+            //Per cada moviment possible
+            for (int i = 0; i < list.size(); ++i) {
+                try {
+                    //Copiem tauler i afegim fitxa al moviment
+                    Board b = new Board(t);
+                    b.add(i, turn);
+                    //b.drawBoard();
+                    //Crida recursiva canviant el color de torn i min/max
+                    int x = profund(b, -turn, color, prof--, !level);
+                    //Segons nivell n es maxim o minim
+                    if ((level && x > n) || (!level && x < n )) {
+                        n = x;
+                    }
+                }catch(Exception e){}
+            }
+            return n;
+        }
+    
     }
 
     private int heuristic(Board b, int color) {
-        
-        if(20 > b.getQuantityOfPieces(color)+b.getQuantityOfPieces(-color)) return b.getMovements(color).size();
-        //System.out.println("Soy un tablero del heuristico");
-       // b.drawBoard();
+        int my=b.getMovements(color).size();
+        int other=b.getMovements(-color).size();
+        //No hi han moviments +- infinit
+        if( my==0 && other==0){
+            if(b.getQuantityOfPieces(color) > b.getQuantityOfPieces(-color)) return Integer.MAX_VALUE;
+            else return Integer.MIN_VALUE;
+                }
         int h = 0;
-        //int OtherMoves= b.getMovements(-color).size();
-        //if(0 == OtherMoves && b.getQuantityOfPieces(color)>b.getQuantityOfPieces(-color)) return Integer.MAX_VALUE;
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
+        boolean [] cols = new boolean[8];
+        Arrays.fill(cols, Boolean.TRUE);
+        for (int i = 0; i < HEIGHT; i++) {
+            //Mirar columnes del mateix color fer taula de 8 posicions i anar anotant a cada columna
+            boolean row=true;
+            for (int j = 0; j < WIDTH; j++) {
+                
                 Point x = new Point(i, j);
                 int xColor = b.getColor(x);
+                // row observa files assegurades
+                if(row) row = xColor == color;
+                if(cols[j]) cols[j]= xColor == color; 
+
 
                 if (xColor != Color.EMPTY.getColor()) {
-                    if (top.containsKey(x)) {
+                    //Cantonades del tauler
+                    if (top.containsKey(x)) {                        
                         h += 700 * (xColor * color);
+                    //Marc exterior    
                     } else if (frame.containsKey(x)) {
-                        
-                        // AÑADIMOS LO NUEVO DE LA HEURISTICA DONDE EVITAMOS QUE UNA PIEZA
-                        // ASEGURADA, NO SEA COMESTIBLE POR EL OPONENTE
-                        
+                        //Si hi ha una casella lliure a les vores, devaluem si som al costat del contrari amb un espai al costat
+                        //Verticals
                         if (i==0 || i==7) {
-                            if ((b.getColor(i, j-1) != xColor) && (b.getColor(i, j-1) != b.getColor(i, j+1))) h-=100 * (xColor * color);
+                            if ((b.getColor(i, j-1) != xColor) && (b.getColor(i, j-1) != b.getColor(i, j+1))) h-=400 * (xColor * color);
                             else h+=400 * (xColor * color); // Incluye al lado de una nuestra
                         }
-                        
+                        //Horitzontals
                         if (j==0 || j==7) {
-                            if ((b.getColor(i-1, j) != xColor) && (b.getColor(i-1, j) != b.getColor(i+1, j))) h-=100 * (xColor * color);
+                            if ((b.getColor(i-1, j) != xColor) && (b.getColor(i-1, j) != b.getColor(i+1, j))) h-=400 * (xColor * color);
                             else h+=400 * (xColor * color); // Incluye al lado de una nuestra
                         }
                             
-                        
+                    //Caselles adjacents a les vores    
                     } else if (bad.containsKey(x)) {
                         
-                        // AÑADIMOS LO NUEVO DE LA HEURISTICA DONDE SALVAMOS MARCOS
+                        //Valorar positivament una d'aquestes caselles si els 3 moviments del marc estan ocupats
                         if (i==1 && (j>1 && j<6)) {
                             if (b.getColor(0,j-1)==0 || b.getColor(0,j)==0 || b.getColor(0, j+1)==0) h-= 200 * (xColor * color);
                             else h+=200 * (xColor * color);
@@ -202,62 +259,90 @@ public class LloydC implements Player {
                             else h+=200 * (xColor * color);
                         }else{
                             if (i==1 && j==1) {
-                                if (b.getColor(0,0)==0 || b.getColor(0, 1)==0 || b.getColor(0, 2)==0 || b.getColor(1,0)==0 || b.getColor(2,0)==0) h-= 200 * (xColor * color);
+                                if (b.getColor(0,0)==0 || b.getColor(0, 1)==0 || b.getColor(0, 2)==0 || b.getColor(1,0)==0 || b.getColor(2,0)==0) h-= 400 * (xColor * color);
                                 else h+=200 * (xColor * color); 
                             }else if(i==1 && j==6) {
-                                if (b.getColor(0,7)==0 || b.getColor(0, 5)==0 || b.getColor(0, 6)==0 || b.getColor(1,7)==0 || b.getColor(2,7)==0) h-= 200 * (xColor * color);
+                                if (b.getColor(0,7)==0 || b.getColor(0, 5)==0 || b.getColor(0, 6)==0 || b.getColor(1,7)==0 || b.getColor(2,7)==0) h-= 400 * (xColor * color);
                                 else h+=200 * (xColor * color); 
                             }else if(i==6 && j==1) {
-                                if (b.getColor(7,0)==0 || b.getColor(5, 0)==0 || b.getColor(6, 0)==0 || b.getColor(7,1)==0 || b.getColor(7,2)==0) h-= 200 * (xColor * color);
+                                if (b.getColor(7,0)==0 || b.getColor(5, 0)==0 || b.getColor(6, 0)==0 || b.getColor(7,1)==0 || b.getColor(7,2)==0) h-= 400 * (xColor * color);
                                 else h+=200 * (xColor * color);
                             }else if(i==6 && j==6) {
-                                if (b.getColor(7,7)==0 || b.getColor(5, 7)==0 || b.getColor(6, 7)==0 || b.getColor(7,5)==0 || b.getColor(7,6)==0) h-= 200 * (xColor * color);
+                                if (b.getColor(7,7)==0 || b.getColor(5, 7)==0 || b.getColor(6, 7)==0 || b.getColor(7,5)==0 || b.getColor(7,6)==0) h-= 400 * (xColor * color);
                                 else h+=200 * (xColor * color);
                             }
                         }
-                        
+                    //Caselles centrals    
                     } else if (middle.containsKey(x)) {
-                        h += 50 * (xColor * color);
+                        h += 20 * (xColor * color);
                     }
                 }
             }
+            //Tota la fila del mateix color
+            if(row) h+= 500;
+        }
+        //Incrementem per columna acumulada
+        for(int i=0; i<WIDTH; ++i){
+            if(cols[i]) h+=500;
         }
         //System.out.println("Heuristic:"+h);
-            if(25 > b.getQuantityOfPiecesOnBoard())h = h + 20*b.getQuantityOfPieces(color);
+            //A partir del torn 50 la diferencia de fitxes amb el contrari puntua
+            if(50 < b.getQuantityOfPiecesOnBoard())h = h + 50*(b.getQuantityOfPieces(color)-b.getQuantityOfPieces(-color));
+            //Entre torn 15 i 50 es valora limitar els moviments del contrari
+            if(15 < b.getQuantityOfPiecesOnBoard() && 50>b.getQuantityOfPiecesOnBoard()){
+                if(other <5) h+=500;
+                else h-= 200;
+            }
             //System.out.println("Soy el resultado del heuristico con valor:"+h);
             return h;
     }
 
-    public int profund(Board t, int turn, int color, int prof, boolean level){
-        //Turn canvia color per afegir fitxa
-        if (prof < 1){
-            //Demanar moviments possibles del tauler
-           return heuristic(t,color);            
-        }else{
-            //Demanar moviments possibles del tauler
-            Vector<Movement> list = t.getMovements(color);
-            Integer n;
-            if (level) n = Integer.MIN_VALUE;
-            else n = Integer.MAX_VALUE;
-            //Per cada moviment possible
-            for (int i = 0; i < list.size(); ++i) {
-                //add ficha
-                try {
-                    Board b = new Board(t);
-                    b.add(i, turn);
-                    //b.drawBoard();
-                    int x = profund(b, -turn, color, prof--, !level);
-                    if ((level && x > n) || (!level && x < n )) {
-                        n = x;
-                    }
-                }catch(Exception e){}
+    
+    
+    private int alfabeta(Board b, int color, int prof, int alfa, int beta) throws CloneNotSupportedException
+     {
+      // Falta mirar si hay solucion
+       if ((prof == 0) || (!b.getMovements(color).isEmpty()))
+       {
 
-            }
-            //System.out.println("Heuristic:"+n);
-            if(25 < t.getQuantityOfPiecesOnBoard())return n;
-            else return n+10*t.getQuantityOfPieces(color);
-    
-        }
-    
-    }
+
+         alfa = heuristic(b, color);
+       }
+       else {
+         //Demanar moviments possibles del tauler
+         Vector<Movement> list = b.getMovements(color);
+
+         for (int i = 0; i < list.size(); i++) {
+           Board aux = new Board(b);
+             aux.add(i, color);
+             alfa = Math.max(alfa, -alfabeta(aux, -color, prof - 1, -beta, -alfa));
+             if (beta <= alfa) return alfa;
+           }
+         }
+
+       return alfa;
+     }
+
+     public int movement2(Board b, int color) throws CloneNotSupportedException
+     {
+       int a = -10000;
+       int anew = 0;
+       int mov = 0;
+
+       //Demanar moviments possibles del tauler
+       Vector<Movement> list = b.getMovements(color);
+
+       for (int i = 0; i < list.size(); i++)
+       {
+         Board aux = new Board(b);
+           aux.add(i, color);
+           anew = -alfabeta(aux, -color, prof, Integer.MIN_VALUE, Integer.MAX_VALUE);
+           if (anew > a) { 
+               mov = i;
+               a = anew;
+           }
+       }
+
+       return mov;
+     }
 }

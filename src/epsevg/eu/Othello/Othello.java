@@ -14,6 +14,7 @@ import epsevg.eu.Othello.GUI.Pick;
 import epsevg.eu.Othello.Player.Interface.Player;
 import epsevg.eu.Othello.Util.Color;
 import epsevg.eu.Othello.Base.Movement;
+import epsevg.eu.Othello.Base.Options;
 import epsevg.eu.Othello.Util.Point;
 import epsevg.eu.Othello.Logic.Board;
 import java.awt.Dimension;
@@ -38,7 +39,13 @@ public class Othello {
     }
     
     static Player jugador1,jugador2;
-    static Pair exjugadors[];
+    
+    
+   // static Pair exjugadors[]; // Borrar mas tarde
+    
+    static Options exjugadors;
+    
+    
     public boolean go = false;
     
     static volatile GUI gui;
@@ -116,7 +123,7 @@ public class Othello {
         return b.getPointPos(p);
     }
     
-     private static void tirar_jugada(Board b, int turn, Vector<Movement> moviments, Player jugador) {
+     private static void tirar_jugada(Board b, int turn, Vector<Movement> moviments, Player jugador) throws CloneNotSupportedException {
         if (jugador instanceof Manual){
             b.add(ManPlay(b),turn);
         }
@@ -187,9 +194,7 @@ public class Othello {
         // Crear Thread
          Thread currentThread = Thread.currentThread();
          
-        
-         
-        
+        // Encarregat de crear Pick Object
         Thread tr = new Thread()
          {
              public void run()
@@ -217,42 +222,12 @@ public class Othello {
         
         esperar_tirada(); // ESPERAR PER PICKEJAR
         
-        System.out.println("TIRADA FETA");
         
-        Pair<String,String> s=null;
+        // DECIDIR QUINS JUGADORS HAN D'APAREIXER
+      
+        Pair <String[],String[]> aux = pi.getChoice();
         
-        s = pi.getChoice();
-        
-        
-        System.out.println("S = " + s);
-        
-        
-        
-        String u1 = s.getKey();
-        String u2 = s.getValue();
-        
-        String user1,user2;
-        int prof1=-1,prof2=-1;
-        
-        
-        
-        if (u1.length()>6){
-            user1 = u1.substring(0,u1.indexOf("-"));
-            System.out.println(u1.substring(u1.indexOf("-")+1,u1.length()));
-            prof1 = Integer.parseInt(u1.substring(u1.indexOf("-")+1,u1.length()));            
-        }
-        
-        else user1 = u1;
-        
-        if (u2.length()>6){
-            user2 = u2.substring(0,u2.indexOf("-"));
-            prof2 = Integer.parseInt(u2.substring(u2.indexOf("-")+1,u2.length()));
-            
-        }
-        else user2 = u2;
-        
-        
-        if (null != s.getKey()) switch (user1) {
+        if (null != aux.getKey()) switch (aux.getKey()[0]) {
             case "Manual":
                 jugador1 = new Manual();
                 break;
@@ -260,13 +235,13 @@ public class Othello {
                 jugador1 = new Random();
                 break;
             case "LloydC":
-                jugador1 = new LloydC(prof1);
+                jugador1 = new LloydC(Integer.parseInt(aux.getKey()[1]),Boolean.parseBoolean(aux.getKey()[2]));
                 break;
             default:
                 break;
         }
         
-        if (null != s.getValue()) switch (user2) {
+        if (null != aux.getValue()) switch (aux.getValue()[0]) {
             case "Manual":
                 jugador2 = new Manual();
                 break;
@@ -274,23 +249,27 @@ public class Othello {
                 jugador2 = new Random();
                 break;
             case "LloydC":
-                jugador2 = new LloydC(prof2);
+                jugador2 = new LloydC(Integer.parseInt(aux.getValue()[1]),Boolean.parseBoolean(aux.getValue()[2]));
                 break;
             default:
                 break;
         }
         
-        if (jugador1 instanceof Manual || jugador1 instanceof Random){
-                exjugadors[0] = new Pair (jugador1,false);                
-        }
-        else exjugadors[0] = new Pair (jugador1,prof1);
         
-        if (jugador2 instanceof Manual || jugador2 instanceof Random){
-                exjugadors[1] = new Pair (jugador2,false);                
-        }
-        else exjugadors[1] = new Pair (jugador2,prof2);
+        // ACTUALITZAR PER SI ES TORNA A JUGAR
+        String[] jugadors_a = new String[2];
+        jugadors_a[0] = jugador1.name();
+        jugadors_a[1] = jugador2.name();
         
+        int[] profunditats = new int[2];
+        profunditats[0] = Integer.parseInt(aux.getKey()[1]);
+        profunditats[1] = Integer.parseInt(aux.getValue()[1]);
         
+        boolean[] poda = new boolean [2];
+        poda[0] = Boolean.parseBoolean(aux.getKey()[2]);
+        poda[1] = Boolean.parseBoolean(aux.getValue()[2]);
+        
+        exjugadors = new Options (jugadors_a,profunditats,poda);
         
         
         // RESTABLECER ETIQUETAS
@@ -298,9 +277,6 @@ public class Othello {
         gui.resetLabels();
         
     }
-    
-    
-    
     
     public static void main (String [] args) throws InterruptedException, CloneNotSupportedException, IOException, FileNotFoundException, JavaLayerException
     {
@@ -312,17 +288,12 @@ public class Othello {
         Board b = start_gui_and_board();        
         esperar_tirada(); // Sincronitzacio threads
         
-        exjugadors = new Pair[2];
+        exjugadors = null; // NO tenim exjugadors
         
-        exjugadors[0] = exjugadors[1] = null;
-        
-        
-        
-
         while (!exit)
         {
             
-            pickPlayers();
+            pickPlayers(); // Assignem nous jugadors i ens els guardem per la seguent partida 
             
             n_turnos = 0;
             
@@ -373,18 +344,12 @@ public class Othello {
                 turn*=-1;
 
             }
-            
-            
 
-            gui.setWinner(getWinner(b,jugador1,jugador2));
-                
+            gui.setWinner(getWinner(b,jugador1,jugador2));                
             exit = checkNextGame(b,jugador1,jugador2);
             
-
         }
         gui.dispatchEvent(new WindowEvent(gui,WindowEvent.WINDOW_CLOSING));
     }
-
-   int processors = Runtime.getRuntime().availableProcessors();
 
 }

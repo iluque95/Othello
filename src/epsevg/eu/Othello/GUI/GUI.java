@@ -29,6 +29,11 @@ import javax.swing.JPanel;
 import javazoom.jl.decoder.JavaLayerException;
 import static epsevg.eu.Othello.Constants.Constants.WIDTH;
 import static epsevg.eu.Othello.Constants.Constants.HEIGHT;
+import static epsevg.eu.Othello.Constants.Constants.IMG;
+import static epsevg.eu.Othello.Constants.Constants.LOGO;
+import static epsevg.eu.Othello.Constants.Constants.MUS1;
+import static epsevg.eu.Othello.Constants.Constants.MUS2;
+import java.io.InputStream;
 /**
  *
  * @author marti
@@ -46,8 +51,12 @@ public class GUI extends JFrame {
     Vector<Movement> mov = null; 
     private Point s;
     javazoom.jl.player.Player p;
+    InputStream FIS;
+    BufferedInputStream BIS;
     boolean play = true;    
     boolean go = false;
+    
+    
     
     Thread music;
     
@@ -71,7 +80,7 @@ public class GUI extends JFrame {
         
         File file = null;
         try{
-            file = new File(getClass().getClassLoader().getResource("epsevg/eu/Othello/Resources/Java.png").getFile());
+            file = new File(getClass().getClassLoader().getResource(LOGO).getFile());
             
         }
         catch(Exception e){System.out.println(e+" | No s'ha pogut carregar la icona");}
@@ -79,7 +88,11 @@ public class GUI extends JFrame {
                 
         Image image = null;
         
-       if (file != null) image = ImageIO.read(file);
+       if (file != null)
+           try{
+               image = ImageIO.read(file);
+           }
+           catch(Exception e){ System.out.println("ERROR : " + e);}
         
        if (image != null) this.setIconImage(image);
        
@@ -860,54 +873,51 @@ public class GUI extends JFrame {
     }
     
     private void playMusic() throws FileNotFoundException, IOException, JavaLayerException{
-        long total_length;
-        long pouse;
         
-        FileInputStream FIS;
-        BufferedInputStream BIS;
-        javazoom.jl.player.Player player;
+        //System.out.println(epsevg.eu.Othello.Othello.class.getResourceAsStream(IMG));
         
-        String mus1="assets/Music.mp3";
-        String mus2="assets/Music2.mp3";
-        
-        File myFile = null;
         
         try{
-            int n = ThreadLocalRandom.current().nextInt(0,2);
-            
-            if (n == 1) FIS = new FileInputStream(new File(mus1));
-            else FIS = new FileInputStream(new File(mus2));
-            BIS = new BufferedInputStream(FIS);
-            p = new javazoom.jl.player.Player(BIS);
-            total_length = FIS.available();
-            
             music = new Thread()
             {
                 public void run()
                 {
                     try{
-                        p.play();
-                        
+                        while (play){
+                            int n = ThreadLocalRandom.current().nextInt(0,2);
+                            if (n == 1) FIS = epsevg.eu.Othello.Othello.class.getResourceAsStream(MUS1);
+                            else FIS = epsevg.eu.Othello.Othello.class.getResourceAsStream(MUS2);
+                            BIS = new BufferedInputStream(FIS);
+                            p = new javazoom.jl.player.Player(BIS);
+                            p.play();
+                        }
                     }
-                    catch(Exception e)
+                    catch(JavaLayerException e)
                     {
-                        
+                        System.out.println("FITXER NO TROBAT MUSICA");
+
                     }
                 }
             };
             music.start();
-                   
             
-            
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
+        catch(Exception e){}
+            
         
     }
     
+    
     private void setPicture() throws IOException
     {
-        BufferedImage image = ImageIO.read(getClass().getResource ("/epsevg/eu/Othello/Resources/Othello.jpg"));        
+        BufferedImage image = null;
+        try{
+           image = ImageIO.read(getClass().getResource (IMG));
+        
+        }
+        catch(Exception e){System.out.println(e);}
+        
+                
         ImageIcon n = new ImageIcon(resize(image,jLabel19.getWidth(),jLabel19.getHeight()));        
         jLabel19.setIcon(n);
     }
@@ -983,14 +993,24 @@ public class GUI extends JFrame {
 
             ++i;
         }
-
-        for (int k=0;k<mov.size();++k){
+        
+        /* IT SOMETIMES EXCEPTS DUE TO NO REASON, USE OF "IF" TO REDUCE ITS PROBLEMS*/
+        int k = 0;
+        if (k<mov.size())
+        {
+            for (k=0;k<mov.size();++k){
             Point p = mov.get(k).getPosition();
             g.setColor(Color.RED);
             g.drawOval(whichx(p.getY()),whichy(p.getX()),40,40);
             g.setColor(new Color (0,175,0));
             g.fillOval(whichx(p.getY()),whichy(p.getX()),40,40);                    
-        }   
+        } 
+            
+            
+            
+        }
+
+          
     }
     
         
