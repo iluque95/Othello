@@ -19,8 +19,11 @@ public class Board {
     public OthelloMove move;
     private Vector<Movement> movements;
     
+    private int turn;
+    
     public Board()
     {
+        turn = -1;
         data = new OthelloData();
         move = new OthelloMove(data);
         movements = null;
@@ -72,7 +75,7 @@ public class Board {
     // Cambiar esto por un puntero a un vector de movimientos.
     public void add (int i, int color)
     {
-        data.add(movements.elementAt(i).getPosition(), movements.elementAt(i).getDirections(), color);
+        if (color==getTurn()) data.add(movements.elementAt(i).getPosition(), movements.elementAt(i).getDirections(), color);
         //movements = null;
     }
     
@@ -127,11 +130,13 @@ public class Board {
     {
        
         movements = move.getMovements(color);
+       
         return movements;
     }
     
     public void reset() // RESET TO NEW GAME
     {
+        turn = -1;
         data = new OthelloData();
         move = new OthelloMove(data);
         movements = null;
@@ -146,7 +151,13 @@ public class Board {
     {
         return movements.contains(p);
     }
-            
-   // PUNT ES VALID ????
-
+    
+    public void nextTurn(){
+        turn*=-1;
+    }
+    
+    public int getTurn(){
+        return turn;
+    }
+    
 }

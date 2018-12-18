@@ -329,9 +329,7 @@ public class Othello {
             n_turnos = 0;
             
             gui.setPlayers(jugador1.name(), jugador2.name());
-
-            int turn = 1; // 1 = jugador 1 / 0 = jugador 2
-                                 // 1 = color_j1 / -1 = color_j2
+            
             boolean acabat = false;
             while (!acabat)
             {
@@ -339,10 +337,10 @@ public class Othello {
                 ++n_turnos;
                 /* ESTABLECER PARAMETROS GUI */
                 gui.setStatus(Integer.toString(b.getQuantityOfPiecesOnBoard())+" PECES");
-                Vector<Movement> moviments = b.getMovements(turn);
+                Vector<Movement> moviments = b.getMovements(b.getTurn());
                 gui.pinta_tauler(b,moviments);
-                if (turn == 1) gui.setTurn("J1 : "+jugador1.name(),turn);
-                else gui.setTurn("J2 : "+jugador2.name(),turn);
+                if (b.getTurn() == 1) gui.setTurn("J1 : "+jugador1.name(),b.getTurn());
+                else gui.setTurn("J2 : "+jugador2.name(),b.getTurn());
                 gui.setNumPieces(b.getQuantityOfPieces(Color.BLACK.getColor()), b.getQuantityOfPieces(Color.WHITE.getColor()));
                 /* FIN ESTABLECER PARAMETROS GUI */
                 
@@ -351,7 +349,7 @@ public class Othello {
                 // COMPROVAR SI PUEDE TIRAR Hacer notificar a GUI de modo visual
                 if(moviments.isEmpty()){
                     System.out.println("No moves for this player");
-                    if(b.getMovements(-turn).isEmpty()){
+                    if(b.getMovements(-b.getTurn()).isEmpty()){
                         System.out.println("Geim ober. There's no moves for any player");
                         acabat = true;
                     }
@@ -359,17 +357,17 @@ public class Othello {
 
                 else{
                     
-                    if (turn==1 && !moviments.isEmpty())
+                    if (b.getTurn()==1 && !moviments.isEmpty())
                     {
-                        tirar_jugada(b, turn, moviments, jugador1);
+                        tirar_jugada(b, b.getTurn(), moviments, jugador1);
                     }
                     else if( !moviments.isEmpty()){ // Tira jugador2
-                        tirar_jugada(b, turn, moviments, jugador2);
+                        tirar_jugada(b, b.getTurn(), moviments, jugador2);
                     }
 
                 }
 
-                turn*=-1;
+                b.nextTurn();
 
             }
             --v;
@@ -382,19 +380,9 @@ public class Othello {
             if (testing)
             {                
                 String gu = getWinner(b,jugador1,jugador2);
-                if (gu.substring(gu.indexOf(' ')+1,gu.length()).equals(jugador1.name()))
-                {
-                    g1++;
-                    
-                }
-                
-                else if (gu.substring(gu.indexOf(' ')+1,gu.length()).equals(jugador2.name())){
-                    g2++;
-                }
+                if (gu.substring(gu.indexOf(' ')+1,gu.length()).equals(jugador1.name())) g1++;
+                else if (gu.substring(gu.indexOf(' ')+1,gu.length()).equals(jugador2.name())) g2++;                
                 else if(gu.equals("DRAW")) draw++;
-                
-                
-                
                 
                 if (v==0)
                 {// Escribir estadisticas

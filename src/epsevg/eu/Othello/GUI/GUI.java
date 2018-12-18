@@ -1008,14 +1008,12 @@ public class GUI extends JFrame {
         if (k<mov.size())
         {
             for (k=0;k<mov.size();++k){
-            Point p = mov.get(k).getPosition();
-            g.setColor(Color.RED);
-            g.drawOval(whichx(p.getY()),whichy(p.getX()),40,40);
-            g.setColor(new Color (0,175,0));
-            g.fillOval(whichx(p.getY()),whichy(p.getX()),40,40);                    
-        } 
-            
-            
+                Point p = mov.get(k).getPosition();
+                g.setColor(Color.RED);
+                g.drawOval(whichx(p.getY()),whichy(p.getX()),40,40);
+                g.setColor(new Color (0,175,0));
+                g.fillOval(whichx(p.getY()),whichy(p.getX()),40,40);  
+            } 
             
         }
 
