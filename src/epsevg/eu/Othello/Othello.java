@@ -18,17 +18,10 @@ import epsevg.eu.Othello.Base.Options;
 import epsevg.eu.Othello.Util.Point;
 import epsevg.eu.Othello.Logic.Board;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,27 +35,23 @@ import javafx.util.Pair;
 import javazoom.jl.decoder.JavaLayerException;
 
 public class Othello {
-    /* CLASE PRINCIPAL*/
-    
+     
+   /* GAME RELATED */
     
     static Player jugador1,jugador2;    
-    static Options exjugadors;    
-    
+    static Options exjugadors;   
+    static int n_turnos;    
     public boolean go = false;
     
-    static volatile GUI gui;
-    static Repeat p;
+    /* GAME FLOW */
     
+    static volatile GUI gui;
+    static Repeat p;    
     static Thread t;
     static Pick pi;
     
-    static int n_turnos;
-    
-    static boolean testing; // Boolean per designar estdistiques partides (HERI)
-    
-    
-    
-    
+    /* TESTING */
+    static boolean testing;
     
     static Board start_gui_and_board()
     {
@@ -96,15 +85,27 @@ public class Othello {
         
     }
     
+    
+    /**
+     * 
+     */
+    
     static void esperar_tirada()
     {
         try {
             Thread.sleep(Integer.MAX_VALUE);
         } catch (InterruptedException ex) {}
         
+       
     }
     
-    
+    /**
+     * 
+     * @param b Games' board
+     * @param j1 First Player
+     * @param j2 Seond Player
+     * @return Game's winner
+     */
     static String getWinner(Board b, Player j1, Player j2)
     {
         int p_j1 = b.getQuantityOfPieces(Color.BLACK.getColor()); // Peces jugador negre
@@ -140,6 +141,13 @@ public class Othello {
         }
     }
     
+    /**
+     * 
+     * @param b Actual Board
+     * @param j1 Player 1
+     * @param j2 Player 2
+     * @return Whether there's gonna be a next game
+     */
     private static boolean checkNextGame(Board b, Player j1, Player j2)
     {
          Thread mainThread = Thread.currentThread();
@@ -292,8 +300,8 @@ public class Othello {
         boolean exit = false;
         
         /* ATRIBUTS TESTING*/
-        testing = false; // SET THIS TO TRUE TO TEST
-        int v = 100; // Nombre de vegades bucle (Testing)
+        testing = true; // SET THIS TO TRUE TO TEST
+        int v = 1000; // Nombre de vegades bucle (Testing)
         int g1 = 0;
         int g2 = 0;
         int draw = 0;
@@ -307,18 +315,18 @@ public class Othello {
         
         while (!exit)
         {
-            
             if (!testing) pickPlayers(); // Assignem nous jugadors i ens els guardem per la seguent partida 
             else{
                 // --------------- TESTING ----------------------Establim jugadors per a fer estadistiques
-                jugador1 = new LloydC(2,false);
-                jugador2 = new Random();
+               jugador1 = new LloydC(0,false);
+               jugador2 = new Random();
+               
+               //   jugador1 = new Random();
+               //   jugador2 = new LloydC(0,false);
+               
             }
             
             n_turnos = 0;
-            
-            
-            
             
             gui.setPlayers(jugador1.name(), jugador2.name());
 
@@ -338,11 +346,8 @@ public class Othello {
                 gui.setNumPieces(b.getQuantityOfPieces(Color.BLACK.getColor()), b.getQuantityOfPieces(Color.WHITE.getColor()));
                 /* FIN ESTABLECER PARAMETROS GUI */
                 
-                
                 gui.setVisible(true);
                 
-                
-
                 // COMPROVAR SI PUEDE TIRAR Hacer notificar a GUI de modo visual
                 if(moviments.isEmpty()){
                     System.out.println("No moves for this player");
@@ -371,9 +376,8 @@ public class Othello {
 
             gui.setWinner(getWinner(b,jugador1,jugador2));                
             if (!testing) exit = checkNextGame(b,jugador1,jugador2);
-            else{
-                exit = (v==0);
-            }
+            else exit = (v==0);
+            
             
             if (testing)
             {                
@@ -395,7 +399,6 @@ public class Othello {
                 if (v==0)
                 {// Escribir estadisticas
                     try {
-                        System.out.println("ENTRO");
                         final Path path = Paths.get("Statistics "+jugador1.name()+" VS "+jugador2.name()+".txt");
                         Files.write(path, Arrays.asList(" J1 "+jugador1.name()+": "+g1+" WINS | J2 "+jugador2.name()+": "+g2+" WINS | DRAW : "+draw), StandardCharsets.UTF_8,
                         Files.exists(path) ? StandardOpenOption.APPEND : StandardOpenOption.CREATE);
@@ -406,14 +409,19 @@ public class Othello {
                     
                     
                 }
-                else b.reset();
+                else{
+                    b.reset();
+                    gui.resetLabels();
+                }
                 
             }
                 
         }
         gui.dispatchEvent(new WindowEvent(gui,WindowEvent.WINDOW_CLOSING));
+        
+        
     }
+    
+    
 
-} /*if (p_j1 > p_j2) return "J1 "+j1.name();
-        else if (p_j1 < p_j2) return "J2 "+j2.name();
-        else return "DRAW";*/
+}

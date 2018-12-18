@@ -73,32 +73,16 @@ public class OthelloData {
         pieces[Color.EMPTY.getColor()+1] = WHOLE_DEFAULT_START_PIECES;
                 
 
-        Random rnd = new Random();
-        
-        if ((1+rnd.nextInt(2))==1) {
-            board[3][3]=Color.BLACK.getColor(); 
-            board[3][4]=Color.WHITE.getColor();
-            board[4][3]=Color.WHITE.getColor();
-            board[4][4]=Color.BLACK.getColor();
-            
-            WPieces.add(new Point(3,4));
-            WPieces.add(new Point(4,3));
-            
-            BPieces.add(new Point(3,3));
-            BPieces.add(new Point(4,4));
-            
-        }else{
-            board[3][3]=Color.WHITE.getColor(); 
-            board[3][4]=Color.BLACK.getColor();
-            board[4][3]=Color.BLACK.getColor();
-            board[4][4]=Color.WHITE.getColor();
-            
-            BPieces.add(new Point(3,4));
-            BPieces.add(new Point(4,3));
-            
-            WPieces.add(new Point(3,3));
-            WPieces.add(new Point(4,4));
-        }
+        board[3][3]=Color.BLACK.getColor(); 
+        board[3][4]=Color.WHITE.getColor();
+        board[4][3]=Color.WHITE.getColor();
+        board[4][4]=Color.BLACK.getColor();
+
+        WPieces.add(new Point(3,4));
+        WPieces.add(new Point(4,3));
+
+        BPieces.add(new Point(3,3));
+        BPieces.add(new Point(4,4));
         
         
     }

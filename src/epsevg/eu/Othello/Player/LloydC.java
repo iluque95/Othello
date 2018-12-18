@@ -27,9 +27,11 @@ public class LloydC implements Player {
     HashMap<Point, Boolean> never;
 
     int prof;
+    boolean prune;
 
     public LloydC(int profunditat, boolean prune) {
         prof = profunditat;
+        this.prune = prune;
         //Hashmaps amb els conjunts de caselles amb un mateix valor
         this.top = new HashMap<Point, Boolean>() {
             {
@@ -171,6 +173,9 @@ public class LloydC implements Player {
         }
         return pos;
     }
+    
+    
+    
 
     private int heuristic(Board b, int color) {
         int my=b.getMovements(color).size();
@@ -201,7 +206,7 @@ public class LloydC implements Player {
                         h += 10000 * (xColor * color);
                     //Marc exterior    
                     } else if (frame.containsKey(x)) {
-                        h+=1000;
+                       // h+=1000;
                         //Si hi ha una casella lliure a les vores, devaluem si som al costat del contrari amb un espai al costat
                         //Verticals
                         if (i==0 || i==7) {
@@ -212,6 +217,9 @@ public class LloydC implements Player {
                         if (j==0 || j==7) {
                             if ((b.getColor(i-1, j) != xColor) && (b.getColor(i-1, j) != b.getColor(i+1, j))) h -= 200 * (xColor * color);
                             else h+=200 * (xColor * color); // Incluye al lado de una nuestra
+                        }
+                        else{
+                            h+=2000;
                         }
                             
                     //Caselles adjacents a les vores    
@@ -285,7 +293,7 @@ public class LloydC implements Player {
             }
             //Tota la fila del mateix color
             if(row){
-                if(i==0 || i==7)h+= 2000;
+                if(i==0 || i==7)h+= 10000;
                 else h += 500;
             }
         }
@@ -293,15 +301,15 @@ public class LloydC implements Player {
         for(int i=0; i<WIDTH; ++i){
             if(cols[i]) h+=500;
         }
-        if(cols[0]) h+= 1000;
-        if(cols[7]) h+= 1000;
+        if(cols[0]) h+= 10000;
+        if(cols[7]) h+= 10000;
         //System.out.println("Heuristic:"+h);
             //A partir del torn 50 la diferencia de fitxes amb el contrari puntua
             if(57 < b.getQuantityOfPiecesOnBoard())h = h + 10*(b.getQuantityOfPieces(color)-b.getQuantityOfPieces(-color));
             //Entre torn 15 i 50 es valora limitar els moviments del contrari
-            if(15 < b.getQuantityOfPiecesOnBoard() && 50>b.getQuantityOfPiecesOnBoard()){
-                if(my>6) h+=1000;
-            }
+           // if(15 < b.getQuantityOfPiecesOnBoard() && 50>b.getQuantityOfPiecesOnBoard()){
+          //      if(my>6) h+=1000;
+           // }
             //if(b.getQuantityOfPiecesOnBoard()>15) h*=my;
             return h;
     }

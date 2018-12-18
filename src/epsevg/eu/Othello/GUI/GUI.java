@@ -843,7 +843,16 @@ public class GUI extends JFrame {
     public void setTurn (String s, int t){TurnLabel.setText(s);    
         if (t == 1) LabelColor.setText("Negres");
         else if (t == -1) LabelColor.setText("Blanques");      
-    }   
+    }  
+    
+    
+    /**
+     * Function its aim to provide a winner for the last game
+     * played.
+     * 
+     * @param s Winner's name
+     * 
+     */
     public void setWinner(String s){
         /*jLabel18.setVisible(false);
         TurnLabel.setVisible(false);
