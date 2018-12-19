@@ -834,57 +834,127 @@ public class GUI extends JFrame {
     }//GEN-LAST:event_BMusicActionPerformed
     
     /* SETTERS */
+    
+    /**
+     * Public method its goal is to set turns into GUI
+     * @param s Name of the player
+     * @param t Color of the player
+     */
     public void setTurn (String s, int t){TurnLabel.setText(s);    
         if (t == 1) LabelColor.setText("Negres");
         else if (t == -1) LabelColor.setText("Blanques");
     }
+    /**
+     * Public method its goal is to set whether is there
+     * going to be a next game.
+     * @param b If True: There's a next game
+     * Else: There is not a next game
+     */
     public void setRepeat(boolean b){go=b;}
     public void setWinner(String s){
-        WLabel.setText("<html>Winner :<br/>"+s+"</html>");        
+        WLabel.setText("<html>Winner :<br/>"+s+"</html>");
+        this.setRepeat(go);
     }
+    
+    /**
+     * Public method its goal is to update the most
+     * recent board
+     * @param b The most recent board
+     */
     public void updateBoard(Board b){this.b=b;}
+    
+    /**
+     * Public method its goal is to update the most
+     * recent movement
+     * @param mov The most recent movement
+     */
     public void updateMov (Vector<Movement> mov){this.mov = mov;}
+    
+    /**
+     * Public method its goal is to set the most
+     * recent number of pieces of each opponent.
+     * @param j1 Number of pieces of the black player
+     * @param j2 Number of pieces of the white player
+     */
     public void setNumPieces(int j1, int j2){
         pecesj1.setText(Integer.toString(j1));
         pecesj2.setText(Integer.toString(j2));
     }
+    
+    /**
+     * Private method its goal is to set a picture in front of
+     * the GUI
+     * @throws IOException 
+     */
     private void setPicture() throws IOException
     {
+        
         BufferedImage image = null;
         try{
-           image = ImageIO.read(getClass().getResource (IMG));
-        
+           image = ImageIO.read(getClass().getResource (IMG));        
         }
-        catch(Exception e){System.out.println(e);}
-        
-                
+        catch(Exception e){System.out.println(e);}               
         ImageIcon n = new ImageIcon(resize(image,jLabel19.getWidth(),jLabel19.getHeight()));        
         jLabel19.setIcon(n);
     }
+    
+    /**
+     * Public method its aim is to set the players name into the GUI
+     * @param p1 Players' one name
+     * @param p2 Players' two name
+     */
     public void setPlayers(String p1,String p2){Jugador1.setText(p1);
         Jugador2.setText(p2);
     }
+    
+    /**
+     * Public method its goal is to set the most recent status of 
+     * the game
+     * @param s String containing the status 
+     */
     public void setStatus(String s){pecesj1.setText(s);}
     
     
     
     /* GETTERS */
     
-    
+    /**
+     * Public method its goal is to get the most recent point
+     * used by a Manual player
+     * @return 
+     */
     public Point getPoint(){return s;}
+    
+    /**
+     * Public method which returns whether is there going to 
+     * be a next match.
+     * @return 
+     */
     public boolean getRepeat(){return go;}
     
     
     /* MODIFIERS */
     
+    /**
+     * Public method its goal is to update PI before painting
+     * the board into the GUI
+     * @param b The most recent board
+     * @param mov The most recent movement
+     */
     public void pinta_tauler(Board b, Vector<Movement> mov)
-    {
-        
+    {   
         updateBoard(b);
         updateMov(mov);
         repaint();    
     }
     
+    /**
+     * Private method its goal is to play music while there is
+     * a running game.
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws JavaLayerException 
+     */
     private void playMusic() throws FileNotFoundException, IOException, JavaLayerException{
         
         try{
@@ -917,12 +987,12 @@ public class GUI extends JFrame {
         
     }
     
-    
-    
-    
+    /**
+     * Public method its goal is to reset all
+     * labels
+     */
     public void resetLabels()
-    { // Responsable de reestablir les labels
-        
+    {   
         jLabel18.setVisible(true);
         TurnLabel.setVisible(true);
         pj1.setVisible(true);
@@ -936,10 +1006,16 @@ public class GUI extends JFrame {
     }
     
     
-    
+    /**
+     * Private method its goal is to play or resume
+     * music flow.
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws JavaLayerException 
+     */
     private void resume_or_pause() throws IOException, FileNotFoundException, JavaLayerException
     {
-        if (play){ // VOLEM PAUSAR
+        if (play){
             p.close();
             BMusic.setText("PLAYM");
         }
@@ -950,7 +1026,10 @@ public class GUI extends JFrame {
         play = !play;        
     }
     
-    
+    /**
+     * Public method overrided that paints the GUI
+     * @param g Graphics object
+     */
     @Override
     public void paint(Graphics g)
     {
@@ -984,32 +1063,37 @@ public class GUI extends JFrame {
 
             ++i;
         }
+       
+        for (int k=0;k<mov.size();++k){
+            Point p = mov.get(k).getPosition();
+            g.setColor(Color.RED);
+            g.drawOval(whichx(p.getY()),whichy(p.getX()),40,40);
+            g.setColor(new Color (0,175,0));
+            g.fillOval(whichx(p.getY()),whichy(p.getX()),40,40);  
+        } 
         
-        /* IT SOMETIMES EXCEPTS DUE TO NO REASON, USE OF "IF" TO REDUCE ITS PROBLEMS*/
-        int k = 0;
-        if (k<mov.size())
-        {
-            for (k=0;k<mov.size();++k){
-                Point p = mov.get(k).getPosition();
-                g.setColor(Color.RED);
-                g.drawOval(whichx(p.getY()),whichy(p.getX()),40,40);
-                g.setColor(new Color (0,175,0));
-                g.fillOval(whichx(p.getY()),whichy(p.getX()),40,40);  
-            } 
-        }
     }
         
+    /**
+     * Private method its goal is to get an horizontal coordenate
+     * from a column
+     * @param col Col which we want to calculate from
+     * @return Horizontal coordenate
+     */
     private static int whichx(int col){
         return ((50*col+52));
     }
-    
+    /**
+     * Private method its goal is to get a vertical coordenate
+     * from a row
+     * @param fil Row
+     * @return Vertical coordenate
+     */
     private static int whichy(int fil){
         return (50*fil+30+42);
     }
     
     
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BMusic;
     private javax.swing.JTextField Jugador1;

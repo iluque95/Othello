@@ -36,24 +36,30 @@ import javazoom.jl.decoder.JavaLayerException;
 
 public class Othello {
      
-   /* GAME RELATED */
+   /* RELACIONATS AMB EL JOC*/
     
-    static Player jugador1,jugador2;    
-    static Options exjugadors;   
-    static int n_turnos;    
-    public boolean go = false;
+    private static Player jugador1,jugador2;    
+    private static Options exjugadors;   
+    private static int n_turnos;
     
-    /* GAME FLOW */
+    /* FUNCIONAMENT DEL JOC */
     
-    static volatile GUI gui;
-    static Repeat p;    
-    static Thread t;
-    static Pick pi;
+    private static volatile GUI gui;
+    private static Repeat p;    
+    private static Thread t;
+    private static Pick pi;
     
     /* TESTING */
-    static boolean testing;
+    private static boolean testing;
     
-    static Board start_gui_and_board()
+    
+    
+    /**
+     * Private method its goal is to set up GUI
+     * and a brand new board
+     * @return Returns the new board
+     */
+    private static Board start_gui_and_board()
     {
         Board b = new Board();
         Thread m = Thread.currentThread();        
@@ -74,7 +80,6 @@ public class Othello {
                     Logger.getLogger(Othello.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 gui.updateBoard(b);        
-                
             }
             });
                 
@@ -82,21 +87,18 @@ public class Othello {
         };        
         t.start();
         return b;
-        
     }
     
     
     /**
-     * 
-     */
-    
-    static void esperar_tirada()
+     * Private method its goal is to wait
+     * for the Manual player to chose a position
+     */    
+    private static void esperar_tirada()
     {
         try {
             Thread.sleep(Integer.MAX_VALUE);
         } catch (InterruptedException ex) {}
-        
-       
     }
     
     /**
@@ -106,7 +108,7 @@ public class Othello {
      * @param j2 Seond Player
      * @return Game's winner
      */
-    static String getWinner(Board b, Player j1, Player j2)
+    private static String getWinner(Board b, Player j1, Player j2)
     {
         int p_j1 = b.getQuantityOfPieces(Color.BLACK.getColor()); // Peces jugador negre
         int p_j2 = b.getQuantityOfPieces(Color.WHITE.getColor()); // Peces jugador blanc
@@ -115,23 +117,34 @@ public class Othello {
         else if (p_j1 < p_j2) return "J2 "+j2.name();
         else return "DRAW";
     }
+    
+    
     /**
-    * Asks to GUI for a valid movement of manual player
-    */
+     * Private method its aim is to return the Point which
+     * a Manual Player has chosen.
+     * @param b Board
+     * @return Point chosen by a manual player
+     */
     private static int ManPlay(Board b){
         esperar_tirada();
         Point p = gui.getPoint();
         while(!b.isValid(p)){
             esperar_tirada();
             p = gui.getPoint();
-            System.out.println(p);
-            
         }
-       
         return b.getPointPos(p);
     }
     
-     private static void tirar_jugada(Board b, int turn, Vector<Movement> moviments, Player jugador) throws CloneNotSupportedException {
+    /**
+     * Private method its aim is to control the flow
+     * of the turns
+     * @param b Board
+     * @param turn Most recent turn
+     * @param moviments Vector of possible movements
+     * @param jugador Player which turn belong to him
+     * @throws CloneNotSupportedException 
+     */
+    private static void tirar_jugada(Board b, int turn, Vector<Movement> moviments, Player jugador) throws CloneNotSupportedException {
         if (jugador instanceof Manual){
             b.add(ManPlay(b),turn);
         }
@@ -178,29 +191,34 @@ public class Othello {
         try{ // ESPERANT CONSTRUCCIO
             Thread.sleep(Integer.MAX_VALUE);
             }
-        catch(Exception e){
-            System.out.println("JA CONSTRUIT");}
+        catch(Exception e){}
         
-        try{
+        try{ // ESPERANT ELECCIÓ
             Thread.sleep(Integer.MAX_VALUE);
             }
-            catch(Exception e){
-                System.out.println("VALOR JA TRIAT");}
+            catch(Exception e){}
         
         
         boolean exit = !gui.getRepeat();
         p.dispatchEvent(new WindowEvent(p, WindowEvent.WINDOW_CLOSING));
-        if (!exit) b.reset(); // RESETEAMOS ATRIBUTOS OTHELLO DATA
-        
+        if (!exit) b.reset(); // RESET OTHELLO DATA ATRIBUTOS        
         return exit;
         
     }
     
-    static private void pickPlayers() throws IOException, FileNotFoundException, JavaLayerException, InterruptedException
+    
+    /**
+     * Private method its aim is to chose the players
+     * which will take part into the game
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws JavaLayerException
+     * @throws InterruptedException 
+     */
+    private static void pickPlayers() throws IOException, FileNotFoundException, JavaLayerException, InterruptedException
     {
         // Crear Thread
-         Thread currentThread = Thread.currentThread();
-         
+         Thread currentThread = Thread.currentThread();         
         // Encarregat de crear Pick Object
         Thread tr = new Thread()
          {
@@ -230,8 +248,6 @@ public class Othello {
         esperar_tirada(); // ESPERAR PER PICKEJAR
         
         
-        // DECIDIR QUINS JUGADORS HAN D'APAREIXER
-      
         Pair <String[],String[]> aux = pi.getChoice();
         
         if (null != aux.getKey()) switch (aux.getKey()[0]) {
@@ -276,30 +292,35 @@ public class Othello {
         exjugadors = new Options (jugadors_a,profunditats);
         
         
-        // RESTABLECER ETIQUETAS
-        
+        // REESTABLIR ETIQUETES        
         gui.resetLabels();
         
     }
     
+    
+    /**
+     * Public method which controls all the flow 
+     * of the execution of Othello
+     * @param args Empty
+     * @throws InterruptedException
+     * @throws CloneNotSupportedException
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws JavaLayerException 
+     */
     public static void main (String [] args) throws InterruptedException, CloneNotSupportedException, IOException, FileNotFoundException, JavaLayerException
-    {
-        
-        
-        boolean exit = false;
-        
+    {        
+        boolean exit = false;        
         /* ATRIBUTS TESTING*/
-        testing = true; // SET THIS TO TRUE TO TEST
+        testing = false; // SET THIS TO TRUE TO TEST
         int v = 1000; // Nombre de vegades bucle (Testing)
         int g1 = 0;
         int g2 = 0;
         int draw = 0;
-        /* FI ATRIBUTS TESTING*/
-        
+        /* FI ATRIBUTS TESTING*/        
         // Declarar GUI
         Board b = start_gui_and_board();        
-        esperar_tirada(); // Sincronitzacio threads
-        
+        esperar_tirada(); // Sincronitzacio threads        
         exjugadors = null; // NO tenim exjugadors
         
         while (!exit)
@@ -313,18 +334,14 @@ public class Othello {
                //   jugador1 = new Random();
                //   jugador2 = new LloydC(0,false);
                
-            }
-            
-            n_turnos = 0;
-            
+            }            
+            n_turnos = 0;            
             gui.setPlayers(jugador1.name(), jugador2.name());
             
             boolean acabat = false;
             while (!acabat)
             {
                 b.nextTurn();
-                
-                
                 ++n_turnos;
                 /* ESTABLECER PARAMETROS GUI */
                 gui.setStatus(Integer.toString(b.getQuantityOfPiecesOnBoard())+" PECES");
@@ -333,8 +350,7 @@ public class Othello {
                 if (b.getTurn() == 1) gui.setTurn("J1 : "+jugador1.name(),b.getTurn());
                 else gui.setTurn("J2 : "+jugador2.name(),b.getTurn());
                 gui.setNumPieces(b.getQuantityOfPieces(Color.BLACK.getColor()), b.getQuantityOfPieces(Color.WHITE.getColor()));
-                /* FIN ESTABLECER PARAMETROS GUI */
-                
+                /* FIN ESTABLECER PARAMETROS GUI */                
                 gui.setVisible(true);
                 
                 // COMPROVAR SI PUEDE TIRAR Hacer notificar a GUI de modo visual
@@ -345,9 +361,7 @@ public class Othello {
                         acabat = true;
                     }
                 }
-
                 else{
-                    
                     if (b.getTurn()==1 && !moviments.isEmpty())
                     {
                         tirar_jugada(b, b.getTurn(), moviments, jugador1);
@@ -355,51 +369,33 @@ public class Othello {
                     else if( !moviments.isEmpty()){ // Tira jugador2
                         tirar_jugada(b, b.getTurn(), moviments, jugador2);
                     }
-
                 }
-
-                
-
             }
             --v;
-
             gui.setWinner(getWinner(b,jugador1,jugador2));                
             if (!testing) exit = checkNextGame(b,jugador1,jugador2);
-            else exit = (v==0);
-            
-            
+            else exit = (v==0);            
             if (testing)
             {                
                 String gu = getWinner(b,jugador1,jugador2);
                 if (gu.substring(gu.indexOf(' ')+1,gu.length()).equals(jugador1.name())) g1++;
                 else if (gu.substring(gu.indexOf(' ')+1,gu.length()).equals(jugador2.name())) g2++;                
-                else if(gu.equals("DRAW")) draw++;
-                
+                else if(gu.equals("DRAW")) draw++;                
                 if (v==0)
-                {// Escribir estadisticas
+                {// Escriure estadistiques
                     try {
                         final Path path = Paths.get("Statistics "+jugador1.name()+" VS "+jugador2.name()+".txt");
                         Files.write(path, Arrays.asList(" J1 "+jugador1.name()+": "+g1+" WINS | J2 "+jugador2.name()+": "+g2+" WINS | DRAW : "+draw), StandardCharsets.UTF_8,
                         Files.exists(path) ? StandardOpenOption.APPEND : StandardOpenOption.CREATE);
                         }
-                        catch (final IOException ioe) {
-                    }
-                    
-                    
-                    
+                        catch (final IOException ioe) {}                    
                 }
                 else{
                     b.reset();
                     gui.resetLabels();
-                }
-                
-            }
-                
+                }                
+            }                
         }
-        gui.dispatchEvent(new WindowEvent(gui,WindowEvent.WINDOW_CLOSING));
-        
-    }
-    
-    
-
+        gui.dispatchEvent(new WindowEvent(gui,WindowEvent.WINDOW_CLOSING));        
+    }    
 }
