@@ -52,8 +52,6 @@ public class Othello {
     /* TESTING */
     private static boolean testing;
     
-    
-    
     /**
      * Private method its goal is to set up GUI
      * and a brand new board
@@ -89,7 +87,6 @@ public class Othello {
         return b;
     }
     
-    
     /**
      * Private method its goal is to wait
      * for the Manual player to chose a position
@@ -111,8 +108,7 @@ public class Othello {
     private static String getWinner(Board b, Player j1, Player j2)
     {
         int p_j1 = b.getQuantityOfPieces(Color.BLACK.getColor()); // Peces jugador negre
-        int p_j2 = b.getQuantityOfPieces(Color.WHITE.getColor()); // Peces jugador blanc
-        
+        int p_j2 = b.getQuantityOfPieces(Color.WHITE.getColor()); // Peces jugador blanc        
         if (p_j1 > p_j2) return "J1 "+j1.name();
         else if (p_j1 < p_j2) return "J2 "+j2.name();
         else return "DRAW";
@@ -145,13 +141,10 @@ public class Othello {
      * @throws CloneNotSupportedException 
      */
     private static void tirar_jugada(Board b, int turn, Vector<Movement> moviments, Player jugador) throws CloneNotSupportedException {
-        if (jugador instanceof Manual){
-            b.add(ManPlay(b),turn);
-        }
-        else{ // Qualsevol altre jugador
+        if (jugador instanceof Manual)
+            b.add(ManPlay(b),turn);        
+        else
             b.add(jugador.movement(b, turn), turn);
-
-        }
     }
     
     /**
@@ -289,7 +282,8 @@ public class Othello {
         profunditats[1] = Integer.parseInt(aux.getValue()[1]);
         
         
-        exjugadors = new Options (jugadors_a,profunditats);
+        exjugadors = new Options (jugadors_a,profunditats); // Actualitzem els exjugadors per
+                                                            // a la següent partida
         
         
         // REESTABLIR ETIQUETES        
