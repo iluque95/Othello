@@ -27,11 +27,13 @@ public class LloydC implements Player {
     HashMap<Point, Boolean> never;
 
     int prof;
-    boolean prune;
 
-    public LloydC(int profunditat, boolean prune) {
+    public LloydC(int profunditat) {
+        
+        
+        
+        
         prof = profunditat;
-        this.prune = prune;
         //Hashmaps amb els conjunts de caselles amb un mateix valor
         this.top = new HashMap<Point, Boolean>() {
             {
@@ -92,12 +94,12 @@ public class LloydC implements Player {
         
         this.bad = new HashMap<Point, Boolean>() {
             {
-                put(new Point(1, 1), true);
+             //   put(new Point(1, 1), true);
                 put(new Point(1, 2), true);
                 put(new Point(1, 3), true);
                 put(new Point(1, 4), true);
                 put(new Point(1, 5), true);
-                put(new Point(1, 6), true);
+             //   put(new Point(1, 6), true);
                 put(new Point(2, 1), true);
                 put(new Point(2, 6), true);
                 put(new Point(3, 1), true);
@@ -106,12 +108,12 @@ public class LloydC implements Player {
                 put(new Point(4, 6), true);
                 put(new Point(5, 1), true);
                 put(new Point(5, 6), true);
-                put(new Point(6, 1), true);
+            //    put(new Point(6, 1), true);
                 put(new Point(6, 2), true);
                 put(new Point(6, 3), true);
                 put(new Point(6, 4), true);
                 put(new Point(6, 5), true);
-                put(new Point(6, 6), true);
+             //   put(new Point(6, 6), true);
             }
         };
 
@@ -137,6 +139,8 @@ public class LloydC implements Player {
 
             }
         };
+        
+        
     }
 
     

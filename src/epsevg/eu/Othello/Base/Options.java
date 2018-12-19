@@ -13,16 +13,13 @@ public class Options {
     
     private String p1,p2;
     private int prof1,prof2;
-    private boolean poda1,poda2;
     
-    public Options(String[] players,int[] prof, boolean[] poda)
+    public Options(String[] players,int[] prof)
     {
         p1 = players[0];
         p2 = players[1];
         prof1 = prof[0];
         prof2 = prof[1];
-        poda1 = poda[0];
-        poda2 = poda[1];
     }
     
     /* GETTERS */
@@ -31,8 +28,6 @@ public class Options {
     public String getSecondPlayer(){return p2;}
     public int getP1Prof(){return prof1;}
     public int getP2Prof(){return prof2;}
-    public boolean getP1Poda(){return poda1;}
-    public boolean getP2Poda(){return poda2;}
     
     
 }

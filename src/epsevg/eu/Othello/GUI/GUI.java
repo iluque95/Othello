@@ -4,13 +4,10 @@ import epsevg.eu.Othello.Logic.Board;
 import static epsevg.eu.Othello.GUI.GUI.resize;
 import epsevg.eu.Othello.Base.Movement;
 import epsevg.eu.Othello.Util.Point;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -20,91 +17,95 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javazoom.jl.decoder.JavaLayerException;
-import static epsevg.eu.Othello.Constants.Constants.WIDTH;
-import static epsevg.eu.Othello.Constants.Constants.HEIGHT;
 import static epsevg.eu.Othello.Constants.Constants.IMG;
 import static epsevg.eu.Othello.Constants.Constants.LOGO;
 import static epsevg.eu.Othello.Constants.Constants.MUS1;
 import static epsevg.eu.Othello.Constants.Constants.MUS2;
 import java.io.InputStream;
-/**
- *
- * @author marti
- */
+
+
 public class GUI extends JFrame {
 
-    /**
-     * Creates new form GUI2
-     */
     
     /* PRIVATES */
-    boolean acabat = false;
-    Thread pare = null;
-    Board b = null;
-    Vector<Movement> mov = null; 
+    private boolean acabat = false;
+    private Thread pare = null;
+    private Board b = null;
+    private Vector<Movement> mov = null; 
     private Point s;
-    javazoom.jl.player.Player p;
-    InputStream FIS;
-    BufferedInputStream BIS;
-    boolean play = true;    
-    boolean go = false;
-    
-    
-    
-    Thread music;
+    private javazoom.jl.player.Player p;
+    private InputStream FIS;
+    private BufferedInputStream BIS;
+    private boolean play = true;    
+    private boolean go = false;
+    private Thread music;
     
     
     /* CONSTRUCTOR */
-        
+    
+    /**
+     * 
+     * Public constructor of the GUI (Graphical Interface)
+     * @param t Main Thread from Othello
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws JavaLayerException 
+     */
     public GUI(Thread t) throws IOException, FileNotFoundException, JavaLayerException {
         initComponents();        
-        /* SET TAGS PROPERTIES*/        
+        /* ESTABLIR PROPIETATS ELS JUGADORS */        
         Jugador1.setEditable(false);
         Jugador2.setEditable(false);
         
-        /* SET GUI PROPERTIES */
+        /* ESTABLIR PROPIETATS DE LA GUI */
         playMusic();
-        setPicture();
+        setAtributes();
         
-        /* SET VARIABLES */        
-        s=null;
+        /* ESTABLIR PROPIETATS PI */        
+        s = null;
         pare = t;
-        this.setTitle("Othello - Reversi");
         
-        File file = null;
-        try{
-            file = new File(getClass().getClassLoader().getResource(LOGO).getFile());
-            
-        }
-        catch(Exception e){System.out.println(e+" | No s'ha pogut carregar la icona");}
-                
-                
-        Image image = null;
-        
-       if (file != null)
-           try{
-               image = ImageIO.read(file);
-           }
-           catch(Exception e){ System.out.println("ERROR : " + e);}
-        
-       if (image != null) this.setIconImage(image);
-       
-       
-       
-        
-        /* INTERRUPT FATHER*/
+        /* INTERROMPRE MAIN THREAD (Construccio acabada)*/
         pare.interrupt();
     }
     
     /* METODES */
     
+    /**
+     * Private method which main goal is to set
+     * the atributes of the GUI
+     * @throws IOException 
+     */
+    private void setAtributes() throws IOException
+    {
+        this.setTitle("Othello - Reversi");        
+        File file = null;
+        try{
+            file = new File(getClass().getClassLoader().getResource(LOGO).getFile());            
+        }
+        catch(Exception e){System.out.println(e+" | No s'ha pogut carregar la icona");}
+        Image image = null;
+        if (file != null)
+            try{
+                image = ImageIO.read(file);
+            }
+            catch(Exception e){ System.out.println("ERROR : " + e);}
+        if (image != null) this.setIconImage(image);
+        setPicture();
+    }
+    
+    /**
+     * Public method which main goal is to resize a photo
+     * 
+     * @param img Image to be resized
+     * @param newW New Width
+     * @param newH New Height
+     * @return Image resized
+     */
     public static BufferedImage resize(BufferedImage img, int newW, int newH) { 
         Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
         BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
@@ -113,8 +114,12 @@ public class GUI extends JFrame {
         g2d.drawImage(tmp, 0, 0, null);
         g2d.dispose();
         return dimg;
-    }  
-        
+    }      
+
+    /**
+     * Event triggered by a mouse action.
+     * @param evt Evt from the Event
+     */
     private void ratoliPres(java.awt.event.MouseEvent evt) {                            
         /* OBTAIN MOUSE POSITION */
         int rata_x = evt.getX();
@@ -129,15 +134,6 @@ public class GUI extends JFrame {
         pare.interrupt();
     }
     
-    public void shutdown() throws InterruptedException
-    {
-        p.close();
-        music.join();
-    }
-    
-    
-    
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -762,7 +758,7 @@ public class GUI extends JFrame {
                         .addGap(26, 26, 26)
                         .addComponent(jLabel17)
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -816,10 +812,17 @@ public class GUI extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Event triggered by a mouse action
+     * @param evt Evt from the Event
+     */
     private void jLayeredPane1ratoliPres(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLayeredPane1ratoliPres
         ratoliPres(evt);
     }//GEN-LAST:event_jLayeredPane1ratoliPres
-
+    /**
+     * Event triggered by a button action
+     * @param evt Evt from the Event
+     */
     private void BMusicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BMusicActionPerformed
         try {
             resume_or_pause();
@@ -828,50 +831,51 @@ public class GUI extends JFrame {
         } catch (JavaLayerException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }//GEN-LAST:event_BMusicActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
     
-     public Point getPoint(){return s;}
-  
     /* SETTERS */
-    public void updateBoard(Board b){this.b=b;}
-    public void updateMov (Vector<Movement> mov){this.mov = mov;}
     public void setTurn (String s, int t){TurnLabel.setText(s);    
         if (t == 1) LabelColor.setText("Negres");
-        else if (t == -1) LabelColor.setText("Blanques");      
-    }  
-    
-    
-    /**
-     * Function its aim to provide a winner for the last game
-     * played.
-     * 
-     * @param s Winner's name
-     * 
-     */
-    public void setWinner(String s){
-        /*jLabel18.setVisible(false);
-        TurnLabel.setVisible(false);
-        pj1.setVisible(false);
-        pecesj1.setVisible(false);
-        pj2.setVisible(false);
-        pecesj2.setVisible(false);
-        LabelColor.setVisible(false);*/
-        
-       // WLabel.setText("Winner: " + s);
-       WLabel.setText("<html>Winner :<br/>"+s+"</html>");
-        
+        else if (t == -1) LabelColor.setText("Blanques");
     }
-    
-    public boolean getRepeat(){return go;}
+    public void setRepeat(boolean b){go=b;}
+    public void setWinner(String s){
+        WLabel.setText("<html>Winner :<br/>"+s+"</html>");        
+    }
+    public void updateBoard(Board b){this.b=b;}
+    public void updateMov (Vector<Movement> mov){this.mov = mov;}
     public void setNumPieces(int j1, int j2){
         pecesj1.setText(Integer.toString(j1));
         pecesj2.setText(Integer.toString(j2));
     }
+    private void setPicture() throws IOException
+    {
+        BufferedImage image = null;
+        try{
+           image = ImageIO.read(getClass().getResource (IMG));
+        
+        }
+        catch(Exception e){System.out.println(e);}
+        
+                
+        ImageIcon n = new ImageIcon(resize(image,jLabel19.getWidth(),jLabel19.getHeight()));        
+        jLabel19.setIcon(n);
+    }
+    public void setPlayers(String p1,String p2){Jugador1.setText(p1);
+        Jugador2.setText(p2);
+    }
+    public void setStatus(String s){pecesj1.setText(s);}
+    
+    
+    
+    /* GETTERS */
+    
+    
+    public Point getPoint(){return s;}
+    public boolean getRepeat(){return go;}
+    
+    
+    /* MODIFIERS */
     
     public void pinta_tauler(Board b, Vector<Movement> mov)
     {
@@ -882,9 +886,6 @@ public class GUI extends JFrame {
     }
     
     private void playMusic() throws FileNotFoundException, IOException, JavaLayerException{
-        
-        //System.out.println(epsevg.eu.Othello.Othello.class.getResourceAsStream(IMG));
-        
         
         try{
             music = new Thread()
@@ -917,19 +918,7 @@ public class GUI extends JFrame {
     }
     
     
-    private void setPicture() throws IOException
-    {
-        BufferedImage image = null;
-        try{
-           image = ImageIO.read(getClass().getResource (IMG));
-        
-        }
-        catch(Exception e){System.out.println(e);}
-        
-                
-        ImageIcon n = new ImageIcon(resize(image,jLabel19.getWidth(),jLabel19.getHeight()));        
-        jLabel19.setIcon(n);
-    }
+    
     
     public void resetLabels()
     { // Responsable de reestablir les labels
@@ -962,19 +951,12 @@ public class GUI extends JFrame {
     }
     
     
-     @Override
+    @Override
     public void paint(Graphics g)
     {
-        //System.out.println("TABLERO : ");
-       // b.drawBoard();
-
-        
         super.paint(g);
-       
-
         int i;
         Point pt;
-
         for (i=0;i<b.getWhitePieces().size(); ++i){
 
             pt = b.getWhitePieces().get(i);
@@ -1014,12 +996,8 @@ public class GUI extends JFrame {
                 g.setColor(new Color (0,175,0));
                 g.fillOval(whichx(p.getY()),whichy(p.getX()),40,40);  
             } 
-            
         }
-
-          
     }
-    
         
     private static int whichx(int col){
         return ((50*col+52));
@@ -1030,10 +1008,7 @@ public class GUI extends JFrame {
     }
     
     
-    public void setPlayers(String p1,String p2){Jugador1.setText(p1);
-        Jugador2.setText(p2);
-    }
-    public void setStatus(String s){pecesj1.setText(s);}
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BMusic;

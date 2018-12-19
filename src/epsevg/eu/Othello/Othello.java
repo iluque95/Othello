@@ -154,19 +154,11 @@ public class Othello {
          
          String[] statistics = new String[5];
          
-         statistics[0] = Integer.toString(n_turnos);
+         statistics[0] = Integer.toString(n_turnos); 
          statistics[1] = Integer.toString(b.getBlackPieces().size());
          statistics[2] = Integer.toString(b.getWhitePieces().size());
          statistics[3] = getWinner(b,j1,j2);
          statistics[4] = Integer.toString(b.getQuantityOfPiecesOnBoard());
-         
-         
-        
-         // statistics[0] = num_turnos
-         // statistics[1] = num_pieces_black
-         // statistics[2] = num_pieces_white
-         // statistics[3] = guanyador
-         // statistics[4] = num_pieces_total
          
          new Thread()
          {
@@ -250,7 +242,7 @@ public class Othello {
                 jugador1 = new Random();
                 break;
             case "LloydC":
-                jugador1 = new LloydC(Integer.parseInt(aux.getKey()[1]),Boolean.parseBoolean(aux.getKey()[2]));
+                jugador1 = new LloydC(Integer.parseInt(aux.getKey()[1]));
                 break;
             default:
                 break;
@@ -264,7 +256,7 @@ public class Othello {
                 jugador2 = new Random();
                 break;
             case "LloydC":
-                jugador2 = new LloydC(Integer.parseInt(aux.getValue()[1]),Boolean.parseBoolean(aux.getValue()[2]));
+                jugador2 = new LloydC(Integer.parseInt(aux.getValue()[1]));
                 break;
             default:
                 break;
@@ -280,11 +272,8 @@ public class Othello {
         profunditats[0] = Integer.parseInt(aux.getKey()[1]);
         profunditats[1] = Integer.parseInt(aux.getValue()[1]);
         
-        boolean[] poda = new boolean [2];
-        poda[0] = Boolean.parseBoolean(aux.getKey()[2]);
-        poda[1] = Boolean.parseBoolean(aux.getValue()[2]);
         
-        exjugadors = new Options (jugadors_a,profunditats,poda);
+        exjugadors = new Options (jugadors_a,profunditats);
         
         
         // RESTABLECER ETIQUETAS
@@ -318,7 +307,7 @@ public class Othello {
             if (!testing) pickPlayers(); // Assignem nous jugadors i ens els guardem per la seguent partida 
             else{
                 // --------------- TESTING ----------------------Establim jugadors per a fer estadistiques
-               jugador1 = new LloydC(0,false);
+               jugador1 = new LloydC(0);
                jugador2 = new Random();
                
                //   jugador1 = new Random();
@@ -333,6 +322,8 @@ public class Othello {
             boolean acabat = false;
             while (!acabat)
             {
+                b.nextTurn();
+                
                 
                 ++n_turnos;
                 /* ESTABLECER PARAMETROS GUI */
@@ -367,7 +358,7 @@ public class Othello {
 
                 }
 
-                b.nextTurn();
+                
 
             }
             --v;
@@ -406,7 +397,6 @@ public class Othello {
                 
         }
         gui.dispatchEvent(new WindowEvent(gui,WindowEvent.WINDOW_CLOSING));
-        
         
     }
     

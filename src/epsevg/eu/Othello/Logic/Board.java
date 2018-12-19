@@ -75,8 +75,10 @@ public class Board {
     // Cambiar esto por un puntero a un vector de movimientos.
     public void add (int i, int color)
     {
-        if (color==getTurn()) data.add(movements.elementAt(i).getPosition(), movements.elementAt(i).getDirections(), color);
+        //if (color==getTurn()) data.add(movements.elementAt(i).getPosition(), movements.elementAt(i).getDirections(), color);// ESTA PETABA ITIEL
         //movements = null;
+        data.add(movements.elementAt(i).getPosition(), movements.elementAt(i).getDirections(), color);
+        
     }
     
     public int getColor(Point p)

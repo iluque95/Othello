@@ -28,14 +28,7 @@ public class Random implements Player {
     
     public int movement(Board t, int color){
         //Board ha de tener movimientos, los pasamos calculados o los recalculamos en player, los ponemos como atributo de board?
-        Vector<Movement> list = t.getMovements(color);
-
-        System.out.println("LIST.SIZE = " + list.size());
-        
-        
+        Vector<Movement> list = t.getMovements(color);        
         return ThreadLocalRandom.current().nextInt(0, list.size());
-        
-       // ThreadLocalRandom.current().nextI
-
     }   
 }
