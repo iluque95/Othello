@@ -3,6 +3,7 @@ package epsevg.eu.Othello.GUI;
 import epsevg.eu.Othello.Logic.Board;
 import static epsevg.eu.Othello.GUI.GUI.resize;
 import epsevg.eu.Othello.Base.Movement;
+import static epsevg.eu.Othello.Constants.Constants.BLACK_PIECE;
 import epsevg.eu.Othello.Util.Point;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -25,6 +26,8 @@ import static epsevg.eu.Othello.Constants.Constants.IMG;
 import static epsevg.eu.Othello.Constants.Constants.LOGO;
 import static epsevg.eu.Othello.Constants.Constants.MUS1;
 import static epsevg.eu.Othello.Constants.Constants.MUS2;
+import static epsevg.eu.Othello.Constants.Constants.WHITE_PIECE;
+import static epsevg.eu.Othello.Constants.Constants.POSSIBLE;
 import java.io.InputStream;
 
 
@@ -711,6 +714,7 @@ public class GUI extends JFrame {
         jPanel1.add(WLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 304, 78, 42));
 
         BMusic.setText("PAUSE");
+        BMusic.setEnabled(false);
         BMusic.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BMusicActionPerformed(evt);
@@ -831,6 +835,11 @@ public class GUI extends JFrame {
     private void jLayeredPane1ratoliPres(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLayeredPane1ratoliPres
         ratoliPres(evt);
     }//GEN-LAST:event_jLayeredPane1ratoliPres
+
+    private void GameFlowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GameFlowActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GameFlowActionPerformed
+
     /**
      * Event triggered by a button action
      * @param evt Evt from the Event
@@ -844,10 +853,6 @@ public class GUI extends JFrame {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_BMusicActionPerformed
-
-    private void GameFlowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GameFlowActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_GameFlowActionPerformed
     
     /* SETTERS */
     
@@ -1049,6 +1054,23 @@ public class GUI extends JFrame {
         play = !play;        
     }
     
+    private void pintaPunt(Graphics g,Point p, boolean isWhite, boolean isTrue) throws IOException
+    {
+        int x = whichx(p.getY());
+        int y = whichy(p.getX());
+        BufferedImage image = null;        
+        
+        if (isWhite && isTrue)
+            image = ImageIO.read(getClass().getClassLoader().getResource(WHITE_PIECE));
+        else if (!isWhite && isTrue)
+            image = ImageIO.read(getClass().getClassLoader().getResource(BLACK_PIECE));   
+        else if (!isTrue)
+            image = ImageIO.read(getClass().getClassLoader().getResource(POSSIBLE));
+                
+        image = resize(image,jLayeredPane1.getWidth()/8,jLayeredPane1.getHeight()/8);        
+        g.drawImage(image,x,y, null);            
+    }
+    
     /**
      * Public method overrided that paints the GUI
      * @param g Graphics object
@@ -1063,36 +1085,48 @@ public class GUI extends JFrame {
 
             pt = b.getWhitePieces().get(i);
 
-            g.setColor(Color.WHITE);
-            g.drawOval(whichx(pt.getY()),whichy(pt.getX()),40,40);
-            g.fillOval(whichx(pt.getY()),whichy(pt.getX()),40,40);
+            try {
+                
+                pintaPunt(g, pt, true, true);
+            } catch (IOException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             if (i<b.getBlackPieces().size()){
 
                 pt = b.getBlackPieces().get(i);
-
-                g.setColor(Color.BLACK);
-                g.drawOval(whichx(pt.getY()),whichy(pt.getX()),40,40);
-                g.fillOval(whichx(pt.getY()),whichy(pt.getX()),40,40);
+                
+                try {                
+                pintaPunt(g, pt, false, true);
+            } catch (IOException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
+                
+                }
         }
 
         while (i<b.getBlackPieces().size()){
             pt = b.getBlackPieces().get(i);
+            
+            try {
+                
+                pintaPunt(g, pt, false, true);
+            } catch (IOException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-            g.setColor(Color.BLACK);
-            g.drawOval(whichx(pt.getY()),whichy(pt.getX()),40,40);
-            g.fillOval(whichx(pt.getY()),whichy(pt.getX()),40,40);
 
             ++i;
         }
        
         for (int k=0;k<mov.size();++k){
-            Point p = mov.get(k).getPosition();
-            g.setColor(Color.RED);
-            g.drawOval(whichx(p.getY()),whichy(p.getX()),40,40);
-            g.setColor(new Color (0,175,0));
-            g.fillOval(whichx(p.getY()),whichy(p.getX()),40,40);  
+            pt = mov.get(k).getPosition();
+            
+            try {
+                pintaPunt(g, pt, true, false);
+            } catch (IOException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } 
         
     }
@@ -1104,7 +1138,7 @@ public class GUI extends JFrame {
      * @return Horizontal coordenate
      */
     private static int whichx(int col){
-        return ((50*col+52));
+        return ((50*col+48));
     }
     /**
      * Private method its goal is to get a vertical coordenate
@@ -1113,7 +1147,7 @@ public class GUI extends JFrame {
      * @return Vertical coordenate
      */
     private static int whichy(int fil){
-        return (50*fil+30+42);
+        return (50*fil+30+13);
     }
     
     
