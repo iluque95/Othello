@@ -54,7 +54,7 @@ public class Othello {
     
     /**
      * Private method its goal is to set up GUI
-     * and a brand new board
+     * and a brand-new board
      * @return Returns the new board
      */
     private static Board start_gui_and_board()
@@ -63,23 +63,21 @@ public class Othello {
         Thread m = Thread.currentThread();        
         t = new Thread()
         {
+            @Override
             public void run()
             {
-                java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    gui = new GUI(m);
-                    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();                                        
-                    gui.setLocation(dim.width/2-gui.getSize().width/2,dim.height/2-gui.getSize().height/2);
-                } catch (IOException ex) {
-                    Logger.getLogger(Othello.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (JavaLayerException ex) {
-                    Logger.getLogger(Othello.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                gui.updateBoard(b);        
-            }
-            });
+                java.awt.EventQueue.invokeLater(() -> {
+                    try {
+                        gui = new GUI(m);
+                        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+                        gui.setLocation(dim.width/2-gui.getSize().width/2,dim.height/2-gui.getSize().height/2);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Othello.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (JavaLayerException ex) {
+                        Logger.getLogger(Othello.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    gui.updateBoard(b);
+                });
                 
             }
         };        
@@ -89,7 +87,7 @@ public class Othello {
     
     /**
      * Private method its goal is to wait
-     * for the Manual player to chose a position
+     * for the Manual player to choose a position
      */    
     private static void esperar_tirada()
     {
@@ -98,17 +96,18 @@ public class Othello {
         } catch (InterruptedException ex) {}
     }
     
+  
     /**
      * 
      * @param b Games' board
      * @param j1 First Player
      * @param j2 Seond Player
-     * @return Game's winner
+     * @return Games' winner
      */
     private static String getWinner(Board b, Player j1, Player j2)
     {
-        int p_j1 = b.getQuantityOfPieces(Color.BLACK.getColor()); // Peces jugador negre
-        int p_j2 = b.getQuantityOfPieces(Color.WHITE.getColor()); // Peces jugador blanc        
+        int p_j1 = b.getQuantityOfPieces(Color.BLACK.getColor()); 
+        int p_j2 = b.getQuantityOfPieces(Color.WHITE.getColor());         
         if (p_j1 > p_j2) return "J1 "+j1.name();
         else if (p_j1 < p_j2) return "J2 "+j2.name();
         else return "DRAW";
@@ -141,10 +140,21 @@ public class Othello {
      * @throws CloneNotSupportedException 
      */
     private static void tirar_jugada(Board b, int turn, Vector<Movement> moviments, Player jugador) throws CloneNotSupportedException {
-        if (jugador instanceof Manual)
-            b.add(ManPlay(b),turn);        
-        else
-            b.add(jugador.movement(b, turn), turn);
+        if (jugador instanceof Manual){
+            int pos = ManPlay(b);
+            
+            String aux = jugador.name()+" TIRA EN LA POSICIO " + b.getMovement(pos).getPosition();
+            gui.setFlow(aux);        
+            
+            b.add(pos,turn);             
+        }
+        else{
+            int pos = jugador.movement(b, turn);
+            String aux = jugador.name()+" TIRA EN LA POSICIO " + b.getMovement(pos).getPosition();
+            gui.setFlow(aux);
+            b.add(pos, turn);
+        }
+            
     }
     
     /**
@@ -368,7 +378,7 @@ public class Othello {
             --v;
             gui.setWinner(getWinner(b,jugador1,jugador2));                
             if (!testing) exit = checkNextGame(b,jugador1,jugador2);
-            else exit = (v==0);            
+            else exit = (v==0);
             if (testing)
             {                
                 String gu = getWinner(b,jugador1,jugador2);

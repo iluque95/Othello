@@ -45,6 +45,7 @@ public class GUI extends JFrame {
     private Thread music;
     
     
+    
     /* CONSTRUCTOR */
     
     /**
@@ -233,6 +234,7 @@ public class GUI extends JFrame {
         pecesj2 = new javax.swing.JLabel();
         WLabel = new javax.swing.JLabel();
         BMusic = new javax.swing.JButton();
+        GameFlow = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 51, 51));
@@ -714,56 +716,65 @@ public class GUI extends JFrame {
                 BMusicActionPerformed(evt);
             }
         });
-        jPanel1.add(BMusic, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 352, 80, -1));
+        jPanel1.add(BMusic, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 80, -1));
+
+        GameFlow.setEditable(false);
+        GameFlow.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
+        GameFlow.setForeground(new java.awt.Color(255, 0, 0));
+        GameFlow.setText("UNDEFINED - No Movements Made");
+        GameFlow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GameFlowActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(62, 62, 62)
+                .addComponent(jLabel10)
+                .addGap(34, 34, 34)
+                .addComponent(jLabel11)
+                .addGap(30, 30, 30)
+                .addComponent(jLabel12)
+                .addGap(34, 34, 34)
+                .addComponent(jLabel13)
+                .addGap(35, 35, 35)
+                .addComponent(jLabel14)
+                .addGap(30, 30, 30)
+                .addComponent(jLabel15)
+                .addGap(26, 26, 26)
+                .addComponent(jLabel16)
+                .addGap(26, 26, 26)
+                .addComponent(jLabel17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel9))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel9))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel2))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(jLabel10)
-                        .addGap(34, 34, 34)
-                        .addComponent(jLabel11)
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel12)
-                        .addGap(34, 34, 34)
-                        .addComponent(jLabel13)
-                        .addGap(35, 35, 35)
-                        .addComponent(jLabel14)
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel15)
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel16)
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel17)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel2))
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(GameFlow, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -799,14 +810,15 @@ public class GUI extends JFrame {
                             .addComponent(jLabel16)
                             .addComponent(jLabel17))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLayeredPane1)
-                        .addGap(45, 45, 45))
+                        .addComponent(jLayeredPane1))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(33, 33, 33)))
-                .addContainerGap())
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(GameFlow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28))
         );
 
         pack();
@@ -832,6 +844,10 @@ public class GUI extends JFrame {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_BMusicActionPerformed
+
+    private void GameFlowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GameFlowActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GameFlowActionPerformed
     
     /* SETTERS */
     
@@ -914,6 +930,13 @@ public class GUI extends JFrame {
      */
     public void setStatus(String s){pecesj1.setText(s);}
     
+    /**
+     * Public method its goal is to set the last movement ocurred
+     * in the game
+     * @param s String containing the movement
+     */
+    public void setFlow(String s){GameFlow.setText("Last Movement : "+s);}
+    
     
     
     /* GETTERS */
@@ -975,7 +998,6 @@ public class GUI extends JFrame {
                     catch(JavaLayerException e)
                     {
                         System.out.println("FITXER NO TROBAT MUSICA");
-
                     }
                 }
             };
@@ -1001,6 +1023,7 @@ public class GUI extends JFrame {
         pecesj2.setVisible(true);
         LabelColor.setVisible(true);
         WLabel.setText("");
+        GameFlow.setText("UNDEFINED - No Movements Made");
         WLabel.setVisible(false);
         
     }
@@ -1096,6 +1119,7 @@ public class GUI extends JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BMusic;
+    private javax.swing.JTextField GameFlow;
     private javax.swing.JTextField Jugador1;
     private javax.swing.JTextField Jugador2;
     private javax.swing.JLabel LabelColor;
