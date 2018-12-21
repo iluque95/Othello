@@ -328,9 +328,14 @@ public class LloydC implements Player {
            return heuristic(t,color);            
         }else{
             //Demanar moviments possibles del tauler
-            Vector<Movement> list = t.getMovements(color);
+            //Vector<Movement> list;
+            //if (turn == color) list = t.getMovements(color);
+            //else list = t.getMovements(-color);
+            
+            Vector<Movement> list = t.getMovements(turn);
             Integer n;
             //Preparar nivell MIN o MAX
+          //  System.out.println(list);
             if (level) n = Integer.MIN_VALUE;
             else n = Integer.MAX_VALUE;
             //Per cada moviment possible
@@ -341,7 +346,7 @@ public class LloydC implements Player {
                     b.add(i, turn);
                     //b.drawBoard();
                     //Crida recursiva canviant el color de torn i min/max
-                    int x = minMax(b, -turn, color, prof--, !level);
+                    int x = minMax(b, -turn, color, --prof, !level);
                     //Segons nivell n es maxim o minim
                     if ((level && x > n) || (!level && x < n )) {
                         n = x;

@@ -317,7 +317,7 @@ public class Othello {
         boolean exit = false;        
         /* ATRIBUTS TESTING*/
         testing = false; // SET THIS TO TRUE TO TEST
-        int v = 10000; // Nombre de vegades bucle (Testing)
+        int v = 1000; // Nombre de vegades bucle (Testing)
         int g1 = 0;
         int g2 = 0;
         int draw = 0;
@@ -332,7 +332,7 @@ public class Othello {
             if (!testing) pickPlayers(); // Assignem nous jugadors i ens els guardem per la seguent partida 
             else{
                 // --------------- TESTING ----------------------Establim jugadors per a fer estadistiques
-               jugador1 = new LloydC(0);
+               jugador1 = new LloydC(8);
                jugador2 = new Random();
                
                //   jugador1 = new Random();
@@ -357,14 +357,10 @@ public class Othello {
                 /* FIN ESTABLECER PARAMETROS GUI */                
                 gui.setVisible(true);
                 
-                // COMPROVAR SI PUEDE TIRAR Hacer notificar a GUI de modo visual
-                if(moviments.isEmpty()){
-                    System.out.println("No moves for this player");
-                    if(b.getMovements(-b.getTurn()).isEmpty()){
-                        System.out.println("Geim ober. There's no moves for any player");
-                        acabat = true;
-                    }
-                }
+                if(moviments.isEmpty() && b.getMovements(-b.getTurn()).isEmpty())
+                    acabat = true;
+                    
+                
                 else{
                     if (b.getTurn()==1 && !moviments.isEmpty())
                     {

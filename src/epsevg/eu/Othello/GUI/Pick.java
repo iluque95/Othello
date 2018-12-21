@@ -139,7 +139,7 @@ public class Pick extends javax.swing.JDialog {
             }
         });
 
-        PCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
+        PCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" }));
         PCombo.setEnabled(false);
         PCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -147,7 +147,7 @@ public class Pick extends javax.swing.JDialog {
             }
         });
 
-        PCombo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
+        PCombo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" }));
         PCombo2.setEnabled(false);
         PCombo2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -223,13 +223,8 @@ public class Pick extends javax.swing.JDialog {
                       
            PCombo.setEnabled(true);
            
-           if (Rulet2.getSelectedItem().equals("Random")){
-               prof1 = 0;
-               PCombo.setSelectedItem("0");
-               PCombo.setEnabled(false);
-           }
            
-           else if (Rulet2.getSelectedItem().equals("LloydC") && !PCombo2.isEnabled()) PCombo2.setEnabled(true);
+           if (Rulet2.getSelectedItem().equals("LloydC") && !PCombo2.isEnabled()) PCombo2.setEnabled(true);
            
        }
        else if (Rulet.getSelectedItem().equals("Random")){
@@ -238,11 +233,6 @@ public class Pick extends javax.swing.JDialog {
            PCombo.setSelectedItem("0");
            PCombo.setEnabled(false);
            
-           if (Rulet2.getSelectedItem().equals("LloydC")){
-               prof2 = 0;
-               PCombo2.setSelectedItem("0");
-               PCombo2.setEnabled(false);
-           }
        }
        
        else{
@@ -274,21 +264,10 @@ public class Pick extends javax.swing.JDialog {
            
            PCombo2.setEnabled(true);
            
-           if (Rulet.getSelectedItem().equals("Random")){
-               prof2 = 0;
-               PCombo2.setSelectedItem("0");
-               PCombo2.setEnabled(false);
-           }
-           else if (Rulet.getSelectedItem().equals("LloydC") && !PCombo.isEnabled()) PCombo.setEnabled(true);
+           if (Rulet.getSelectedItem().equals("LloydC") && !PCombo.isEnabled()) PCombo.setEnabled(true);
            
        }
        else if (Rulet2.getSelectedItem().equals("Random")){
-           
-           if (Rulet.getSelectedItem().equals("LloydC")){
-               prof1=0;
-               PCombo.setSelectedItem("0");
-               PCombo.setEnabled(false);
-           }
            
            prof2 = 0;
            PCombo2.setSelectedItem("0");
