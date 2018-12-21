@@ -317,7 +317,7 @@ public class Othello {
         boolean exit = false;        
         /* ATRIBUTS TESTING*/
         testing = false; // SET THIS TO TRUE TO TEST
-        int v = 1000; // Nombre de vegades bucle (Testing)
+        int v = 10000; // Nombre de vegades bucle (Testing)
         int g1 = 0;
         int g2 = 0;
         int draw = 0;

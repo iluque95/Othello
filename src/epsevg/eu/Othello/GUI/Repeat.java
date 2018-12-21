@@ -44,13 +44,14 @@ public class Repeat extends javax.swing.JDialog {
         round(p_cent,2);
         round (w_cent,2);
         
+        
         jLabel9.setText(Double.toString(p_cent)+" %");
         jLabel10.setText(Double.toString(w_cent)+" %");
         
         this.getRootPane().setDefaultButton(SB);
         this.setTitle("Othello - Reversi");
         
-        t.interrupt(); // PAPA SAP QUE MHE CONSTRUIT
+        t.interrupt(); // Ja sha construit el objecte
     }
 
     /**
@@ -261,7 +262,7 @@ public class Repeat extends javax.swing.JDialog {
 
     private void SBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SBActionPerformed
         j.setRepeat(true);
-        t.interrupt(); // PAPA VUELVE
+        t.interrupt(); // Torna el pare
     }//GEN-LAST:event_SBActionPerformed
 
     private void NBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NBActionPerformed

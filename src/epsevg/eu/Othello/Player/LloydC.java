@@ -30,9 +30,6 @@ public class LloydC implements Player {
 
     public LloydC(int profunditat) {
         
-        
-        
-        
         prof = profunditat;
         //Hashmaps amb els conjunts de caselles amb un mateix valor
         this.top = new HashMap<Point, Boolean>() {
@@ -45,11 +42,9 @@ public class LloydC implements Player {
             }
         };
        
-
-
         this.frame = new HashMap<Point, Boolean>() {
             {
-                //Marc exterior excepte dolentes
+                //Marc exterior excepte perpendicularment adjacents a les cantonades
                 put(new Point(0, 2), true);
                 put(new Point(0, 3), true);
                 put(new Point(0, 4), true);
@@ -71,7 +66,7 @@ public class LloydC implements Player {
         
                 this.never = new HashMap<Point, Boolean>() {
             {
-                //Cantonades
+                //Diagonalment adjacents a les cantonades
                 put(new Point(1, 1), true);
                 put(new Point(1, 6), true);
                 put(new Point(6, 1), true);
@@ -80,7 +75,7 @@ public class LloydC implements Player {
         };
         this.baddest = new HashMap<Point, Boolean>() {
             {
-                //Cantonades
+                //Perpendicularment adjacents a les cantonades
                 put(new Point(0, 1), true);
                 put(new Point(0, 6), true);
                 put(new Point(1, 0), true);
@@ -94,12 +89,11 @@ public class LloydC implements Player {
         
         this.bad = new HashMap<Point, Boolean>() {
             {
-             //   put(new Point(1, 1), true);
+                //Marc interioir excepte els cantons d'aquest
                 put(new Point(1, 2), true);
                 put(new Point(1, 3), true);
                 put(new Point(1, 4), true);
                 put(new Point(1, 5), true);
-             //   put(new Point(1, 6), true);
                 put(new Point(2, 1), true);
                 put(new Point(2, 6), true);
                 put(new Point(3, 1), true);
@@ -108,12 +102,10 @@ public class LloydC implements Player {
                 put(new Point(4, 6), true);
                 put(new Point(5, 1), true);
                 put(new Point(5, 6), true);
-            //    put(new Point(6, 1), true);
                 put(new Point(6, 2), true);
                 put(new Point(6, 3), true);
                 put(new Point(6, 4), true);
                 put(new Point(6, 5), true);
-             //   put(new Point(6, 6), true);
             }
         };
 
@@ -143,12 +135,19 @@ public class LloydC implements Player {
         
     }
 
-    
     public String name() {
         return "LloydC";
-
     }
 
+    /**
+     * Returns the best movement for the given board and the given
+     * color which is same as turn.
+     * Call minmax algorithm.
+     * 
+     * @param t Board
+     * @param color Color for select best movement
+     * @return int whith best move of given board
+     */
     @Override
     public int movement(Board t, int color) {    
         //Demanar moviments possibles del tauler
@@ -165,7 +164,7 @@ public class LloydC implements Player {
                 //b.drawBoard();
                 b.add(i, color);
                 //Enviar a evaluar
-                int x = profund(b, -color, color, prof, false);
+                int x = minMax(b, -color, color, prof, false);
                 if( x== Integer.MAX_VALUE) return i;
                 //Obtenir màxim, nivell MAX
                 if (x > n) {
@@ -179,18 +178,29 @@ public class LloydC implements Player {
     }
     
     
-    
+    /**
+     * Return a valoration of the given board and the given color.
+     * Evaluates each position with different values, determines
+     * in frames which are better for the algorithm depending of
+     * the worst cases where opponent can flip pieces like as given
+     * color.
+     * 
+     * @param b Board
+     * @param color Color to analyze
+     * @return int with board valoration
+     */
 
     private int heuristic(Board b, int color) {
-        int my=b.getMovements(color).size();
+        
         int other=b.getMovements(-color).size();
+        int my=b.getMovements(color).size();
         //No hi han moviments + / - infinit
         if( my==0 && other==0){
             if(b.getQuantityOfPieces(color) > b.getQuantityOfPieces(-color)) return Integer.MAX_VALUE;
             else return Integer.MIN_VALUE;
                 }
         int h = 0;
-        boolean [] cols = new boolean[8];
+        boolean [] cols = new boolean[WIDTH];
         Arrays.fill(cols, Boolean.TRUE);
         for (int i = 0; i < HEIGHT; i++) {
             //Mirar columnes del mateix color fer taula de 8 posicions i anar anotant a cada columna
@@ -210,20 +220,21 @@ public class LloydC implements Player {
                         h += 10000 * (xColor * color);
                     //Marc exterior    
                     } else if (frame.containsKey(x)) {
-                       // h+=1000;
                         //Si hi ha una casella lliure a les vores, devaluem si som al costat del contrari amb un espai al costat
                         //Verticals
                         if (i==0 || i==7) {
                             if ((b.getColor(i, j-1) != xColor) && (b.getColor(i, j-1) != b.getColor(i, j+1))) h -= 200 * (xColor * color);
-                            else h+=200 * (xColor * color); // Incluye al lado de una nuestra
+                            //Valorem positivament qualsevol jugador ja que despres les intentarem voltejar
+                            else h+=200; 
                         }
                         //Horitzontals
                         if (j==0 || j==7) {
                             if ((b.getColor(i-1, j) != xColor) && (b.getColor(i-1, j) != b.getColor(i+1, j))) h -= 200 * (xColor * color);
-                            else h+=200 * (xColor * color); // Incluye al lado de una nuestra
+                            //Valorem positivament qualsevol jugador ja que despres les intentarem voltejar
+                            else h+=200; 
                         }
                         else{
-                            h+=2000;
+                            h+=200;
                         }
                             
                     //Caselles adjacents a les vores    
@@ -242,54 +253,39 @@ public class LloydC implements Player {
                         } else if (j==1 && (i>1 && i<6)) {
                             if (b.getColor(i,7)==0 || b.getColor(i+1,7)==0 || b.getColor(i-1, 7)==0) h-= 200 * (xColor * color);
                             else h+=200 * (xColor * color);
-                        }else{
-                            if (i==1 && j==1) {
-                                if (b.getColor(0,0)==0 || b.getColor(0, 1)==0 || b.getColor(0, 2)==0 || b.getColor(1,0)==0 || b.getColor(2,0)==0) h-= 600 * (xColor * color);
-                                else h+=200 * (xColor * color); 
-                            }else if(i==1 && j==6) {
-                                if (b.getColor(0,7)==0 || b.getColor(0, 5)==0 || b.getColor(0, 6)==0 || b.getColor(1,7)==0 || b.getColor(2,7)==0) h-= 600 * (xColor * color);
-                                else h+=200 * (xColor * color); 
-                            }else if(i==6 && j==1) {
-                                if (b.getColor(7,0)==0 || b.getColor(5, 0)==0 || b.getColor(6, 0)==0 || b.getColor(7,1)==0 || b.getColor(7,2)==0) h-= 600 * (xColor * color);
-                                else h+=200 * (xColor * color);
-                            }else if(i==6 && j==6) {
-                                if (b.getColor(7,7)==0 || b.getColor(5, 7)==0 || b.getColor(6, 7)==0 || b.getColor(7,5)==0 || b.getColor(7,6)==0) h-= 600 * (xColor * color);
-                                else h+=200 * (xColor * color);
-                            }else{
-                                h-=400 * (xColor * color);
-                            }
                         }
                     //Caselles centrals    
                     } else if (middle.containsKey(x)) {
                          h += 200 * (xColor * color);
+                      //perpendiculars de la vora de les cantonades
                     } else if (baddest.containsKey(x)){
                         if((i==1 && j==0) || (i==0 && j==1)){
-                            if(b.getColor(0, 0)!=0) h+=2000;
-                            else h-=3000;
+                            if(b.getColor(0, 0)!=0) h+=2000 * (xColor * color);
+                            else h-=3000 * (xColor * color);
                         } else if((i==0 && j==6) || (i==1 && j==7)){
-                            if(b.getColor(0, 7)!=0) h+=2000;
-                            else h-=3000;
+                            if(b.getColor(0, 7)!=0) h+=2000* (xColor * color);
+                            else h-=3000 * (xColor * color);
                         } else if((i==6 && j==0) || (i==7 && j==1)){
-                            if(b.getColor(7, 0)!=0) h+=2000;
-                            else h-=3000;
+                            if(b.getColor(7, 0)!=0) h+=2000 * (xColor * color);
+                            else h-=3000* (xColor * color);
                         } else if((i==6 && j==7) || (i==7 && j==6)){
-                            if(b.getColor(7, 7)!=0) h+=2000;
-                            else h-=3000;
+                            if(b.getColor(7, 7)!=0) h+=2000 * (xColor * color);
+                            else h-=3000 * (xColor * color);
                         }
                         
                     } else if (never.containsKey(x)){
                         if(i==1 && j==1){
-                            if(b.getColor(0, 0)!=0) h+=1000;
-                            else h-=5000;
+                            if(b.getColor(0, 0)!=0) h+=1000 * (xColor * color);
+                            else h-=5000 * (xColor * color);
                         } else if(i==1 && j==6){
-                            if(b.getColor(0, 7)!=0) h+=1000;
-                            else h-=5000;
+                            if(b.getColor(0, 7)!=0) h+=1000 * (xColor * color);
+                            else h-=5000 * (xColor * color);
                         } else if(i==6 && j==1){
-                            if(b.getColor(7, 0)!=0) h+=1000;
-                            else h-=5000;
+                            if(b.getColor(7, 0)!=0) h+=1000 * (xColor * color);
+                            else h-=5000 * (xColor * color);
                         } else if(i==6 && j==6){
-                            if(b.getColor(7, 7)!=0) h+=1000;
-                            else h-=5000;
+                            if(b.getColor(7, 7)!=0) h+=1000 * (xColor * color);
+                            else h-=5000 * (xColor * color);
                         }
                         
                     }
@@ -308,17 +304,25 @@ public class LloydC implements Player {
         if(cols[0]) h+= 10000;
         if(cols[7]) h+= 10000;
         //System.out.println("Heuristic:"+h);
-            //A partir del torn 50 la diferencia de fitxes amb el contrari puntua
-            if(57 < b.getQuantityOfPiecesOnBoard())h = h + 10*(b.getQuantityOfPieces(color)-b.getQuantityOfPieces(-color));
-            //Entre torn 15 i 50 es valora limitar els moviments del contrari
-           // if(15 < b.getQuantityOfPiecesOnBoard() && 50>b.getQuantityOfPiecesOnBoard()){
-          //      if(my>6) h+=1000;
-           // }
-            //if(b.getQuantityOfPiecesOnBoard()>15) h*=my;
+            //A partir del torn 57 la diferencia de fitxes amb el contrari puntua
+            if(57 < b.getQuantityOfPiecesOnBoard()) h = h + 10*(b.getQuantityOfPieces(color)-b.getQuantityOfPieces(-color));
             return h;
     }
 
-    public int profund(Board t, int turn, int color, int prof, boolean level){
+    /**
+     * Given a depth, using MIN-MAX algorithm determines the best board states.
+     * In each iteration the algorithm expands all possible movements and
+     * stores the max or min values depending on the level which it is in that.
+     * Finally, returns the value of leaves.
+     *
+     * @param t Board to analyze
+     * @param turn Player turn for add piece
+     * @param color Color to analyze
+     * @param prof expansion depht
+     * @param level true for MAX, false for MIN
+     * @return heuristic value for the leaves using MIN-MAX
+     */
+    public int minMax(Board t, int turn, int color, int prof, boolean level){
         //Turn canvia color per afegir fitxa, color es el que avaluara heuristic
         if (prof < 1){
            return heuristic(t,color);            
@@ -337,7 +341,7 @@ public class LloydC implements Player {
                     b.add(i, turn);
                     //b.drawBoard();
                     //Crida recursiva canviant el color de torn i min/max
-                    int x = profund(b, -turn, color, prof--, !level);
+                    int x = minMax(b, -turn, color, prof--, !level);
                     //Segons nivell n es maxim o minim
                     if ((level && x > n) || (!level && x < n )) {
                         n = x;
@@ -349,4 +353,3 @@ public class LloydC implements Player {
     
     }
 }
-//comentario

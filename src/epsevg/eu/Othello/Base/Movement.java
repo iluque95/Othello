@@ -9,7 +9,7 @@ import epsevg.eu.Othello.Util.Point;
 
 /**
  *
- * @author itiel
+ * 
  * 
  * Determina qué es un movimiento.
  * 

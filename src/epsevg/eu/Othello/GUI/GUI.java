@@ -236,7 +236,6 @@ public class GUI extends JFrame {
         pj2 = new javax.swing.JLabel();
         pecesj2 = new javax.swing.JLabel();
         WLabel = new javax.swing.JLabel();
-        BMusic = new javax.swing.JButton();
         GameFlow = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -713,15 +712,6 @@ public class GUI extends JFrame {
         jPanel1.add(pecesj2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, -1, -1));
         jPanel1.add(WLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 304, 78, 42));
 
-        BMusic.setText("PAUSE");
-        BMusic.setEnabled(false);
-        BMusic.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BMusicActionPerformed(evt);
-            }
-        });
-        jPanel1.add(BMusic, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 80, -1));
-
         GameFlow.setEditable(false);
         GameFlow.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         GameFlow.setForeground(new java.awt.Color(255, 0, 0));
@@ -840,20 +830,7 @@ public class GUI extends JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_GameFlowActionPerformed
 
-    /**
-     * Event triggered by a button action
-     * @param evt Evt from the Event
-     */
-    private void BMusicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BMusicActionPerformed
-        try {
-            resume_or_pause();
-        } catch (IOException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JavaLayerException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_BMusicActionPerformed
-    
+   
     /* SETTERS */
     
     /**
@@ -1033,27 +1010,6 @@ public class GUI extends JFrame {
         
     }
     
-    
-    /**
-     * Private method its goal is to play or resume
-     * music flow.
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws JavaLayerException 
-     */
-    private void resume_or_pause() throws IOException, FileNotFoundException, JavaLayerException
-    {
-        if (play){
-            p.close();
-            BMusic.setText("PLAYM");
-        }
-        else{
-            playMusic();
-            BMusic.setText("PAUSE");
-        }        
-        play = !play;        
-    }
-    
     private void pintaPunt(Graphics g,Point p, boolean isWhite, boolean isTrue) throws IOException
     {
         int x = whichx(p.getY());
@@ -1067,7 +1023,7 @@ public class GUI extends JFrame {
         else if (!isTrue)
             image = ImageIO.read(getClass().getClassLoader().getResource(POSSIBLE));
                 
-        image = resize(image,jLayeredPane1.getWidth()/8,jLayeredPane1.getHeight()/8);        
+        image = resize(image,jLayeredPane1.getWidth()/9,jLayeredPane1.getHeight()/9);        
         g.drawImage(image,x,y, null);            
     }
     
@@ -1138,7 +1094,7 @@ public class GUI extends JFrame {
      * @return Horizontal coordenate
      */
     private static int whichx(int col){
-        return ((50*col+48));
+        return ((50*col+50));
     }
     /**
      * Private method its goal is to get a vertical coordenate
@@ -1147,12 +1103,11 @@ public class GUI extends JFrame {
      * @return Vertical coordenate
      */
     private static int whichy(int fil){
-        return (50*fil+30+13);
+        return (50*fil+30+42);
     }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BMusic;
     private javax.swing.JTextField GameFlow;
     private javax.swing.JTextField Jugador1;
     private javax.swing.JTextField Jugador2;
