@@ -15,15 +15,18 @@ Example:
 *W: White
 *B: Black
 
+
+```cpp
 1)                      2)
-  * * * * * * * *         * * * * * * * *
-  * * * * * * * *         * * * * * * * *
-  * * * * * * * *         * * * * * * * *
-  * * * W B * * *         * * * B W * * *
-  * * * B W * * *         * * * W B * * *
-  * * * * * * * *         * * * * * * * *
-  * * * * * * * *         * * * * * * * *
-  * * * * * * * *         * * * * * * * *
+ x x x x x x x x         x x x x x x x x 
+ x x x x x x x x         x x x x x x x x 
+ x x x x x x x x         x x x x x x x x 
+ x x x W B x x x         x x x B W x x x
+ x x x B W x x x         x x x W B x x x
+ x x x x x x x x         x x x x x x x x 
+ x x x x x x x x         x x x x x x x x 
+ x x x x x x x x         x x x x x x x x
+```
   
   
  These are the two possibilities as starting game.
