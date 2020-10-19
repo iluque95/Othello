@@ -18,14 +18,14 @@ Example:
 
 ```cpp
 1)                      2)
- x x x x x x x x         x x x x x x x x 
- x x x x x x x x         x x x x x x x x 
- x x x x x x x x         x x x x x x x x 
- x x x W B x x x         x x x B W x x x
- x x x B W x x x         x x x W B x x x
- x x x x x x x x         x x x x x x x x 
- x x x x x x x x         x x x x x x x x 
- x x x x x x x x         x x x x x x x x
+ · · · · · · · ·         · · · · · · · · 
+ · · · · · · · ·         · · · · · · · · 
+ · · · · · · · ·         · · · · · · · · 
+ · · · W B · · ·         · · · B W · · ·
+ · · · B W · · ·         · · · W B · · ·
+ · · · · · · · ·         · · · · · · · · 
+ · · · · · · · ·         · · · · · · · · 
+ · · · · · · · ·         · · · · · · · ·
 ```
   
   
@@ -43,14 +43,14 @@ Example:
  
  ```cpp
  1) Showing options      2) Picking an option    3) Result
-  x x x x x x x x         x x x x x x x x         x x x x x x x x 
-  x x x x x x x x         x x x x x x x x         x x x x x x x x 
-  x x x x O x x x         x x x x x x x x         x x x x x x x x 
-  x x x W B O x x         x x x W B x x x         x x x W B x x x
-  x x O B W x x x         x x O B W x x x         x x W W W x x x
-  x x x O x x x x         x x x x x x x x         x x x x x x x x 
-  x x x x x x x x         x x x x x x x x         x x x x x x x x 
-  x x x x x x x x         x x x x x x x x         x x x x x x x x 
+  · · · · · · · ·         · · · · · · · ·         · · · · · · · · 
+  · · · · · · · ·         · · · · · · · ·         · · · · · · · · 
+  · · · · O · · ·         · · · · · · · ·         · · · · · · · · 
+  · · · W B O · ·         · · · W B · · ·         · · · W B · · ·
+  · · O B W · · ·         · · O B W · · ·         · · W W W · · ·
+  · · · O · · · ·         · · · · · · · ·         · · · · · · · · 
+  · · · · · · · ·         · · · · · · · ·         · · · · · · · · 
+  · · · · · · · ·         · · · · · · · ·         · · · · · · · · 
 ```
  
  
