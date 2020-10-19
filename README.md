@@ -70,9 +70,11 @@ Execute Othello.java as main entrypoint.
 
 ## Documentation
 
-Is attached in release section in Catalan language. You can translate it and take it a look.
+Language is Catalan. You can translate it and take it a look.
 
 Whole project is explained in depth detail on the doc, from taken decission to why we use some strategies.
+
+[[PDF]](https://github.com/iluque95/Othello/releases/download/1.0/Documentacio.pdf)
 
 ## Working team
 
@@ -85,6 +87,7 @@ Whole project is explained in depth detail on the doc, from taken decission to w
 I worked around 90% on the logic of the game.
 
 [@decube83](https://github.com/decube83/) worked around 90% on the MinMax algorithm heuristic.
+
 [@LivedMm](https://github.com/LivedMm/) worked around 90% on the GUI of the project.
 
 ## License
