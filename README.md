@@ -78,9 +78,9 @@ Whole project is explained in depth detail on the doc, from taken decission to w
 
 ## Working team
 
-[@decube83](https://github.com/decube83/)
-
-[@LivedMm](https://github.com/LivedMm/)
+[<img alt="decube83" src="https://avatars.githubusercontent.com/u/43383375" width="120">](https://github.com/decube83)
+[<img alt="MartiMiquel" src="https://avatars.githubusercontent.com/u/34455600" width="120">](https://github.com/MartiMiquel)
+[<img alt="me" src="https://avatars.githubusercontent.com/u/14928184" width="120">](https://github.com/iluque95)
 
 ## Work
 
