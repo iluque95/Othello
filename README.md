@@ -84,11 +84,11 @@ Whole project is explained in depth detail on the doc, from taken decission to w
 
 ## Work
 
-I worked around 90% on the logic of the game.
-
 [@decube83](https://github.com/decube83/) worked around 90% on the MinMax algorithm heuristic.
 
 [@LivedMm](https://github.com/LivedMm/) worked around 90% on the GUI of the project.
+
+[@me](https://github.com/iluque95/) I worked around 90% on the logic of the game.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
